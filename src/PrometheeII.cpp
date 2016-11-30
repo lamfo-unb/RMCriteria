@@ -6,13 +6,23 @@ using namespace Rcpp;
 
 //Error Measure
 void GaussianPreference(Eigen::MatrixXd &matDelta, double sigma);
+//Usual Preference Function
+void UsualPreference(Eigen::MatrixXd &matDelta);
+//UShape Preference Function
+void UShapePreference(Eigen::MatrixXd &matDelta, double q);
+//VShape Preference Function
+void VShapePreference(Eigen::MatrixXd &matDelta, double p);
+//Level Preference Function
+void LevelPreference(Eigen::MatrixXd &matDelta,double q, double p);
+//Level Preference Function
+void VShapeIndPreference(Eigen::MatrixXd &matDelta, double q, double p);
 
 
 // Create the Kernel matrix
 // @param datVec  Column of the dataset
 // @param int Type od preference function
 // @return Preference Matrix
-Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction){
+Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
   //Get the number of rows
   int rows=datVec.size();
 
@@ -39,11 +49,36 @@ Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction){
 
   //Gaussian Preference
   if(prefFunction==0){
-    GaussianPreference(matPromethee,sigma);
+    if(std::isnan(parms(0))){
+      GaussianPreference(matPromethee,sigma);
+    }
+    else{
+      sigma=parms(0);
+      GaussianPreference(matPromethee,sigma);
+    }
+
   }
   else if(prefFunction==1){
+    UsualPreference(matPromethee);
   }
-
+  else if(prefFunction==2){
+    double q = parms(0);
+    UShapePreference(matPromethee, q);
+  }
+  else if(prefFunction==3){
+    double p=parms(0);
+    VShapePreference(matPromethee, p);
+  }
+  else if(prefFunction==4){
+    double q=parms(0);
+    double p=parms(1);
+    LevelPreference(matPromethee, q,  p);
+  }
+  else if(prefFunction==5){
+    double q=parms(0);
+    double p=parms(1);
+    VShapeIndPreference(matPromethee, q,  p);
+  }
   return(matPromethee);
 }
 
@@ -53,7 +88,7 @@ Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction){
 // @param int Type od preference function
 // @return Preference Matrix
 // [[Rcpp::export]]
-Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, bool normalize){
+Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();
 
@@ -67,7 +102,7 @@ Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, 
   for(int col=0;col<cols;col++){
     if(vecWeights(col)>0){
       //Create the delta matrix
-      Eigen::MatrixXd matTemp  = matPrometheeII(datMat.col(col), prefFunction(col));
+      Eigen::MatrixXd matTemp  = matPrometheeII(datMat.col(col), prefFunction(col), parms.row(col));
       //Multiply the weight
       matTemp = matTemp*vecWeights(col);
       //Accumulate the matrix
