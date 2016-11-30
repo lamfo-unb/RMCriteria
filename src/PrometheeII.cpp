@@ -21,27 +21,21 @@ Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction){
 
   //Variance
   double sum2 = 0;
-  double sum  = 0;
   double cont = 0;
   //Initialize the computation
   for(int i=0;i<rows;i++){
-    for(int j=i+1;j<rows-1;j++){
+    for(int j=i+1;j<rows;j++){
       //Compute the difference
       double delta = datVec(i)-datVec(j);
-      if(delta>0){
-        matPromethee(i,j)=delta;
-      }
-      else{
-        matPromethee(j,i)=(1.0)*delta;
-      }
-      sum2=sum2+std::pow(matPromethee(j,i),2);
-      sum=sum+delta;
+      matPromethee(i,j)=delta;
+      matPromethee(j,i)=(-1.0)*delta;
+      sum2=sum2+2.0*std::pow(matPromethee(j,i),2);
       cont=cont+1;
     }
   }
 
   //Calculate the sigma
-  double sigma = (sum2/cont)-(std::pow(sum/cont,2));
+  double sigma = (sum2/(2*cont));
 
   //Gaussian Preference
   if(prefFunction==0){
@@ -58,7 +52,8 @@ Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction){
 // @param datVec  Column of the dataset
 // @param int Type od preference function
 // @return Preference Matrix
-Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction){
+// [[Rcpp::export]]
+Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();
 
@@ -83,11 +78,22 @@ Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, 
   //Normalize the matrix
   matPromethee = matPromethee/vecWeights.sum();
 
-  //Create the Flow matrix
-  Eigen::MatrixXd matFlow = Eigen::MatrixXd::Zero(cols, cols);
-  for(int col=0;col<cols;col++){
-    matFlow.row(col) = matPromethee.row(col).sum();
+  //Create the Flow vector
+  Eigen::VectorXd phiPlus  = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiMinus = Eigen::VectorXd::Zero(rows);
+
+  for(int row=0;row<rows;row++){
+    phiPlus(row) = matPromethee.row(row).sum();
+    phiMinus(row) = matPromethee.col(row).sum();
   }
 
+    //Index
+  Eigen::VectorXd phi = phiPlus-phiMinus;
+
+  //Normalize
+  double min = phi.minCoeff();
+  double max = phi.maxCoeff();
+  if(normalize==true) phi = (phi.array() - min)/(max-min);
+  return (phi);
 }
 
