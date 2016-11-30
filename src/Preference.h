@@ -2,7 +2,7 @@
 #ifndef PREFERENCE_H
 #define PREFERENCE_H
 
-double GaussianPreference(double delta, Eigen::VectorXd parms);
+void GaussianPreference(Eigen::MatrixXd &matDelta, double sigma);
 
 
 // This is the end of the header guard
