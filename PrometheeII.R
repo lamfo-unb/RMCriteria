@@ -1,0 +1,4 @@
+dados<-matrix(c(5.2,-3.5,
+                4.3,-1.2,
+                6.7,-2.0),byrow = T, ncol=2,nrow=3)
+RMCriteria::PrometheeII(dados,c(0.3,0.7),c(0,0),FALSE)
