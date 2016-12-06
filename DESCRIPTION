@@ -11,6 +11,7 @@ LazyData: TRUE
 LinkingTo: Rcpp, RcppEigen
 Imports:
     Rcpp,
-    RcppEigen
+    RcppEigen,
+    RcppNumerical
 SystemRequirements: GNU make
 RoxygenNote: 5.0.1
