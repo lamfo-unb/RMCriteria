@@ -5,72 +5,203 @@
 #include <RcppNumerical.h>
 using namespace Numer;
 
-// P(0.3 < X < 0.8), X ~ Beta(a, b)
-class BetaPDF: public Func {
+class Usual: public Func {
 private:
-  double a;
-  double b;
+  double y;
+  bool plus;
 public:
-  BetaPDF(double a_, double b_) : a(a_), b(b_) {}
+  Usual(double y_, bool plus_): y(y_), plus(plus_) {}
 
   double operator()(const double& x) const
   {
-    return R::dbeta(x, a, b, 0);
+    if(plus){
+      if((y-x)<=0){
+        return(0.0);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+    else{
+      if((x-y)<=0){
+        return(0.0);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
   }
 };
 
-// [[Rcpp::export]]
-Rcpp::List integrate_test()
-{
-  const double a = 3, b = 10;
-  const double lower = 0.3, upper = 0.8;
-  const double true_val = R::pbeta(upper, a, b, 1, 0) -
-    R::pbeta(lower, a, b, 1, 0);
 
-  BetaPDF f(a, b);
-  double err_est;
-  int err_code;
-  const double res = Numer::integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("true") = true_val,
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
-}
+class UShape: public Func {
+private:
+  double q;
+  double y;
+  bool plus;
+public:
+  UShape(double y_, double q_, bool plus_) :  y(y_), q(q_), plus(plus_) {}
 
-
-// Create the Kernel matrix
-// @param datVec  Column of the dataset
-// @param int Type od preference function
-// @return Preference Matrix
-Eigen::MatrixXd matPrometheeIV(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
-  //Get the number of rows
-  int rows=datVec.size();
-
-  //Initialize the matPromethee
-  Eigen::MatrixXd matPromethee = Eigen::MatrixXd::Zero(rows, rows);
-
-  //Variance
-  double sum2 = 0;
-  double cont = 0;
-  //Initialize the computation
-  for(int i=0;i<rows;i++){
-    for(int j=i+1;j<rows;j++){
-      //Compute the difference
-      double delta = datVec(i)-datVec(j);
-      matPromethee(i,j)=delta;
-      matPromethee(j,i)=(-1.0)*delta;
-      sum2=sum2+2.0*std::pow(matPromethee(j,i),2);
-      cont=cont+1;
+  double operator()(const double& x) const
+  {
+    if(plus){
+      if((y-x)<=q){
+        return(0.0);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+    else{
+      if((x-y)<=q){
+        return(0.0);
+      }
+      else
+      {
+        return(1.0);
+      }
     }
   }
+};
 
-  //Calculate the sigma
-  double sigma = (sum2/(2*cont));
+class VShape: public Func {
+private:
+  double p;
+  double y;
+  bool plus;
+public:
+  VShape(double y_, double p_, bool plus_) : y(y_), p(p_), plus(plus_) {}
 
-  return(matPromethee);
-}
+  double operator()(const double& x) const
+  {
+    if(plus){
+      if((y-x)<=0){
+        return(0.0);
+      }
+      else if((y-x)<=p){
+        return((y-x)/p);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+    else{
+      if((x-y)<=0){
+        return(0.0);
+      }
+      else if((x-y)<=p){
+        return((x-y)/p);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+  }
+};
+
+class Level: public Func {
+private:
+  double q;
+  double p;
+  double y;
+  bool plus;
+public:
+  Level(double y_, double q_, double p_, bool plus_) : y(y_), q(q_), p(p_), plus(plus_) {}
+
+  double operator()(const double& x) const
+  {
+    if(plus){
+      if((y-x)<=q){
+        return(0.0);
+      }
+      else if((y-x)<=p){
+        return(0.5);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+    else{
+      if((x-y)<=q){
+        return(0.0);
+      }
+      else if((x-y)<=p){
+        return(0.5);
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+  }
+};
+
+class VShapeIndPref: public Func {
+private:
+  double q;
+  double p;
+  double y;
+  bool plus;
+public:
+  VShapeIndPref(double y_, double q_, double p_, bool plus_) : y(y_), q(q_), p(p_), plus(plus_) {}
+
+  double operator()(const double& x) const
+  {
+    if(plus){
+      if((y-x)<=q){
+        return(0.0);
+      }
+      else if((y-x)<=p){
+        return(((y-x)-q)/(p-q));
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+    else{
+      if((x-y)<=q){
+        return(0.0);
+      }
+      else if((x-y)<=p){
+        return(((x-y)-q)/(p-q));
+      }
+      else
+      {
+        return(1.0);
+      }
+    }
+  }
+};
+
+
+class GaussianPref: public Func {
+private:
+  double sigma;
+  double y;
+  bool plus;
+public:
+  GaussianPref(double y_, double sigma_, bool plus_) : y(y_), sigma(sigma_), plus(plus_) {}
+
+  double operator()(const double& x) const
+  {
+    if(plus==true){
+      return(1.0-std::exp(-1.0*std::pow(y-x,2)/(2*std::pow(sigma,2))));
+    }
+    else{
+      return(-1.0+std::exp(-1.0*std::pow(y-x,2)/(2*std::pow(sigma,2))));
+    }
+    return(0);
+  }
+};
+
+
 
 
 // Create the Kernel matrix
@@ -78,27 +209,130 @@ Eigen::MatrixXd matPrometheeIV(Eigen::VectorXd datVec,int prefFunction, Eigen::V
 // @param int Type od preference function
 // @return Preference Matrix
 // [[Rcpp::export]]
-Rcpp::List PrometheeIV(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction,Eigen::VectorXi alphaVector, Eigen::MatrixXd parms){
+Rcpp::List PrometheeIV(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();
 
   //Get the number of columns
   int cols=datMat.cols();
 
-  //Initialize the matPromethee
-  Eigen::MatrixXd matPromethee = Eigen::MatrixXd::Zero(rows, rows);
-
-
-
-
-
   //Create the Flow vector
-  Eigen::VectorXd limInf  = Eigen::VectorXd::Zero(rows);
-  Eigen::VectorXd limSup = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiPlusVec  = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiMinusVec = Eigen::VectorXd::Zero(rows);
 
-  //'Store the results
-  Rcpp::List resTemp = Rcpp::List::create(Rcpp::Named("limInf") = limInf,
-                                    Rcpp::Named("limSup")  = limSup);
+  //Get maximum
+  Eigen::VectorXd maxVec = datMat.colwise().maxCoeff();
+  Eigen::VectorXd minVec = datMat.colwise().minCoeff();
+
+
+  //Foreach alternative
+  for(int r=0;r<rows;r++){
+    //Phi+
+    double phiPlus=0.0;
+    double phiMinus=0.0;
+     //Foreach criterion
+    for(int c=0;c<cols;c++){
+      //Gaussian
+      if(prefFunction(c)==0){
+        Eigen::VectorXd sigmaVec = parms.row(c);
+        GaussianPref fplus(datMat(r,c),sigmaVec(0),true);
+        double err_est_plus;
+        int err_code_plus;
+        const double resPlus = Numer::integrate(fplus, minVec(c), maxVec(c), err_est_plus, err_code_plus);
+        phiPlus=phiPlus+resPlus*vecWeights(c);
+
+        GaussianPref fminus(datMat(r,c),sigmaVec(0),false);
+        double err_est_minus;
+        int err_code_minus;
+        const double resMinus = Numer::integrate(fminus, minVec(c), maxVec(c), err_est_minus, err_code_minus);
+        phiMinus=phiMinus+resMinus*vecWeights(c);
+      }
+      else if(prefFunction(c)==1){
+        Usual fplus(datMat(r,c),true);
+        double err_est_plus;
+        int err_code_plus;
+        const double resPlus = Numer::integrate(fplus, minVec(c), maxVec(c), err_est_plus, err_code_plus);
+        phiPlus=phiPlus+resPlus*vecWeights(c);
+
+        Usual fminus(datMat(r,c),false);
+        double err_est_minus;
+        int err_code_minus;
+        const double resMinus = Numer::integrate(fminus, minVec(c), maxVec(c), err_est_minus, err_code_minus);
+        phiMinus=phiMinus+resMinus*vecWeights(c);
+      }
+      else if(prefFunction(c)==2){
+        Eigen::VectorXd parmsVec = parms.row(c);
+        UShape fplus(datMat(r,c),parmsVec(0),true);
+        double err_est_plus;
+        int err_code_plus;
+        const double resPlus = Numer::integrate(fplus, minVec(c), maxVec(c), err_est_plus, err_code_plus);
+        phiPlus=phiPlus+resPlus*vecWeights(c);
+
+        UShape fminus(datMat(r,c),parmsVec(0),false);
+        double err_est_minus;
+        int err_code_minus;
+        const double resMinus = Numer::integrate(fminus, minVec(c), maxVec(c), err_est_minus, err_code_minus);
+        phiMinus=phiMinus+resMinus*vecWeights(c);
+      }
+      else if(prefFunction(c)==3){
+        Eigen::VectorXd parmsVec = parms.row(c);
+        VShape fplus(datMat(r,c),parmsVec(0),true);
+        double err_est_plus;
+        int err_code_plus;
+        const double resPlus = Numer::integrate(fplus, minVec(c), maxVec(c), err_est_plus, err_code_plus);
+        phiPlus=phiPlus+resPlus*vecWeights(c);
+
+        VShape fminus(datMat(r,c),parmsVec(0),false);
+        double err_est_minus;
+        int err_code_minus;
+        const double resMinus = Numer::integrate(fminus, minVec(c), maxVec(c), err_est_minus, err_code_minus);
+        phiMinus=phiMinus+resMinus*vecWeights(c);
+      }
+      else if(prefFunction(c)==4){
+        Eigen::VectorXd parmsVec = parms.row(c);
+        Level fplus(datMat(r,c),parmsVec(0),parmsVec(1),true);
+        double err_est_plus;
+        int err_code_plus;
+        const double resPlus = Numer::integrate(fplus, minVec(c), maxVec(c), err_est_plus, err_code_plus);
+        phiPlus=phiPlus+resPlus*vecWeights(c);
+
+        Level fminus(datMat(r,c),parmsVec(0),parmsVec(1),false);
+        double err_est_minus;
+        int err_code_minus;
+        const double resMinus = Numer::integrate(fminus, minVec(c), maxVec(c), err_est_minus, err_code_minus);
+        phiMinus=phiMinus+resMinus*vecWeights(c);
+      }
+      else if(prefFunction(c)==5){
+        Eigen::VectorXd parmsVec = parms.row(c);
+        VShapeIndPref fplus(datMat(r,c),parmsVec(0),parmsVec(1),true);
+        double err_est_plus;
+        int err_code_plus;
+        const double resPlus = Numer::integrate(fplus, minVec(c), maxVec(c), err_est_plus, err_code_plus);
+        phiPlus=phiPlus+resPlus*vecWeights(c);
+
+        VShapeIndPref fminus(datMat(r,c),parmsVec(0),parmsVec(1),false);
+        double err_est_minus;
+        int err_code_minus;
+        const double resMinus = Numer::integrate(fminus, minVec(c), maxVec(c), err_est_minus, err_code_minus);
+        phiMinus=phiMinus+resMinus*vecWeights(c);
+      }
+    }
+
+    phiPlusVec(r) = phiPlus;
+    phiMinusVec(r) =phiMinus;
+  }
+
+  //Index
+  Eigen::VectorXd phi = phiPlusVec-phiMinusVec;
+
+  //Normalize
+  double min = phi.minCoeff();
+  double max = phi.maxCoeff();
+  if(normalize==true) phi = (phi.array() - min)/(max-min);
+
+  Rcpp::List resTemp = Rcpp::List::create(Rcpp::Named("Phi+") = phiPlusVec,
+                                          Rcpp::Named("Phi-")  = phiMinusVec,
+                                          Rcpp::Named("Index")  = phi);
 
   return (resTemp);
 }
