@@ -8,7 +8,7 @@ Description: Multicriteria Analysis <http://lamfo.unb.br/>
 Depends: R (>= 3.1.0)
 License: What license is it under?
 LazyData: TRUE
-LinkingTo: Rcpp, RcppEigen
+LinkingTo: Rcpp, RcppEigen, RcppNumerical
 Imports:
     Rcpp,
     RcppEigen,

@@ -7,8 +7,4 @@ PKG_LIBS += $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" \
 
 all: $(SHLIB)
 
-solve.QP.o: solve.QP.f
-	$(F77) $(SAFE_FFLAGS) -c -o solve.QP.o solve.QP.f
 
-solve.QP.compact.o: solve.QP.compact.f
-	$(F77) $(SAFE_FFLAGS) -c -o solve.QP.compact.o solve.QP.compact.f
