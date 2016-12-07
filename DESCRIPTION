@@ -8,11 +8,12 @@ Description: Multicriteria Analysis <http://lamfo.unb.br/>
 Depends: R (>= 3.1.0)
 License: What license is it under?
 LazyData: TRUE
-LinkingTo: Rcpp, RcppEigen, RcppNumerical, linprog
+LinkingTo: Rcpp, RcppEigen, RcppNumerical, linprog, lpSolve
 Imports:
     Rcpp,
     RcppEigen,
     RcppNumerical,
-    linprog
+    linprog,
+    lpSolve
 SystemRequirements: GNU make
 RoxygenNote: 5.0.1
