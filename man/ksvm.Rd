@@ -9,13 +9,13 @@
 \alias{coef,ksvm-method}
 \title{Support Vector Machines}
 \description{
-  Support Vector Machines are an excellent tool for classification, 
-  novelty detection, and regression. \code{ksvm} supports the 
+  Support Vector Machines are an excellent tool for classification,
+  novelty detection, and regression. \code{ksvm} supports the
   well known C-svc, nu-svc, (classification) one-class-svc (novelty)
-  eps-svr, nu-svr (regression) formulations along with 
-  native multi-class classification formulations and 
+  eps-svr, nu-svr (regression) formulations along with
+  native multi-class classification formulations and
  the bound-constraint SVM formulations.\cr
-  \code{ksvm} also supports class-probabilities output and 
+  \code{ksvm} also supports class-probabilities output and
   confidence intervals for regression.
 }
 \usage{
@@ -27,7 +27,7 @@
      kernel ="rbfdot", kpar = "automatic",
      C = 1, nu = 0.2, epsilon = 0.1, prob.model = FALSE,
      class.weights = NULL, cross = 0, fit = TRUE, cache = 40,
-     tol = 0.001, shrinking = TRUE, ..., 
+     tol = 0.001, shrinking = TRUE, ...,
      subset, na.action = na.omit)
 
 \S4method{ksvm}{kernelMatrix}(x, y = NULL, type = NULL,
@@ -47,7 +47,7 @@
 \arguments{
   \item{x}{a symbolic description of the model to be fit.  When not
     using a formula x can be a matrix or vector containing the training
-    data 
+    data
     or a kernel matrix of class \code{kernelMatrix} of the training data
     or a list of character vectors (for use with the string
     kernel). Note, that the intercept is always excluded, whether
@@ -56,7 +56,7 @@
   \item{data}{an optional data frame containing the training data, when using a formula.
           By default the data is taken from the environment which
           `ksvm' is called from.}
-	  
+
   \item{y}{a response vector with one label for each row/component of \code{x}. Can be either
     a factor (for classification tasks) or a numeric vector (for
     regression).}
@@ -110,24 +110,24 @@
 
       \item \code{polydot} Polynomial kernel
 
-      \item \code{vanilladot} Linear kernel 
+      \item \code{vanilladot} Linear kernel
 
-      \item \code{tanhdot} Hyperbolic tangent kernel 
+      \item \code{tanhdot} Hyperbolic tangent kernel
 
-      \item \code{laplacedot} Laplacian kernel 
+      \item \code{laplacedot} Laplacian kernel
 
-      \item \code{besseldot} Bessel kernel 
+      \item \code{besseldot} Bessel kernel
 
-      \item \code{anovadot} ANOVA RBF kernel 
+      \item \code{anovadot} ANOVA RBF kernel
 
-      \item \code{splinedot} Spline kernel 
+      \item \code{splinedot} Spline kernel
 
-      \item \code{stringdot} String kernel 
+      \item \code{stringdot} String kernel
     }
 
     Setting the kernel parameter to "matrix" treats \code{x} as a kernel
     matrix calling the \code{kernelMatrix} interface.\cr
-    
+
     The kernel parameter can also be set to a user defined function of
     class kernel by passing the function name as an argument.
   }
@@ -145,10 +145,10 @@
       \item \code{scale, offset} for the Hyperbolic tangent kernel
       function "tanhdot"
 
-      \item \code{sigma, order, degree} for the Bessel kernel "besseldot". 
+      \item \code{sigma, order, degree} for the Bessel kernel "besseldot".
 
       \item \code{sigma, degree} for the ANOVA kernel "anovadot".
-      
+
       \item \code{length, lambda, normalized} for the "stringdot" kernel
       where length is the length of the strings considered, lambda the
       decay factor and normalized a logical parameter determining if the
@@ -157,11 +157,11 @@
 
     Hyper-parameters for user defined kernels can be passed through the
     kpar parameter as well. In the case of a Radial Basis kernel function (Gaussian)
-     kpar can also be set to the string "automatic" which uses the heuristics in 
+     kpar can also be set to the string "automatic" which uses the heuristics in
     \code{\link{sigest}} to calculate a good \code{sigma} value for the
     Gaussian RBF or Laplace kernel, from the data.
     (default = "automatic").}
-  
+
   \item{C}{cost of constraints violation (default: 1) this is the
     `C'-constant of the regularization term in the Lagrange
     formulation.}
@@ -188,7 +188,7 @@
   \item{cache}{cache memory in MB (default 40)}
 
   \item{tol}{tolerance of termination criterion (default: 0.001)}
- 
+
   \item{shrinking}{option whether to use the shrinking-heuristics
     (default: \code{TRUE})}
 
@@ -212,7 +212,7 @@
 	  is \code{na.fail}, which causes an error if \code{NA} cases
 	  are found. (NOTE: If given, this argument must be named.)}
       }
-    
+
     \value{
       An S4 object of class \code{"ksvm"} containing the fitted model,
   Accessor functions can be used to access the slots of the object (see
@@ -224,7 +224,7 @@
   \item{coef}{The corresponding coefficients times the training labels.}
   \item{b}{The negative intercept.}
   \item{nSV}{The number of Support Vectors}
- \item{obj}{The value of the objective function. In case of one-against-one classification this is a vector of values} 
+ \item{obj}{The value of the objective function. In case of one-against-one classification this is a vector of values}
   \item{error}{Training error}
   \item{cross}{Cross validation error, (when cross > 0)}
   \item{prob.model}{Contains the width of the Laplacian fitted on the
@@ -232,7 +232,7 @@
     fitted on the decision values in case of classification.}
 }
 
-  
+
 \details{
   \code{ksvm} uses John Platt's SMO algorithm for solving the SVM QP problem an
   most SVM formulations. On the \code{spoc-svc}, \code{kbb-svc}, \code{C-bsvc} and
@@ -255,7 +255,7 @@
   The \code{plot} function for binary classification \code{ksvm} objects
   displays a contour plot of the decision values with the corresponding
   support vectors highlighted.\cr
- The predict function can return class probabilities for 
+ The predict function can return class probabilities for
  classification problems by setting the \code{type} parameter to
  "probabilities". \cr
  The problem of model selection is partially addressed by an empirical
@@ -272,7 +272,7 @@
       Chang Chih-Chung, Lin Chih-Jen\cr
       \emph{LIBSVM: a library for Support Vector Machines}\cr
       \url{http://www.csie.ntu.edu.tw/~cjlin/libsvm}
-   
+
    \item
       Chih-Wei Hsu, Chih-Jen Lin\cr
        \emph{BSVM}
@@ -283,12 +283,12 @@
      \emph{Probabilistic outputs for support vector machines and comparison to regularized likelihood methods} \cr
      Advances in Large Margin Classifiers, A. Smola, P. Bartlett, B. Schoelkopf and D. Schuurmans, Eds. Cambridge, MA: MIT Press, 2000.\cr
      \url{http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.41.1639}
-     
+
     \item
     H.-T. Lin, C.-J. Lin and R. C. Weng\cr
     \emph{A note on Platt's probabilistic outputs for support vector machines}\cr
     \url{http://www.csie.ntu.edu.tw/~htlin/paper/doc/plattprob.pdf}
-    
+
     \item
      C.-W. Hsu and C.-J. Lin \cr
      \emph{A comparison on methods for multi-class support vector machines}\cr
@@ -313,7 +313,7 @@
   \email{alexandros.karatzoglou@ci.tuwien.ac.at}
 }
 \seealso{\code{\link{predict.ksvm}}, \code{\link{ksvm-class}}, \code{\link{couple}} }
-  
+
 \keyword{methods}
 \keyword{regression}
 \keyword{nonlinear}
@@ -387,7 +387,7 @@ Ktest <- as.kernelMatrix(crossprod(t(xtest),t(x[SVindex(svp2), ])))
 predict(svp2, Ktest)
 
 
-#### Use custom kernel 
+#### Use custom kernel
 
 k <- function(x,y) {(sum(x*y) +1)*exp(-0.001*sum((x-y)^2))}
 class(k) <- "kernel"
