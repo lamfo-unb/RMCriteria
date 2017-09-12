@@ -15,7 +15,7 @@
   \item{vecWeights}{vector of weights}
   \item{prefFunction}{Type of Preference Function:
       \itemize{
-      \item \code{prefFunction=0}   Gaussian Preference Function
+      \item \code{prefFunction=0}  Gaussian Preference Function
 
       \item \code{prefFunction=1}  Usual Preference Function
 
@@ -29,7 +29,13 @@
 
     }
   }
-  \item{parms}{Parameters associates to the Preference Function}
+  \item{parms}{Parameters associated to the Preference Function. They're defined as a matrix of n columns and m rows. The maximum number of parameters is 3 and m is the number of criterias. The parameters are:
+       \itemize{
+       \item{Indifference Threshold (\code{q})}
+       \item{Preference Threshold (\code{p})}
+       \item{Gaussian Threshold (\code{s})}
+  }
+}
   \item{normalize}{boolean to normalize the index}
   }
 
