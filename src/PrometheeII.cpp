@@ -45,7 +45,7 @@ Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction, Eigen::V
   }
 
   //Calculate the sigma
-  double sigma2 = (sum2/(cont));
+  double sigma2 = (sum2/(2*cont));
 
   //Gaussian Preference
   if(prefFunction==0){

@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // PrometheeI
 List PrometheeI(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize);
-RcppExport SEXP RMCriteria_PrometheeI(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP normalizeSEXP) {
+RcppExport SEXP _RMCriteria_PrometheeI(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP normalizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // PrometheeII
 Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize);
-RcppExport SEXP RMCriteria_PrometheeII(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP normalizeSEXP) {
+RcppExport SEXP _RMCriteria_PrometheeII(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP normalizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,4 +35,64 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(PrometheeII(datMat, vecWeights, prefFunction, parms, normalize));
     return rcpp_result_gen;
 END_RCPP
+}
+// PrometheeIII
+List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::VectorXi alphaVector, Eigen::MatrixXd parms);
+RcppExport SEXP _RMCriteria_PrometheeIII(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP alphaVectorSEXP, SEXP parmsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type datMat(datMatSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type vecWeights(vecWeightsSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type prefFunction(prefFunctionSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type alphaVector(alphaVectorSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type parms(parmsSEXP);
+    rcpp_result_gen = Rcpp::wrap(PrometheeIII(datMat, vecWeights, prefFunction, alphaVector, parms));
+    return rcpp_result_gen;
+END_RCPP
+}
+// PrometheeIV
+Rcpp::List PrometheeIV(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize);
+RcppExport SEXP _RMCriteria_PrometheeIV(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP normalizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type datMat(datMatSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type vecWeights(vecWeightsSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type prefFunction(prefFunctionSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type parms(parmsSEXP);
+    Rcpp::traits::input_parameter< bool >::type normalize(normalizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(PrometheeIV(datMat, vecWeights, prefFunction, parms, normalize));
+    return rcpp_result_gen;
+END_RCPP
+}
+// PrometheeIVKernel
+Rcpp::List PrometheeIVKernel(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, Eigen::MatrixXd band, bool normalize);
+RcppExport SEXP _RMCriteria_PrometheeIVKernel(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP bandSEXP, SEXP normalizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type datMat(datMatSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type vecWeights(vecWeightsSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type prefFunction(prefFunctionSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type parms(parmsSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type band(bandSEXP);
+    Rcpp::traits::input_parameter< bool >::type normalize(normalizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize));
+    return rcpp_result_gen;
+END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_RMCriteria_PrometheeI", (DL_FUNC) &_RMCriteria_PrometheeI, 5},
+    {"_RMCriteria_PrometheeII", (DL_FUNC) &_RMCriteria_PrometheeII, 5},
+    {"_RMCriteria_PrometheeIII", (DL_FUNC) &_RMCriteria_PrometheeIII, 5},
+    {"_RMCriteria_PrometheeIV", (DL_FUNC) &_RMCriteria_PrometheeIV, 5},
+    {"_RMCriteria_PrometheeIVKernel", (DL_FUNC) &_RMCriteria_PrometheeIVKernel, 6},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_RMCriteria(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
