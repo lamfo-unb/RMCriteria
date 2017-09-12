@@ -45,15 +45,15 @@ Eigen::MatrixXd matPrometheeI(Eigen::VectorXd datVec,int prefFunction, Eigen::Ve
   }
 
   //Calculate the sigma
-  double sigma = (sum2/(2*cont));
+  double sigma2 = (sum2/(cont));
 
   //Gaussian Preference
   if(prefFunction==0){
     if(std::isnan(parms(0))){
-      GaussianPreference(matPromethee,sigma);
+      GaussianPreference(matPromethee,std::sqrt(sigma2));
     }
     else{
-      sigma=parms(0);
+      double sigma=parms(0);
       GaussianPreference(matPromethee,sigma);
     }
 

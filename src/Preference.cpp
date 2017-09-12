@@ -99,7 +99,7 @@ void GaussianPreference(Eigen::MatrixXd &matDelta, double sigma){
         matDelta(i,j) = 0.0;
       }
       else{
-        matDelta(i,j) = 1-std::exp((-1.0*std::pow(matDelta(i,j),2.0))/(2.0*sigma));
+        matDelta(i,j) = 1-std::exp((-1.0*std::pow(matDelta(i,j),2.0))/(2.0*sigma*sigma));
       }
 
     }
