@@ -59,18 +59,27 @@ ggplot(datatest_sum, aes(x = alternatives, y = Phi_nums)) +
 
 # Create a dataframe to use as source for both bars in PrometheeI plot
 limits <- data.frame(
-    class = as.factor(c("PhiMinus", "PhiMinus", "PhiPlus", "PhiPlus")),
+    class = c("PhiPlus", "PhiPlus", "PhiMinus", "PhiMinus"),
     boundaries = c(0.5, 0.5, 0.5, 0.5),
-    pos_neg = as.factor(c("Pos", "Neg", "Pos", "Neg")))
+    pos_neg = c("Pos", "Neg", "Pos", "Neg"))
 
+# Change order of factors
+limits$class <- factor(limits$class, levels = c("PhiPlus", "PhiMinus"))
+limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
 
 # Full bars as in Visual-Promethee.
-# To-do: resize bars; line connecting dots; data labels)
+# To-do: adjust data labels
 ggplot(limits) +
-    geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+  geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+           stat = "identity", width = 0.5) +
+  geom_point(data = datatest, aes(x = Phi_labels, y = Phi_nums),
              stat = "identity") +
-    geom_point(data = datatest, aes(x = Phi_labels, y = Phi_nums),
-               stat = "identity")
-#    geom_text(data = datatest, aes(label = sprintf("0.3f", Phi_nums)),
-#              position = position_dodge())
-#    geom_line()
+  geom_line(data = datatest, aes(x = Phi_labels, y = Phi_nums),
+            group = alternatives, stat = "identity") +
+  geom_text(data = datatest, aes(x = Phi_labels, y = Phi_nums),
+            label = sprintf("%0.3f", round(Phi_nums, digits = 3),
+                            position = position_dodge(width = 0.9)),
+            hjust = 0, nudge_x = 0.05) +
+  scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+  geom_text(data = datatest, aes(x = Phi_labels, y = Phi_nums),
+            label = alternatives, hjust = 1, nudge_x = -0.05)
