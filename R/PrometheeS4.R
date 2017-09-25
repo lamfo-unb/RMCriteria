@@ -1,33 +1,36 @@
 ################################################################################
 ########################### Main Class RPromethee  #############################
 ################################################################################
-#
-# setClass(
-#   Class = "RPromethee",
-#   slots = c(datMat       = "matrix" ,
-#             vecWeights   = "numeric",
-#             prefFunction = "numeric",
-#             parms        = "matrix" ,
-#             normalize    = "logical"),
-#   prototype = list(
-#             datMat       = matrix(0) ,
-#             vecWeights   = numeric(0),
-#             prefFunction = numeric(0),
-#             parms        = matrix(0) ,
-#             normalize    = FALSE)
-#   )
-#
-# validRPromethee <- function(object) {
-#   stopifnot( ncol(object@datMat) == length(object@vecWeights  ),
-#              ncol(object@datMat) == length(object@prefFunction),
-#              ncol(object@datMat) == nrow(object@parms)         ,
-#              object@prefFunction>=0 && object@prefFunction<=5  )
-#   if(any(object@vecWeights < 0 ||  object@vecWeights >1)) {
-#     stop("All weights must be between 0 and 1")
-#   }
-#   return(TRUE)
-# }
-#
+
+ setClass(
+   Class = "RPromethee",
+   slots = c(datMat       = "matrix" ,
+             vecWeights   = "numeric",
+             vecMaximiz   = "logical",
+             prefFunction = "numeric",
+             parms        = "matrix" ,
+             normalize    = "logical"),
+   prototype = list(
+             datMat       = matrix(0) ,
+             vecWeights   = numeric(0),
+             vecMaximiz   = rep(TRUE,length(vecWeights)),
+             prefFunction = numeric(0),
+             parms        = matrix(0) ,
+             normalize    = FALSE)
+   )
+
+ validRPromethee <- function(object) {
+   stopifnot( ncol(object@datMat) == length(object@vecWeights  ),
+              length(object@vecMaximiz) == length(object@vecWeights),
+              ncol(object@datMat) == length(object@prefFunction),
+              ncol(object@datMat) == nrow(object@parms)         ,
+              object@prefFunction>=0 && object@prefFunction<=5  )
+   if(any(object@vecWeights < 0 ||  object@vecWeights >1)) {
+     stop("All weights must be between 0 and 1")
+   }
+   return(TRUE)
+ }
+
 # #Assign the function as the validity method for the class
 # setValidity("RPromethee", validRPromethee)
 #
