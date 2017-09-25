@@ -3,7 +3,7 @@
 ################################################################################
 
  setClass(
-   Class = "RPromethee",
+   Class = "RPrometheeArguments",
    slots = c(datMat       = "matrix" ,
              vecWeights   = "numeric",
              vecMaximiz   = "logical",
@@ -13,7 +13,7 @@
    prototype = list(
              datMat       = matrix(0) ,
              vecWeights   = numeric(0),
-             vecMaximiz   = rep(TRUE,length(vecWeights)),
+             vecMaximiz   = TRUE,
              prefFunction = numeric(0),
              parms        = matrix(0) ,
              normalize    = FALSE)
@@ -31,13 +31,129 @@
    return(TRUE)
  }
 
-# #Assign the function as the validity method for the class
-# setValidity("RPromethee", validRPromethee)
-#
-# #Constructor
-# RPromethee<-function(datMat, vecWeights, prefFunction, parms, normalize){
-#   new("RPromethee",datMat=datMat, vecWeights=vecWeights, prefFunction=prefFunction, parms=parms, normalize=normalize)
-# }
+#Assign the function as the validity method for the class
+setValidity("RPrometheeArguments", validRPromethee)
+
+
+
+#Constructor
+RPrometheeCosntructor<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
+   new("RPrometheeArguments",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize)
+}
+
+#Define the Method
+setGeneric(
+  "RPrometheeI",
+  function(object) {
+    standardGeneric("RPrometheeI")
+  }
+)
+
+#Promethee I - Method
+setMethod(
+  "RPrometheeI",
+  signature("RPrometheeArguments"),
+  function(object) {
+      datMat       <- object@datMat
+      vecWeights   <- object@vecWeights
+      vecMaximiz   <- object@vecMaximiz
+      prefFunction <- object@prefFunction
+      parms        <- object@parms
+      normalize    <- object@normalize
+    #Validate the object
+    validRPromethee(object)
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee I
+    results <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
+    #Set the class
+    resultsClass <- new("RPromethee",PhiPlus=results[[1]], PhiMinus=results[[2]])
+    #Return the class
+    return(resultsClass)
+  }
+)
+
+#Promethee I - Results
+setClass(
+  Class = "RPromethee",
+  slots = c(PhiPlus        = "numeric" ,
+            PhiMinus       = "numeric"),
+  prototype = list(
+    PhiPlus   = numeric(0),
+    PhiMinus   = numeric(0)),
+  validity=function(object)
+  {
+    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
+      return("The flow vectors must have the same length.")
+    }
+    return(TRUE)
+  }
+)
+
+# ################################################################################
+# ###########################       RPromethee 2     #############################
+# ################################################################################
+
+#Promethee II - Results
+setClass(
+  # Set the name for the class
+  Class = "RPrometheeII",
+
+  # Define the slots - in this case it is numeric
+  slots = c(Phi = "numeric"),
+
+  # Set the default values for the slots. (optional)
+  prototype=list(numeric(0)),
+
+  # Set the inheritance for this class
+  contains = "RPromethee",
+
+  # Make a function that can test to see if the data is consistent.
+  # This is not called if you have an initialize function defined!
+  validity=function(object)
+  {
+    if(length(object@Phi)!=length(object@PhiPlus)) {
+      return("The flow vectors must have the same length.")
+    }
+    return(TRUE)
+  }
+)
+
+
+#Define the Method
+setGeneric(
+  "RPrometheeII",
+  function(object) {
+    standardGeneric("RPrometheeII")
+  }
+)
+
+#Promethee II - Method
+setMethod(
+  "RPrometheeII",
+  signature("RPrometheeArguments"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+    #Validate the object
+    validRPromethee(object)
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee I
+    results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
+    #Set the class
+    resultsClass <- new("RPrometheeII",PhiPlus=results[[1]], PhiMinus=results[[2]], Phi=PhiPlus-PhiMinus)
+    #Return the class
+    return(resultsClass)
+  }
+)
+
+
+
 #
 # ################################################################################
 # ###########################       RPromethee 3     #############################
