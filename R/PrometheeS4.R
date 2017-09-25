@@ -103,20 +103,8 @@ setClass(
   slots = c(Phi = "numeric"),
 
   # Set the default values for the slots. (optional)
-  prototype=list(numeric(0)),
+  prototype=list(numeric(0))
 
-  # Set the inheritance for this class
-  contains = "RPromethee",
-
-  # Make a function that can test to see if the data is consistent.
-  # This is not called if you have an initialize function defined!
-  validity=function(object)
-  {
-    if(length(object@Phi)!=length(object@PhiPlus)) {
-      return("The flow vectors must have the same length.")
-    }
-    return(TRUE)
-  }
 )
 
 
@@ -146,7 +134,7 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeII",PhiPlus=results[[1]], PhiMinus=results[[2]], Phi=PhiPlus-PhiMinus)
+    resultsClass <- new("RPrometheeII",Phi=results)
     #Return the class
     return(resultsClass)
   }
@@ -159,25 +147,31 @@ setMethod(
 # ###########################       RPromethee 3     #############################
 # ################################################################################
 #
-# #New RPromethee3
-# setClass("RPromethee3",
-#            contains="RPromethee",
-#            slots=c(alphaVector   = "numeric"),
-#            prototype = list(alphaVector   = numeric(0))
-#          )
-#
-# validRPromethee3 <- function(object) {
-#   stopifnot( nrow(object@datMat) == length(object@alphaVector  ))
-#   return(TRUE)
-# }
-#
-# #Assign the function as the validity method for the class
-# setValidity("RPromethee3", validRPromethee3)
-#
-# #Constructor
-# RPromethee3<-function(alphaVector, datMat, vecWeights, prefFunction, parms, normalize){
-#   new("RPromethee3",alphaVector=alphaVector, datMat=datMat, vecWeights=vecWeights, prefFunction=prefFunction, parms=parms, normalize=normalize)
-# }
+#New RPromethee3
+ setClass("RPrometheeArguments3",
+            contains="RPrometheeArguments",
+            slots=c(alphaVector   = "numeric"),
+            prototype = list(alphaVector   = numeric(0))
+          )
+
+validRPromethee3 <- function(object) {
+ stopifnot( nrow(object@datMat) == length(object@alphaVector  ))
+ return(TRUE)
+}
+#Assign the function as the validity method for the class
+setValidity("RPromethee3", validRPromethee3)
+
+#Constructor
+RPrometheeCosntructor3<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
+  new("RPrometheeArguments3",alphaVector=alphaVector, datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize)
+}
+
+
+
+
+
+
+
 #
 # ################################################################################
 # ###########################       RPromethee 4K    #############################
