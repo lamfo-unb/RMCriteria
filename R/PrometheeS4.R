@@ -37,7 +37,7 @@ setValidity("RPrometheeArguments", validRPromethee)
 
 
 #Constructor
-RPrometheeCosntructor<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
+RPrometheeConstructor<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
    new("RPrometheeArguments",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize)
 }
 
@@ -147,30 +147,74 @@ setMethod(
 # ###########################       RPromethee 3     #############################
 # ################################################################################
 #
-#New RPromethee3
- setClass("RPrometheeArguments3",
-            contains="RPrometheeArguments",
-            slots=c(alphaVector   = "numeric"),
-            prototype = list(alphaVector   = numeric(0))
-          )
 
-validRPromethee3 <- function(object) {
- stopifnot( nrow(object@datMat) == length(object@alphaVector  ))
- return(TRUE)
+setClass(
+  Class = "RPrometheeArguments3",
+  contains = "RPrometheeArguments",
+  slots = c(alphaVector  = "numeric"),
+  prototype = list(alphaVector = numeric(0)),
+  validity=function(object){
+    if(length(object@alphaVector)!=nrow(object@datMat)){
+      stop ("The Alpha Vector must have the same size as the Preference Vector.")
+    }
+    if(all(object@alphaVector>0)){
+      stop ("The Alpha Vector must be positive.")
+    }
+  }
+)
+
+RPrometheeConstructor3<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
+  new("RPrometheeArguments3",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, alphaVector = alphaVector, parms=parms, normalize=normalize)
 }
-#Assign the function as the validity method for the class
-setValidity("RPromethee3", validRPromethee3)
 
-#Constructor
-RPrometheeCosntructor3<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
-  new("RPrometheeArguments3",alphaVector=alphaVector, datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize)
-}
+#Define the Method
+setGeneric(
+  "RPrometheeIII",
+  function(object) {
+    standardGeneric("RPrometheeIII")
+  }
+)
 
+#Promethee I - Method
+setMethod(
+  "RPrometheeIII",
+  signature("RPrometheeArguments3"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    alphaVector  <- object@alphaVector
+    normalize    <- object@normalize
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee III
+    results <- RMCriteria::PrometheeIII(datMat, vecWeights, prefFunction, alphaVector, parms)
 
+    #Set the class
+    resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]])
+    #Return the class
+    return(resultsClass)
+  }
+)
 
-
-
-
+#Promethee III - Results
+setClass(
+  Class = "RPrometheeIII",
+  slots = c(limInf        = "numeric" ,
+            limSup       = "numeric"),
+  prototype = list(
+    limInf   = numeric(0),
+    limSup   = numeric(0)),
+  validity=function(object)
+  {
+    if(length(object@limSup)!=length(object@limInf)) {
+      return("The limit vectors must have the same length.")
+    }
+    return(TRUE)
+  }
+)
 
 #
 # ################################################################################

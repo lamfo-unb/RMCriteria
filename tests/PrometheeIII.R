@@ -5,4 +5,8 @@ dados<-matrix(c(5.2,-3.5,
 parms<-matrix(c(NA,
                 NA),byrow=TRUE,ncol=1,nrow=2)
 
-RMCriteria::PrometheeIII(dados,c(0.3,0.7),c(0,0),c(1,1,1),parms)
+#RMCriteria::PrometheeIII(dados,c(0.3,0.7),c(0,0),c(1,1,1),parms)
+
+PromObj <- RPrometheeCosntructor3(datMat=dados, vecWeights=c(0.3,0.7), vecMaximiz=c(F,T), prefFunction=c(0,0), alphaVector=c(1,1,1), parms=parms, normalize=FALSE)
+res <- RPrometheeIII(PromObj)
+str(res)

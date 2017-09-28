@@ -8,6 +8,6 @@ parms<-matrix(c(NA,
 #RMCriteria::PrometheeII(dados,c(0.3,0.7),c(0,0),parms,FALSE)
 
 #Step 1: Construct the RPrometheeArguments
-PromObj <- RPrometheeCosntructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms,normalize=FALSE)
+PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms,normalize=FALSE)
 res <- RPrometheeII(PromObj)
 str(res)
