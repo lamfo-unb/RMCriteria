@@ -157,13 +157,13 @@ setClass(
     if(length(object@alphaVector)!=nrow(object@datMat)){
       stop ("The Alpha Vector must have the same size as the Preference Vector.")
     }
-    if(all(object@alphaVector>0)){
+    if(!all(object@alphaVector>0)){
       stop ("The Alpha Vector must be positive.")
     }
   }
 )
 
-RPrometheeConstructor3<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
+RPrometheeConstructor3<-function(datMat, vecWeights, vecMaximiz, prefFunction, alphaVector, parms, normalize){
   new("RPrometheeArguments3",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, alphaVector = alphaVector, parms=parms, normalize=normalize)
 }
 
