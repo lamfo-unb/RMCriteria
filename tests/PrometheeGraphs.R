@@ -2,6 +2,8 @@ rm(list=ls())
 library(RMCriteria)
 library(ggplot2)
 library(dplyr)
+library(network)
+library(gridExtra)
 
 # Examplo Ishizaka - Cap 6
 
@@ -11,15 +13,20 @@ dados<-matrix(c(15000,7.5,1,50,
                 24000,8.0,8,75,
                 25500,7.0,8,85),byrow = T, ncol=4,nrow=5)
 
-rownames(dados)<-c("Economic","Sport","Luxury","Touring A","Touring B")
-colnames(dados)<-c("Price","Consumption","Comfort","Power")
+alternatives <- c("Economic","Sport","Luxury","Touring A","Touring B")
+criterias <- c("Price","Consumption","Comfort","Power")
+
+rownames(dados) <- alternatives
+colnames(dados) <- criterias
 
 parms<-matrix(c(2000, 5000,
                 0.5,1,
                 1,2,
                 10,20),byrow=FALSE,ncol=4,nrow=2)
 
-RMCriteria::PrometheeI(dados,c(1,1,1,1),c(5,1,1,1),parms,T)
+weights <- data.frame(criterias, weights = c(0.5, 0.2, 0.1, 0.2))
+
+RMCriteria::PrometheeI(dados,weights[,2],c(5,1,1,1),parms,T)
 flows <- data.frame(RMCriteria::PrometheeI(dados,c(1,1,1,1),c(5,1,1,1),parms,T))
 flows$Phi <- flows[,1] - flows[,2]
 colnames(flows) <-  c("PhiPlus", "PhiMinus", "Phi")
@@ -91,7 +98,7 @@ prometheeII_temp[,1] <- factor(prometheeII_temp[,1],
 # Full Ranking bar as in Visual-Promethee.
 ggplot(limits_II) +
   geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
-           stat = "identity", width = 0.5) +
+           stat = "identity", width = 0.3) +
   geom_point(data = prometheeII_temp, aes(x = Phi_labels, y = Phi_nums),
              stat = "identity") +
   geom_text(data = prometheeII_temp, aes(x = Phi_labels, y = Phi_nums),
@@ -103,3 +110,38 @@ ggplot(limits_II) +
                                          y = prometheeII_temp$Phi_nums),
             label = prometheeII_temp$alternatives,
             hjust = 1, nudge_x = -0.03)
+
+
+
+######################################################################
+# First draft for walking weights plot
+
+plot_a <- ggplot(prometheeII_temp) +
+  geom_bar(aes(x = alternatives, y = Phi_nums, fill = alternatives),
+           stat = "identity") +
+  theme(legend.position = "none") +
+  geom_text(aes(x = alternatives, y = Phi_nums,
+                label = sprintf("%0.3f", round(Phi_nums, digits = 3))),
+            vjust = 1, nudge_y = -0.1)
+
+plot_b <- ggplot(weights) +
+  geom_bar(aes(x = criterias, y = weights), stat = "identity", width = 0.5) +
+  geom_text(aes(x = criterias, y = weights,
+                label = sprintf("%0.2f%%", 100*weights),
+                vjust = 1))
+
+grid.arrange(plot_a, plot_b, nrow = 2, ncol = 1,
+             heights = unit(c(0.7, 0.3), "npc"))
+
+
+######################################################################
+# First tests for Network Plot
+
+data("flo")
+data("emon")
+
+net <- network.initialize(5)
+
+
+
+
