@@ -265,6 +265,28 @@ setClass(
 #   new("RPromethee5",bounds=bounds, datMat=datMat, vecWeights=vecWeights, prefFunction=prefFunction, parms=parms, normalize=normalize)
 # }
 #
+
+# Promethee V
+setClass(
+  # Set the name for the class
+  Class = "RPrometheeV",
+  contains = "RPrometheeArguments",
+
+  # Define the slots
+  slots = c(Phi = "numeric",
+            direction = "character",
+            bounds = "numeric"),
+
+  # Set the default values for the slots. (optional)
+  prototype=list(Phi = numeric(0),
+                 direction = NA_character_,
+                 bounds = numeric(0))
+)
+
+
+
+
+
 # ################################################################################
 # ###########################       Promethee Method    ##########################
 # ################################################################################
