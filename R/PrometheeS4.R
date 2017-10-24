@@ -244,27 +244,9 @@ setClass(
 # ################################################################################
 # ###########################       RPromethee 5     #############################
 # ################################################################################
-#
-# #New RPromethee5
-# setClass("RPromethee5",
-#          contains="RPromethee",
-#          slots=c(bounds   = "numeric"),
-#          prototype = list(bounds   = numeric(0))
-# )
-#
-# validRPromethee5 <- function(object) {
-#   stopifnot(ncol(object@datMat) == length(object@bounds))
-#   return(TRUE)
-# }
-#
-# #Assign the function as the validity method for the class
-# setValidity("RPromethee5", validRPromethee5)
-#
-# #Constructor
-# RPromethee5<-function(bounds, datMat, vecWeights, prefFunction, parms, normalize){
-#   new("RPromethee5",bounds=bounds, datMat=datMat, vecWeights=vecWeights, prefFunction=prefFunction, parms=parms, normalize=normalize)
-# }
-#
+
+# To do: adjust Promethee V script, edit method to adjust for Promethee V,
+# create the results class
 
 # Promethee V
 setClass(
@@ -274,13 +256,60 @@ setClass(
 
   # Define the slots
   slots = c(Phi = "numeric",
-            direction = "character",
-            bounds = "numeric"),
+            constraintDir = "matrix",
+            bounds = "matrix"),
 
   # Set the default values for the slots. (optional)
   prototype=list(Phi = numeric(0),
-                 direction = NA_character_,
-                 bounds = numeric(0))
+                 constraintDir = matrix(0),
+                 bounds = matrix(0)),
+
+  validity = function(object){
+    if(length(object@constraintDir) != ncol(object@datMat)){
+      stop("The direction of the constraint must be available for all criterias.")
+      }
+    if(length(object@bounds) != ncol(object@datMat)){
+      stop("All criterias must have bounds.")
+    }
+  }
+)
+
+RPrometheeConstructor5 <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, constraintDir, bounds){
+  new("RPrometheeArguments5", datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize, constraintDir=constraintDir, bounds=bounds)
+}
+
+
+#Define the Method
+setGeneric(
+  "RPrometheeV",
+  function(object) {
+    standardGeneric("RPrometheeV")
+  }
+)
+
+#Promethee - Method
+setMethod(
+  "RPrometheeV",
+  signature("RPrometheeArguments5"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+    constraintDir <- object@constraintDir
+    bounds <- object@bounds
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee V - To do: adjust Promethee V function in RScript
+#    results <- RMCriteria::PrometheeV(datMat, vecWeights, prefFunction, alphaVector, parms)
+
+    #Set the class
+#    resultsClass <- new("RPrometheeV",limInf=results[[1]], limSup=results[[2]])
+    #Return the class
+    return(resultsClass)
+  }
 )
 
 
