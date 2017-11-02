@@ -34,8 +34,6 @@
 #Assign the function as the validity method for the class
 setValidity("RPrometheeArguments", validRPromethee)
 
-
-
 #Constructor
 RPrometheeConstructor<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
    new("RPrometheeArguments",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize)
@@ -290,7 +288,7 @@ setGeneric(
 #Promethee - Method
 setMethod(
   "RPrometheeV",
-  signature("RPrometheeArguments5"),
+  signature("RPrometheeArguments"),
   function(object) {
     datMat       <- object@datMat
     vecWeights   <- object@vecWeights
@@ -302,11 +300,11 @@ setMethod(
     bounds <- object@bounds
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
-    #Execute Promethee V - To do: adjust Promethee V function in RScript
-#    results <- RMCriteria::PrometheeV(datMat, vecWeights, prefFunction, alphaVector, parms)
+    #Execute Promethee V
+    results <- RMCriteria::PrometheeV(datMat, vecWeights, prefFunction, parms, bounds, normalize)
 
     #Set the class
-#    resultsClass <- new("RPrometheeV",limInf=results[[1]], limSup=results[[2]])
+    resultsClass <- new("RPrometheeV", results)
     #Return the class
     return(resultsClass)
   }

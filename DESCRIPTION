@@ -2,7 +2,7 @@ Package: RMCriteria
 Type: Package
 Title: Multicriteria Package
 Version: 0.1.0
-Author: Pedro Albuquerque
+Author: Pedro Albuquerque and Gustavo Monteiro
 Maintainer: Pedro Albuquerque <pedroa@unb.br>
 Description: Multicriteria Analysis <http://lamfo.unb.br/>
 Depends: R (>= 3.1.0)
