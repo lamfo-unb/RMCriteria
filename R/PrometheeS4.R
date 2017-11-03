@@ -227,12 +227,12 @@ setClass(
             PhiMinus = "numeric",
             Index = "numeric"),
 
-  # Set the default values for the slots. (optional)
-  prototype=list(numeric(0),
-                 numeric(0),
-                 numeric(0))
-)
 
+  # Set the default values for the slots. (optional)
+  prototype=list(PhiPlus   = numeric(0),
+                 PhiMinus  = numeric(0),
+                 Index     = numeric(0))
+)
 #Define the Method
 setGeneric(
   "RPrometheeIV",
@@ -262,6 +262,90 @@ setMethod(
     resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]])
     #Return the class
     return(resultsClass)
+  }
+)
+
+
+# ################################################################################
+# ###########################       RPromethee 4K    #############################
+# ################################################################################
+#
+
+setClass(
+  Class = "RPrometheeArguments4Kernel",
+  contains = "RPrometheeArguments",
+  slots = c(band       = "matrix",
+            PhiPlus    = "numeric",
+            PhiMinus   = "numeric",
+            Index      = "numeric"),
+
+  prototype = list(band      = matrix(0),
+                   PhiPlus   = numeric(0),
+                   PhiMinus  = numeric(0),
+                   Index     = numeric(0)),
+
+  validity=function(object){
+    if(length(object@band)!=nrow(object@datMat)){
+      stop ("The Bandwidth Vector must have the same size as the Preference Vector.")
+    }
+    if(!all(object@band>0)){
+      stop ("The Bandwidth Vector must be positive.")
+    }
+  }
+)
+
+RPrometheeConstructor4Kernel<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, band, normalize){
+  new("RPrometheeArguments4Kernel",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, band=band, normalize=normalize)
+}
+
+#Define the Method
+setGeneric(
+  "RPrometheeIVKernel",
+  function(object) {
+    standardGeneric("RPrometheeIVKernel")
+  }
+)
+
+#Promethee IV - Method
+setMethod(
+  "RPrometheeIVKernel",
+  signature("RPrometheeArguments4Kernel"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    band         <- object@band
+    normalize    <- object@normalize
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee III
+    results <- RMCriteria::PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
+
+    #Set the class
+    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]])
+    #Return the class
+    return(resultsClass)
+  }
+)
+
+#Promethee III - Results
+setClass(
+  Class = "RPrometheeIVKernel",
+  slots = c(PhiPlus        = "numeric",
+            PhiMinus       = "numeric",
+            Index          = "numeric"),
+  prototype = list(
+    PhiPlus    = numeric(0),
+    PhiMinus   = numeric(0),
+    Index      = numeric(0)),
+  validity=function(object)
+  {
+    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
+      return("The Phi vectors must have the same length.")
+    }
+    return(TRUE)
   }
 )
 
