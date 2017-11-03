@@ -102,9 +102,7 @@ setClass(
 
   # Set the default values for the slots. (optional)
   prototype=list(numeric(0))
-
 )
-
 
 #Define the Method
 setGeneric(
@@ -216,35 +214,61 @@ setClass(
 
 #
 # ################################################################################
-# ###########################       RPromethee 4K    #############################
+# ###########################       RPromethee 4    #############################
 # ################################################################################
-#
-# #New RPromethee4K
-# setClass("RPromethee4K",
-#          contains="RPromethee",
-#          slots=c(band   = "numeric"),
-#          prototype = list(band   = numeric(0))
-# )
-#
-# validRPromethee4K <- function(object) {
-#   stopifnot(ncol(object@datMat) == length(object@band))
-#   return(TRUE)
-# }
-#
-# #Assign the function as the validity method for the class
-# setValidity("RPromethee4K", validRPromethee4K)
-#
-# #Constructor
-# RPromethee4K<-function(band, datMat, vecWeights, prefFunction, parms, normalize){
-#   new("RPromethee4K",band=band, datMat=datMat, vecWeights=vecWeights, prefFunction=prefFunction, parms=parms, normalize=normalize)
-# }
-#
+
+#Promethee IV - Results
+setClass(
+  # Set the name for the class
+  Class = "RPrometheeIV",
+
+  # Define the slots - in this case it is numeric
+  slots = c(PhiPlus = "numeric",
+            PhiMinus = "numeric",
+            Index = "numeric"),
+
+  # Set the default values for the slots. (optional)
+  prototype=list(numeric(0),
+                 numeric(0),
+                 numeric(0))
+)
+
+#Define the Method
+setGeneric(
+  "RPrometheeIV",
+  function(object) {
+    standardGeneric("RPrometheeIV")
+  }
+)
+
+#Promethee II - Method
+setMethod(
+  "RPrometheeIV",
+  signature("RPrometheeArguments"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+    #Validate the object
+    validRPromethee(object)
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee I
+    results <- RMCriteria::PrometheeIV(datMat, vecWeights, prefFunction, parms, normalize)
+    #Set the class
+    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]])
+    #Return the class
+    return(resultsClass)
+  }
+)
+
+
 # ################################################################################
 # ###########################       RPromethee 5     #############################
 # ################################################################################
-
-# To do: adjust Promethee V script, edit method to adjust for Promethee V,
-# create the results class
 
 # Promethee V
 setClass(
@@ -309,9 +333,6 @@ setMethod(
     return(resultsClass)
   }
 )
-
-
-
 
 
 # ################################################################################
