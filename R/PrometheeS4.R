@@ -171,7 +171,7 @@ setGeneric(
   }
 )
 
-#Promethee I - Method
+#Promethee III - Method
 setMethod(
   "RPrometheeIII",
   signature("RPrometheeArguments3"),
@@ -241,7 +241,7 @@ setGeneric(
   }
 )
 
-#Promethee II - Method
+#Promethee IV - Method
 setMethod(
   "RPrometheeIV",
   signature("RPrometheeArguments"),
@@ -306,7 +306,7 @@ setGeneric(
   }
 )
 
-#Promethee IV - Method
+#Promethee IV K - Method
 setMethod(
   "RPrometheeIVKernel",
   signature("RPrometheeArguments4Kernel"),
@@ -330,7 +330,7 @@ setMethod(
   }
 )
 
-#Promethee III - Results
+#Promethee IV K - Results
 setClass(
   Class = "RPrometheeIVKernel",
   slots = c(PhiPlus        = "numeric",
@@ -420,162 +420,41 @@ setMethod(
 
 
 # ################################################################################
-# ###########################       Promethee Method    ##########################
+# ###########################   Sensitive Analysis   #############################
 # ################################################################################
-#
-# setMethod(
-#   "RPrometheeI",
-#   signature("RPromethee"),
-#   function(object){
-#     res<- PrometheeI(object@datMat,
-#                      object@vecWeights,
-#                      object@prefFunction,
-#                      object@parms,
-#                      object@normalize)
-#     return(res)
-#   }
-# )
-#
-# setMethod(
-#   "RPrometheeII",
-#   signature("RPromethee"),
-#   function(object){
-#     res<- PrometheeII(object@datMat,
-#                      object@vecWeights,
-#                      object@prefFunction,
-#                      object@parms,
-#                      object@normalize)
-#     return(res)
-#   }
-# )
-#
-# setMethod(
-#   "RPrometheeIV",
-#   signature("RPromethee"),
-#   function(object){
-#     res<- PrometheeIV(object@datMat,
-#                       object@vecWeights,
-#                       object@prefFunction,
-#                       object@parms,
-#                       object@normalize)
-#     return(res)
-#   }
-# )
-#
-#
-# ################################################################################
-# ###########################       Promethee 3 Method   #########################
-# ################################################################################
-#
-# setMethod(
-#   "RPrometheeIII",
-#   signature("RPromethee3"),
-#   function(object){
-#     res<- PrometheeIII(object@datMat,
-#                       object@vecWeights,
-#                       object@prefFunction,
-#                       object@alphaVector,
-#                       object@parms)
-#     return(res)
-#   }
-# )
-#
-#
-# ################################################################################
-# ###########################       Promethee 4 Kernel Method    #################
-# ################################################################################
-#
-# setMethod(
-#   "RPrometheeIVK",
-#   signature("RPromethee4K"),
-#   function(object){
-#     res<- PrometheeIVKernel(
-#                        object@datMat,
-#                        object@vecWeights,
-#                        object@prefFunction,
-#                        object@parms,
-#                        object@band,
-#                        object@normalize)
-#     return(res)
-#   }
-# )
-#
-#
-# ################################################################################
-# ###########################         Promethee 5 Method         #################
-# ################################################################################
-#
-# setMethod(
-#   "RPrometheeV",
-#   signature("RPromethee5"),
-#   function(object){
-#     res<- PrometheeV(
-#       object@datMat,
-#       object@vecWeights,
-#       object@prefFunction,
-#       object@parms,
-#       object@bounds,
-#       object@normalize)
-#     return(res)
-#   }
-# )
-#
-#
-# ################################################################################
-# ###########################         Promethee Function         #################
-# ################################################################################
-#
-#
-# RDecision<-function(datMat, vecWeights, prefFunction, parms, normalize, type){
-#   #Create the object
-#   object<-RPromethee(datMat, vecWeights, prefFunction, parms, normalize)
-#   #Results
-#   res<-NULL
-#   if(type=="PrometheeI"){
-#     res<-RPrometheeI(object)
-#   }
-#   else if(type=="PrometheeII"){
-#     res<-RPrometheeII(object)
-#   }
-#   else if(type=="PrometheeIV"){
-#     res<-RPrometheeIV(object)
-#   }
-#   return(res)
-# }
-#
-# RDecision<-function(datMat, vecWeights, prefFunction, parms, alphaVector, type){
-#   #Create the object
-#   object<-RPromethee3(alphaVector, datMat, vecWeights, prefFunction, parms)
-#   #Results
-#   res<-NULL
-#   if(type=="PrometheeIII"){
-#     res<-RPrometheeIII(object)
-#   }
-#   return(res)
-# }
-#
-# RDecision<-function(datMat, vecWeights, prefFunction, parms, band, normalize, type){
-#   #Create the object
-#   object<-RPromethee4K(band, datMat, vecWeights, prefFunction, parms, normalize)
-#   #Results
-#   res<-NULL
-#   if(type=="PrometheeIVK"){
-#     res<-RPrometheeIVK(object)
-#   }
-#   return(res)
-# }
-#
-#
-# RDecision<-function(datMat, vecWeights, prefFunction, parms, bounds, normalize, type){
-#   #Create the object
-#   object<-RPromethee5(bounds, datMat, vecWeights, prefFunction, parms, normalize)
-#   #Results
-#   res<-NULL
-#   if(type=="PrometheeV"){
-#     res<-RPrometheeV(object)
-#   }
-#   return(res)
-# }
-#
-#
-#
+
+
+#Define the Method
+setGeneric(
+  "SensitiveAnalysis",
+  function(object) {
+    standardGeneric("SensitiveAnalysis")
+  }
+)
+
+#Sensitive Analysis - Method
+setMethod(
+  "SensitiveAnalysis",
+  signature("RPrometheeArguments"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+    #Validate the object
+    validRPromethee(object)
+    #Fix orientation
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Execute Promethee I
+    results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
+    #Execute Sensitive Analysis
+    sensitiveResults <- RMCriteria::SensitiveAnalysis(results)
+    #Set the class
+    resultsClass <- new("SensitiveAnalysis",Phi=sensitiveResults)
+    #Return the class
+    return(resultsClass)
+  }
+)
+
