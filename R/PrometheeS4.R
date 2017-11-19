@@ -285,7 +285,7 @@ setClass(
                    Index     = numeric(0)),
 
   validity=function(object){
-    if(length(object@band)!=nrow(object@datMat)){
+    if(length(object@band)!=ncol(object@datMat)){
       stop ("The Bandwidth Vector must have the same size as the Preference Vector.")
     }
     if(!all(object@band>0)){
@@ -357,18 +357,18 @@ setClass(
 # Promethee V
 setClass(
   # Set the name for the class
-  Class = "RPrometheeV",
+  Class = "RPrometheeArguments5",
   contains = "RPrometheeArguments",
 
   # Define the slots
   slots = c(Phi = "numeric",
-            constraintDir = "matrix",
-            bounds = "matrix"),
+            constraintDir = "character",
+            bounds = "numeric"),
 
   # Set the default values for the slots. (optional)
   prototype=list(Phi = numeric(0),
-                 constraintDir = matrix(0),
-                 bounds = matrix(0)),
+                 constraintDir = character(0),
+                 bounds = numeric(0)),
 
   validity = function(object){
     if(length(object@constraintDir) != ncol(object@datMat)){

@@ -12,3 +12,7 @@ RMCriteria::PrometheeIVKernel(dados,c(0.3,0.7),c(2,2),parms, bands, FALSE)
 
 RMCriteria::PrometheeIVKernel(dados,c(0.3,0.7),c(3,3),parms, bands, FALSE)
 
+#Step 1: Construct the RPrometheeArguments
+PromObj <- RPrometheeConstructor4Kernel(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms, band=bands, normalize=FALSE)
+res <- RPrometheeIVKernel(PromObj)
+str(res)
