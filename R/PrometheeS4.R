@@ -65,7 +65,7 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPromethee",PhiPlus=results[[1]], PhiMinus=results[[2]])
+    resultsClass <- new("RPrometheeI",PhiPlus=results[[1]], PhiMinus=results[[2]])
     #Return the class
     return(resultsClass)
   }
@@ -73,7 +73,7 @@ setMethod(
 
 #Promethee I - Results
 setClass(
-  Class = "RPromethee",
+  Class = "RPrometheeI",
   slots = c(PhiPlus        = "numeric" ,
             PhiMinus       = "numeric"),
   prototype = list(
@@ -457,4 +457,85 @@ setMethod(
     return(resultsClass)
   }
 )
+
+
+# ################################################################################
+# ###########################          Plots         #############################
+# ################################################################################
+
+##### Promethee I Partial Ranking
+
+#Define the Method
+setGeneric(
+  "PrometheeIPlot",
+  function(object) {
+    standardGeneric("PrometheeIPlot")
+  }
+)
+
+# Partial Ranking Promethee I - Method
+setMethod(
+  "PrometheeIPlot",
+  signature("RPrometheeI"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+    results      <- object@results
+
+    # Create data frame with results information
+
+    phiLabels <- c(rep("PhiPlus", nrow(datMat)), rep("PhiMinus", nrow(datMat)))
+    phiNums <- c(results[1], results[2])
+    alternatives <- c(rep(rownames(datMat), 3))
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
+    resultsPlot[,3] <- as.factor(resultsPlot[,3])
+
+    datatest <- data.frame(alternatives, Phi_labels, Phi_nums)
+    datatest$Phi_labels <- as.factor(datatest$Phi_labels)
+
+    # Create a dataframe to use as source for both Phi bars in PrometheeI plot
+    limits <- data.frame(
+      class = c("PhiPlus", "PhiPlus", "PhiMinus", "PhiMinus"),
+      boundaries = c(0.5, 0.5, 0.5, 0.5),
+      pos_neg = c("Pos", "Neg", "Pos", "Neg"))
+
+    # Change order of factors
+    limits$class <- factor(limits$class, levels = c("PhiPlus", "PhiMinus"))
+    limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
+
+    results <- ggplot(limits) +
+      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+               stat = "identity", width = 0.5) +
+      geom_point(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
+                 stat = "identity") +
+      geom_line(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
+                group = prometheeI_temp[,1], stat = "identity") +
+      geom_text(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
+                label = sprintf("%0.3f",
+                                round(prometheeI_temp$Phi_nums, digits = 3),
+                                position = position_dodge(width = 0.9)),
+                hjust = 0, nudge_x = 0.05) +
+      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      geom_text(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
+                label = prometheeI_temp$alternatives, hjust = 1, nudge_x = -0.05)
+
+    #Return the class
+    return(results)
+  }
+)
+
+
+
+
+
+
+
+
+
+
+
 
