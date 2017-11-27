@@ -2,6 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.dropbox
+.ini
+.rapp.history
+.xlsx
 src/*.o
 src/*.so
 src/*.dll
