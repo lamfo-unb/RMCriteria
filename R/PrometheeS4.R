@@ -396,7 +396,7 @@ setGeneric(
 #Promethee - Method
 setMethod(
   "RPrometheeV",
-  signature("RPrometheeArguments"),
+  signature("RPrometheeArguments5"),
   function(object) {
     datMat       <- object@datMat
     vecWeights   <- object@vecWeights
@@ -416,6 +416,13 @@ setMethod(
     #Return the class
     return(resultsClass)
   }
+)
+
+setClass(
+  Class = "RPrometheeV",
+  slots = c(ObjFunction    = "numeric"),
+  prototype = list(
+  ObjFunction  = numeric(0))
 )
 
 
