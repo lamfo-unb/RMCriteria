@@ -11,3 +11,21 @@ parms<-matrix(c(NA,
 PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms,normalize=FALSE)
 res <- RPrometheeI(PromObj)
 str(res)
+
+getPhiPlus <- function(RPrometheeI){
+  return(data.frame(RPrometheeI@PhiPlus))
+}
+
+getPhiPlus(res)
+
+getPhiMinus <- function(RPrometheeI){
+  return(data.frame(RPrometheeI@PhiMinus))
+}
+
+getPhiMinus(res)
+
+getPhi <- function(RPrometheeI){
+  return(data.frame(RPrometheeI@PhiPlus - RPrometheeI@PhiMinus))
+}
+
+getPhi(res)
