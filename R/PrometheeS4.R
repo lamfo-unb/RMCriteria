@@ -483,7 +483,7 @@ setGeneric(
 # Partial Ranking Promethee I - Method
 setMethod(
   "PrometheeIPlot",
-  signature("RPrometheeI"),
+  signature("RPrometheeArguments"),
   function(object) {
     datMat       <- object@datMat
     vecWeights   <- object@vecWeights
@@ -491,18 +491,21 @@ setMethod(
     prefFunction <- object@prefFunction
     parms        <- object@parms
     normalize    <- object@normalize
-    results      <- object@results
 
-    # Create data frame with results information
+    PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
 
-    phiLabels <- c(rep("PhiPlus", nrow(datMat)), rep("PhiMinus", nrow(datMat)))
-    phiNums <- c(results[1], results[2])
-    alternatives <- c(rep(rownames(datMat), 3))
+    res <- RPrometheeI(PromObj)
+
+    datMatDF <- data.frame(datMat)
+    vecWeightsDF <- data.frame(vecWeights)
+    parmsDF <- data.frame(parms)
+    resDF <- data.frame("PhiPlus" = res@PhiPlus, "PhiMinus" = res@PhiMinus)
+
+    phiLabels <- c(rep("PhiPlus", nrow(datMatDF)), rep("PhiMinus", nrow(datMatDF)))
+    phiNums <- c(resDF[,1], resDF[,2])
+    alternatives <- c(rep(rownames(datMatDF), 2))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
-    resultsPlot[,3] <- as.factor(resultsPlot[,3])
-
-    datatest <- data.frame(alternatives, Phi_labels, Phi_nums)
-    datatest$Phi_labels <- as.factor(datatest$Phi_labels)
+    resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
     # Create a dataframe to use as source for both Phi bars in PrometheeI plot
     limits <- data.frame(
@@ -514,35 +517,28 @@ setMethod(
     limits$class <- factor(limits$class, levels = c("PhiPlus", "PhiMinus"))
     limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
 
+    # Filter results table to exclude Phi flows
+    resultsPlot[,2] <- factor(resultsPlot[,2],
+                              levels = c("PhiPlus", "PhiMinus"))
+
+    # Full bars as in Visual-Promethee.
     results <- ggplot(limits) +
       geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
                stat = "identity", width = 0.5) +
-      geom_point(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
+      geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
-      geom_line(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
-                group = prometheeI_temp[,1], stat = "identity") +
-      geom_text(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
+      geom_line(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                group = resultsPlot[,1], stat = "identity") +
+      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = sprintf("%0.3f",
-                                round(prometheeI_temp$Phi_nums, digits = 3),
+                                round(resultsPlot$phiNums, digits = 3),
                                 position = position_dodge(width = 0.9)),
                 hjust = 0, nudge_x = 0.05) +
       scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
-      geom_text(data = prometheeI_temp, aes(x = Phi_labels, y = Phi_nums),
-                label = prometheeI_temp$alternatives, hjust = 1, nudge_x = -0.05)
+      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                label = alternatives, hjust = 1, nudge_x = -0.05)
 
     #Return the class
     return(results)
   }
 )
-
-
-
-
-
-
-
-
-
-
-
-
