@@ -492,36 +492,37 @@ setMethod(
     parms        <- object@parms
     normalize    <- object@normalize
 
+    # Create RPrometheeArguments object to be used in RPrometheeI
     PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
 
     res <- RPrometheeI(PromObj)
 
+    # Create dataframes using arguments from RPrometheeArguments
     datMatDF <- data.frame(datMat)
     vecWeightsDF <- data.frame(vecWeights)
     parmsDF <- data.frame(parms)
     resDF <- data.frame("PhiPlus" = res@PhiPlus, "PhiMinus" = res@PhiMinus)
 
+    # Create a dataframe with results from RPrometheeI and arguments
     phiLabels <- c(rep("PhiPlus", nrow(datMatDF)), rep("PhiMinus", nrow(datMatDF)))
     phiNums <- c(resDF[,1], resDF[,2])
     alternatives <- c(rep(rownames(datMatDF), 2))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
-    # Create a dataframe to use as source for both Phi bars in PrometheeI plot
+    # Create a dataframe to use as source for the plot
     limits <- data.frame(
       class = c("PhiPlus", "PhiPlus", "PhiMinus", "PhiMinus"),
       boundaries = c(0.5, 0.5, 0.5, 0.5),
       pos_neg = c("Pos", "Neg", "Pos", "Neg"))
 
-    # Change order of factors
+    # Change order of factors and levels
     limits$class <- factor(limits$class, levels = c("PhiPlus", "PhiMinus"))
     limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
-
-    # Filter results table to exclude Phi flows
     resultsPlot[,2] <- factor(resultsPlot[,2],
                               levels = c("PhiPlus", "PhiMinus"))
 
-    # Full bars as in Visual-Promethee.
+    # Partial bars as in Visual-Promethee
     results <- ggplot(limits) +
       geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
                stat = "identity", width = 0.5) +
@@ -537,6 +538,79 @@ setMethod(
       scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = alternatives, hjust = 1, nudge_x = -0.05)
+
+    #Return the class
+    return(results)
+  }
+)
+
+
+##### Promethee II Complete Ranking
+
+#Define the Method
+setGeneric(
+  "PrometheeIIPlot",
+  function(object) {
+    standardGeneric("PrometheeIIPlot")
+  }
+)
+
+# Complete Ranking Promethee II - Method
+setMethod(
+  "PrometheeIIPlot",
+  signature("RPrometheeArguments"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+
+    # Create RPrometheeArguments object to be used in RPrometheeI
+    PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
+
+    res <- RPrometheeII(PromObj)
+
+    # Create dataframes using arguments from RPrometheeArguments
+    datMatDF <- data.frame(datMat)
+    vecWeightsDF <- data.frame(vecWeights)
+    parmsDF <- data.frame(parms)
+    resDF <- data.frame("Phi" = res@Phi)
+
+    # Create a dataframe with results from RPrometheeI and arguments
+    phiLabels <- c(rep("Phi", nrow(datMatDF)))
+    phiNums <- c(resDF[,1])
+    alternatives <- c(rep(rownames(datMatDF), 2))
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
+    resultsPlot[,2] <- as.factor(resultsPlot[,2])
+
+    # Create a dataframe to use as source for the plot
+      limits <- data.frame(
+      class = c("Phi", "Phi"),
+      boundaries = c(-1, 1),
+      pos_neg = c("Neg", "Pos"))
+
+    # Change order of factors
+    limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
+
+    resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
+
+    # Full Ranking bar as in Visual-Promethee
+    results <- ggplot(limits) +
+      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+               stat = "identity", width = 0.3) +
+      geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                 stat = "identity") +
+      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                label = sprintf("%0.3f",
+                                round(resultsPlot$phiNums, digits = 3)),
+                hjust = 0, nudge_x = 0.03) +
+      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      geom_text(data = resultsPlot, aes(x = phiLabels,
+                                        y = resultsPlot$phiNums),
+                label = resultsPlot$alternatives,
+                hjust = 1, nudge_x = -0.03)
 
     #Return the class
     return(results)
