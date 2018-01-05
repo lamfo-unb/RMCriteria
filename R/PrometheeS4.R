@@ -537,7 +537,11 @@ setMethod(
                 hjust = 0, nudge_x = 0.05) +
       scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                label = alternatives, hjust = 1, nudge_x = -0.05)
+                label = alternatives, hjust = 1, nudge_x = -0.05) +
+      theme(axis.text.y = element_blank(),
+            axis.ticks = element_blank(),
+            axis.title.x = element_blank()) +
+      labs(y = "Alternative/Phi")
 
     #Return the class
     return(results)
@@ -610,9 +614,93 @@ setMethod(
       geom_text(data = resultsPlot, aes(x = phiLabels,
                                         y = resultsPlot$phiNums),
                 label = resultsPlot$alternatives,
-                hjust = 1, nudge_x = -0.03)
+                hjust = 1, nudge_x = -0.03) +
+      theme(axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks = element_blank(),
+            axis.title.x = element_blank()) +
+      labs(y = "Alternative Phi")
 
     #Return the class
     return(results)
   }
 )
+
+
+
+##### Walking Weights Plot
+
+#Define the Method
+setGeneric(
+  "WalkingWeightsPlot",
+  function(object) {
+    standardGeneric("WalkingWeightsPlot")
+  }
+)
+
+# Complete Ranking Promethee II - Method
+setMethod(
+  "WalkingWeightsPlot",
+  signature("RPrometheeArguments"),
+  function(object) {
+    datMat       <- object@datMat
+    vecWeights   <- object@vecWeights
+    vecMaximiz   <- object@vecMaximiz
+    prefFunction <- object@prefFunction
+    parms        <- object@parms
+    normalize    <- object@normalize
+
+    # Create RPrometheeArguments object to be used in RPrometheeI
+    PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
+
+    res <- RPrometheeII(PromObj)
+
+    # Create dataframes using arguments from RPrometheeArguments
+    datMatDF <- data.frame(datMat)
+    vecWeightsDF <- data.frame(vecWeights)
+    parmsDF <- data.frame(parms)
+    resDF <- data.frame("Phi" = res@Phi)
+
+    # Create a dataframe with results from RPrometheeI and arguments
+    phiLabels <- c(rep("Phi", nrow(datMatDF)))
+    phiNums <- c(resDF[,1])
+    alternatives <- c(rep(rownames(datMatDF), 2))
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
+    resultsPlot[,2] <- as.factor(resultsPlot[,2])
+    resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
+    weightsDF <- setNames(data.frame(c(1:ncol(datMatDF)), vecWeightsDF), c("criterias", "weights"))
+
+    plot_a <- ggplot(resultsPlot) +
+      geom_bar(aes(x = alternatives, y = phiNums, fill = alternatives),
+               stat = "identity") +
+      theme(legend.position = "none",
+            axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks = element_blank()) +
+      geom_text(aes(x = alternatives, y = phiNums,
+                    label = sprintf("%0.3f", round(phiNums, digits = 3))),
+                vjust = 1, nudge_y = -0.1) +
+      labs(x = "Alternatives", y = "Phi")
+
+    plot_b <- ggplot(weightsDF) +
+      geom_bar(aes(x = as.character(criterias), y = weights), stat = "identity", width = 0.5) +
+      geom_text(aes(x = as.character(criterias), y = weights,
+                    label = sprintf("%0.2f%%", 100*weights),
+                    vjust = 1)) +
+      theme(axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks = element_blank()) +
+      labs(x = "Criterias", y = "Weights")
+
+    results <- grid.arrange(plot_a, plot_b, nrow = 2, ncol = 1,
+                 heights = unit(c(0.7, 0.3), "npc"))
+
+    #Return the class
+    return(results)
+  }
+)
+
+
+
+
+

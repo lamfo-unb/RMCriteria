@@ -15,6 +15,7 @@ Imports:
     RcppNumerical,
     linprog,
     lpSolve,
-    ggplot2
+    ggplot2,
+    gridExtra
 SystemRequirements: GNU make
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
