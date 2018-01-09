@@ -1,3 +1,5 @@
+library(ggplot2)
+library(gridExtra)
 dados<-matrix(c(5.2,-3.5,
                 4.3,-1.2,
                 6.7,-2.0),byrow = T, ncol=2,nrow=3)
@@ -13,3 +15,5 @@ res <- RPrometheeI(PromObj)
 str(res)
 
 PrometheeIPlot(PromObj)
+
+RPrometheePlot(PromObj, 1)
