@@ -24,7 +24,7 @@ parms<-matrix(c(2000, 5000,
                 1,2,
                 10,20),byrow=FALSE,ncol=4,nrow=2)
 
-weights <- data.frame(criterias, weights = c(0.5, 0.2, 0.1, 0.2))
+weights <- data.frame(criterias, "weights" = c(0.5, 0.2, 0.1, 0.2))
 
 RMCriteria::PrometheeI(dados,weights[,2],c(5,1,1,1),parms,T)
 flows <- data.frame(RMCriteria::PrometheeI(dados,c(1,1,1,1),c(5,1,1,1),parms,T))
