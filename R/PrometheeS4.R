@@ -2,42 +2,77 @@
 ########################### Main Class RPromethee  #############################
 ################################################################################
 
- setClass(
-   Class = "RPrometheeArguments",
-   slots = c(datMat       = "matrix" ,
-             vecWeights   = "numeric",
-             vecMaximiz   = "logical",
-             prefFunction = "numeric",
-             parms        = "matrix" ,
-             normalize    = "logical"),
-   prototype = list(
-             datMat       = matrix(0) ,
-             vecWeights   = numeric(0),
-             vecMaximiz   = TRUE,
-             prefFunction = numeric(0),
-             parms        = matrix(0) ,
-             normalize    = FALSE)
-   )
+### Global Promethee Arguments
+setClassUnion("NULLmeric", c("numeric", "NULL"))
+setClassUnion("matrixNULL", c("matrix", "NULL"))
+setClassUnion("charNULL", c("character", "NULL"))
 
- validRPromethee <- function(object) {
-   stopifnot( ncol(object@datMat) == length(object@vecWeights  ),
-              length(object@vecMaximiz) == length(object@vecWeights),
-              ncol(object@datMat) == length(object@prefFunction),
-              ncol(object@datMat) == nrow(object@parms)         ,
-              object@prefFunction>=0 && object@prefFunction<=5  )
-   if(any(object@vecWeights < 0 ||  object@vecWeights >1)) {
-     stop("All weights must be between 0 and 1")
-   }
-   return(TRUE)
- }
+setClass(
+  Class = "RPrometheeArguments",
+  slots = c(datMat        = "matrix" ,
+            vecWeights    = "numeric",
+            vecMaximiz    = "logical",
+            prefFunction  = "numeric",
+            parms         = "matrix" ,
+            normalize     = "logical",
+            alphaVector   = "NULLmeric",
+            band          = "matrixNULL",
+            constraintDir = "charNULL",
+            bounds        = "NULLmeric"),
+
+  prototype = list(
+    datMat        = matrix(0) ,
+    vecWeights    = numeric(0),
+    vecMaximiz    = TRUE,
+    prefFunction  = numeric(0),
+    parms         = matrix(0) ,
+    normalize     = FALSE,
+    alphaVector   = NULL,
+    band          = NULL,
+    constraintDir = NULL,
+    bounds        = NULL)
+)
+
+validRPromethee <- function(object) {
+  stopifnot( ncol(object@datMat) == length(object@vecWeights  ),
+             length(object@vecMaximiz) == length(object@vecWeights),
+             ncol(object@datMat) == length(object@prefFunction),
+             ncol(object@datMat) == nrow(object@parms)         ,
+             object@prefFunction>=0 && object@prefFunction<=5  )
+  if(any(object@vecWeights < 0 || object@vecWeights >1)) {
+    stop("All weights must be between 0 and 1")
+  }
+  if(is.null(object@alphaVector) || is.null(object@band) || is.null(object@constraintDir) || is.null(object@bounds)){
+    return(TRUE)
+  }
+  else if(length(object@alphaVector)!=nrow(object@datMat)){
+    stop ("The Alpha Vector must have the same size as the Preference Vector.")
+  }
+  if(!all(object@alphaVector>0)){
+    stop ("The Alpha Vector must be positive.")
+  }
+  if(length(object@band)!=ncol(object@datMat)){
+    stop ("The Bandwidth Vector must have the same size as the Preference Vector.")
+  }
+  if(!all(object@band>0)){
+    stop ("The Bandwidth Vector must be positive.")
+  }
+  if(length(object@constraintDir) != ncol(object@datMat)){
+    stop("The direction of the constraint must be available for all criterias.")
+  }
+  if(length(object@bounds) != ncol(object@datMat)){
+    stop("All criterias must have bounds.")
+  }
+
+  return(TRUE)
+}
 
 #Assign the function as the validity method for the class
 setValidity("RPrometheeArguments", validRPromethee)
 
-#Constructor
-RPrometheeConstructor<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize){
-   new("RPrometheeArguments",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize)
-}
+
+##########################################################################
+##########################################################################
 
 #Define the Method
 setGeneric(
@@ -144,25 +179,6 @@ setMethod(
 # ################################################################################
 #
 
-setClass(
-  Class = "RPrometheeArguments3",
-  contains = "RPrometheeArguments",
-  slots = c(alphaVector  = "numeric"),
-  prototype = list(alphaVector = numeric(0)),
-  validity=function(object){
-    if(length(object@alphaVector)!=nrow(object@datMat)){
-      stop ("The Alpha Vector must have the same size as the Preference Vector.")
-    }
-    if(!all(object@alphaVector>0)){
-      stop ("The Alpha Vector must be positive.")
-    }
-  }
-)
-
-RPrometheeConstructor3<-function(datMat, vecWeights, vecMaximiz, prefFunction, alphaVector, parms, normalize){
-  new("RPrometheeArguments3",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, alphaVector = alphaVector, parms=parms, normalize=normalize)
-}
-
 #Define the Method
 setGeneric(
   "RPrometheeIII",
@@ -174,7 +190,7 @@ setGeneric(
 #Promethee III - Method
 setMethod(
   "RPrometheeIII",
-  signature("RPrometheeArguments3"),
+  signature("RPrometheeArguments"),
   function(object) {
     datMat       <- object@datMat
     vecWeights   <- object@vecWeights
@@ -271,33 +287,6 @@ setMethod(
 # ################################################################################
 #
 
-setClass(
-  Class = "RPrometheeArguments4Kernel",
-  contains = "RPrometheeArguments",
-  slots = c(band       = "matrix",
-            PhiPlus    = "numeric",
-            PhiMinus   = "numeric",
-            Index      = "numeric"),
-
-  prototype = list(band      = matrix(0),
-                   PhiPlus   = numeric(0),
-                   PhiMinus  = numeric(0),
-                   Index     = numeric(0)),
-
-  validity=function(object){
-    if(length(object@band)!=ncol(object@datMat)){
-      stop ("The Bandwidth Vector must have the same size as the Preference Vector.")
-    }
-    if(!all(object@band>0)){
-      stop ("The Bandwidth Vector must be positive.")
-    }
-  }
-)
-
-RPrometheeConstructor4Kernel<-function(datMat, vecWeights, vecMaximiz, prefFunction, parms, band, normalize){
-  new("RPrometheeArguments4Kernel",datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, band=band, normalize=normalize)
-}
-
 #Define the Method
 setGeneric(
   "RPrometheeIVKernel",
@@ -309,7 +298,7 @@ setGeneric(
 #Promethee IV K - Method
 setMethod(
   "RPrometheeIVKernel",
-  signature("RPrometheeArguments4Kernel"),
+  signature("RPrometheeArguments"),
   function(object) {
     datMat       <- object@datMat
     vecWeights   <- object@vecWeights
@@ -354,37 +343,6 @@ setClass(
 # ###########################       RPromethee 5     #############################
 # ################################################################################
 
-# Promethee V
-setClass(
-  # Set the name for the class
-  Class = "RPrometheeArguments5",
-  contains = "RPrometheeArguments",
-
-  # Define the slots
-  slots = c(Phi = "numeric",
-            constraintDir = "character",
-            bounds = "numeric"),
-
-  # Set the default values for the slots. (optional)
-  prototype=list(Phi = numeric(0),
-                 constraintDir = character(0),
-                 bounds = numeric(0)),
-
-  validity = function(object){
-    if(length(object@constraintDir) != ncol(object@datMat)){
-      stop("The direction of the constraint must be available for all criterias.")
-      }
-    if(length(object@bounds) != ncol(object@datMat)){
-      stop("All criterias must have bounds.")
-    }
-  }
-)
-
-RPrometheeConstructor5 <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, constraintDir, bounds){
-  new("RPrometheeArguments5", datMat=datMat, vecWeights=vecWeights, vecMaximiz=vecMaximiz, prefFunction=prefFunction, parms=parms, normalize=normalize, constraintDir=constraintDir, bounds=bounds)
-}
-
-
 #Define the Method
 setGeneric(
   "RPrometheeV",
@@ -396,16 +354,16 @@ setGeneric(
 #Promethee - Method
 setMethod(
   "RPrometheeV",
-  signature("RPrometheeArguments5"),
+  signature("RPrometheeArguments"),
   function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
+    datMat        <- object@datMat
+    vecWeights    <- object@vecWeights
+    vecMaximiz    <- object@vecMaximiz
+    prefFunction  <- object@prefFunction
+    parms         <- object@parms
+    normalize     <- object@normalize
     constraintDir <- object@constraintDir
-    bounds <- object@bounds
+    bounds        <- object@bounds
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee V
@@ -418,12 +376,10 @@ setMethod(
   }
 )
 
-setClass(
-  Class = "RPrometheeV",
-  slots = c(ObjFunction    = "numeric"),
-  prototype = list(
-  ObjFunction  = numeric(0))
-)
+#setClass(
+#  Class = "RPrometheeV",
+#  slots = c(ObjFunction    = "lp.object"))
+#)
 
 
 # ################################################################################
@@ -732,7 +688,28 @@ setMethod(
   }
 )
 
+########################################################################
+##################### Standard Methods #################################
+########################################################################
 
+########### show() method for PrometheeClass
 
+#setMethod(f = "show", signature = "RPrometheeI",
+#          definition <-  function(object) {
+#             data <- object@datMat;
+#             weights <- object@vecWeights;
+#             max <- object@vecMaximiz;
+#             pref <- object@prefFunction;
+#             parms <- object@parms;
+#             normalize <- object@normalize
+#            cat("Promethee I object with ", nrow(data), " alternatives and", ncol(data), "criterias. \n")
+#            invisible(NULL)
+#          })
 
+#datMat       <- object@datMat
+#vecWeights   <- object@vecWeights
+#vecMaximiz   <- object@vecMaximiz
+#prefFunction <- object@prefFunction
+#parms        <- object@parms
+#normalize    <- object@normalize
 
