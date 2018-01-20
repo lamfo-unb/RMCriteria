@@ -70,6 +70,26 @@ validRPromethee <- function(object) {
 #Assign the function as the validity method for the class
 setValidity("RPrometheeArguments", validRPromethee)
 
+#Constructor
+RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector, band, constraintDir, bounds){
+  ## I and II
+  if(missing(alphaVector) && missing(band) && missing(constraintDir) && missing(bounds)){
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize)
+  }
+  ## III
+  else if(missing(band) && missing(constraintDir) && missing(bounds)){
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector)
+  }
+  ## IV Kernel
+  else if(missing(alphaVector) && missing(constraintDir) && missing(bounds)){
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band)
+  }
+  ## V
+  else if(missing(alphaVector) && missing(band)){
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds)
+  }
+}
+
 
 ##########################################################################
 ##########################################################################
@@ -692,19 +712,19 @@ setMethod(
 ##################### Standard Methods #################################
 ########################################################################
 
-########### show() method for PrometheeClass
+## show() method for PrometheeClass
 
-#setMethod(f = "show", signature = "RPrometheeI",
-#          definition <-  function(object) {
-#             data <- object@datMat;
-#             weights <- object@vecWeights;
-#             max <- object@vecMaximiz;
-#             pref <- object@prefFunction;
-#             parms <- object@parms;
-#             normalize <- object@normalize
-#            cat("Promethee I object with ", nrow(data), " alternatives and", ncol(data), "criterias. \n")
-#            invisible(NULL)
-#          })
+setMethod(f = "show", signature = "RPrometheeI",
+          definition <-  function(object) {
+             data <- object@datMat;
+             weights <- object@vecWeights;
+             max <- object@vecMaximiz;
+             pref <- object@prefFunction;
+             parms <- object@parms;
+             normalize <- object@normalize
+            cat("Promethee I object with ", nrow(data), " alternatives and", ncol(data), "criterias. \n")
+            invisible(NULL)
+          })
 
 #datMat       <- object@datMat
 #vecWeights   <- object@vecWeights
