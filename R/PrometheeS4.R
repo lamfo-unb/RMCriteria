@@ -120,7 +120,7 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeI",PhiPlus=results[[1]], PhiMinus=results[[2]])
+    resultsClass <- new("RPrometheeI", PhiPlus=results[[1]], PhiMinus=results[[2]])
     #Return the class
     return(resultsClass)
   }
@@ -714,7 +714,7 @@ setMethod(
 
 ## show() method for PrometheeClass
 
-setMethod(f = "show", signature = "RPrometheeI",
+setMethod(f = "show", signature = "RPrometheeArguments",
           definition <-  function(object) {
              data <- object@datMat;
              weights <- object@vecWeights;
@@ -722,9 +722,26 @@ setMethod(f = "show", signature = "RPrometheeI",
              pref <- object@prefFunction;
              parms <- object@parms;
              normalize <- object@normalize
-            cat("Promethee I object with ", nrow(data), " alternatives and", ncol(data), "criterias. \n")
+            cat("Promethee Arguments object with", nrow(data), "alternatives and", ncol(data), "criterias. \nThe criterias weights are", weights, "and the results",
+                ifelse(normalize, "will be normalized.", "won't be normalized"))
             invisible(NULL)
           })
+
+setMethod(f = "show", signature = "RPrometheeI",
+          definition <-  function(object) {
+            Plus <- object@PhiPlus
+            Minus <- object@PhiMinus
+            cat("Promethee I object with", length(Plus), "alternatives. \nPhi Plus:", sprintf("%0.3f", round(Plus, digits = 3)), "\nPhi Minus:", sprintf("%0.3f", round(Minus, digits = 3)))
+            invisible(NULL)
+          })
+
+setMethod(f = "show", signature = "RPrometheeII",
+          definition <-  function(object) {
+            Phi <- object@Phi
+            cat("Promethee II object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)))
+            invisible(NULL)
+          })
+
 
 #datMat       <- object@datMat
 #vecWeights   <- object@vecWeights

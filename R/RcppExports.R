@@ -2,10 +2,22 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 PrometheeI <- function(datMat, vecWeights, prefFunction, parms, normalize) {
-    .Call('RMCriteria_PrometheeI', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
+    .Call('_RMCriteria_PrometheeI', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
 }
 
 PrometheeII <- function(datMat, vecWeights, prefFunction, parms, normalize) {
-    .Call('RMCriteria_PrometheeII', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
+    .Call('_RMCriteria_PrometheeII', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
+}
+
+PrometheeIII <- function(datMat, vecWeights, prefFunction, alphaVector, parms) {
+    .Call('_RMCriteria_PrometheeIII', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, alphaVector, parms)
+}
+
+PrometheeIV <- function(datMat, vecWeights, prefFunction, parms, normalize) {
+    .Call('_RMCriteria_PrometheeIV', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
+}
+
+PrometheeIVKernel <- function(datMat, vecWeights, prefFunction, parms, band, normalize) {
+    .Call('_RMCriteria_PrometheeIVKernel', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, band, normalize)
 }
 

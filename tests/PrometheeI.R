@@ -17,3 +17,7 @@ str(res)
 PrometheeIPlot(PromObj)
 
 RPrometheePlot(PromObj, 1)
+
+show(res)
+
+show(PromObj)

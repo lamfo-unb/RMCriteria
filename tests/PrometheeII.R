@@ -14,3 +14,5 @@ str(res)
 
 PrometheeIIPlot(PromObj)
 WalkingWeightsPlot(PromObj)
+
+show(res)
