@@ -153,10 +153,13 @@ setClass(
   Class = "RPrometheeII",
 
   # Define the slots - in this case it is numeric
-  slots = c(Phi = "numeric"),
+  slots = c(Phi = "numeric",
+            vecWeights = "numeric"),
 
   # Set the default values for the slots. (optional)
-  prototype=list(numeric(0))
+  prototype=list(
+    Phi = numeric(0),
+    vecWeights = numeric(0))
 )
 
 #Define the Method
@@ -185,7 +188,7 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeII",Phi=results)
+    resultsClass <- new("RPrometheeII", Phi = results, vecWeights = vecWeights)
     #Return the class
     return(resultsClass)
   }
@@ -459,30 +462,18 @@ setGeneric(
 # Partial Ranking Promethee I - Method
 setMethod(
   "PrometheeIPlot",
-  signature("RPrometheeArguments"),
+  signature("RPrometheeI"),
   function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
+    Plus       <- object@PhiPlus
+    Minus      <- object@PhiMinus
 
-    # Create RPrometheeArguments object to be used in RPrometheeI
-    PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
-
-    res <- RPrometheeI(PromObj)
-
-    # Create dataframes using arguments from RPrometheeArguments
-    datMatDF <- data.frame(datMat)
-    vecWeightsDF <- data.frame(vecWeights)
-    parmsDF <- data.frame(parms)
-    resDF <- data.frame("PhiPlus" = res@PhiPlus, "PhiMinus" = res@PhiMinus)
+    # Create dataframes
+    resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus)
 
     # Create a dataframe with results from RPrometheeI and arguments
-    phiLabels <- c(rep("PhiPlus", nrow(datMatDF)), rep("PhiMinus", nrow(datMatDF)))
+    phiLabels <- c(rep("PhiPlus", nrow(resDF)), rep("PhiMinus", nrow(resDF)))
     phiNums <- c(resDF[,1], resDF[,2])
-    alternatives <- c(rep(rownames(datMatDF), 2))
+    alternatives <- c(as.character(rep(1:nrow(resDF),2)))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
@@ -538,32 +529,20 @@ setGeneric(
 # Complete Ranking Promethee II - Method
 setMethod(
   "PrometheeIIPlot",
-  signature("RPrometheeArguments"),
+  signature("RPrometheeII"),
   function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
+    Phi     <-   object@Phi
 
-    # Create RPrometheeArguments object to be used in RPrometheeI
-    PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
+        # Create dataframes
+    resDF <- data.frame("Phi" = Phi)
 
-    res <- RPrometheeII(PromObj)
-
-    # Create dataframes using arguments from RPrometheeArguments
-    datMatDF <- data.frame(datMat)
-    vecWeightsDF <- data.frame(vecWeights)
-    parmsDF <- data.frame(parms)
-    resDF <- data.frame("Phi" = res@Phi)
-
-    # Create a dataframe with results from RPrometheeI and arguments
-    phiLabels <- c(rep("Phi", nrow(datMatDF)))
+    # Create a dataframe with results from RPrometheeII
+    phiLabels <- c(rep("Phi", nrow(resDF)))
     phiNums <- c(resDF[,1])
-    alternatives <- c(rep(rownames(datMatDF), 2))
+    alternatives <- c(as.character((1:nrow(resDF))))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
+
 
     # Create a dataframe to use as source for the plot
       limits <- data.frame(
@@ -617,34 +596,23 @@ setGeneric(
 # Complete Ranking Promethee II - Method
 setMethod(
   "WalkingWeightsPlot",
-  signature("RPrometheeArguments"),
+  signature("RPrometheeII"),
   function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
+    Phi       <-   object@Phi
+    weights   <-   object@vecWeights
 
-    # Create RPrometheeArguments object to be used in RPrometheeI
-    PromObj <- RPrometheeConstructor(datMat = object@datMat, vecWeights = object@vecWeights, vecMaximiz = object@vecMaximiz, prefFunction = object@prefFunction, parms = object@parms, normalize=object@normalize)
+    # Create dataframes
+    resDF <- data.frame("Phi" = Phi)
+    vecWeightsDF <- data.frame("Weights" = weights)
 
-    res <- RPrometheeII(PromObj)
-
-    # Create dataframes using arguments from RPrometheeArguments
-    datMatDF <- data.frame(datMat)
-    vecWeightsDF <- data.frame(vecWeights)
-    parmsDF <- data.frame(parms)
-    resDF <- data.frame("Phi" = res@Phi)
-
-    # Create a dataframe with results from RPrometheeI and arguments
-    phiLabels <- c(rep("Phi", nrow(datMatDF)))
+    # Create a dataframe with results from RPrometheeII
+    phiLabels <- c(rep("Phi", nrow(resDF)))
     phiNums <- c(resDF[,1])
-    alternatives <- c(rep(rownames(datMatDF), 2))
+    alternatives <- c(as.character((1:nrow(resDF))))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
     resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
-    weightsDF <- setNames(data.frame(c(1:ncol(datMatDF)), vecWeightsDF), c("criterias", "weights"))
+    weightsDF <- setNames(data.frame(c(1:nrow(vecWeightsDF)), vecWeightsDF), c("criterias", "weights"))
 
     plot_a <- ggplot(resultsPlot) +
       geom_bar(aes(x = alternatives, y = phiNums, fill = alternatives),

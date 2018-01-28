@@ -12,7 +12,7 @@ PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c
 res <- RPrometheeII(PromObj)
 str(res)
 
-PrometheeIIPlot(PromObj)
-WalkingWeightsPlot(PromObj)
+PrometheeIIPlot(res)
+WalkingWeightsPlot(res)
 
 show(res)

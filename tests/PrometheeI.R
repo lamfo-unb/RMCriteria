@@ -14,7 +14,7 @@ PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c
 res <- RPrometheeI(PromObj)
 str(res)
 
-PrometheeIPlot(PromObj)
+PrometheeIPlot(res)
 
 RPrometheePlot(PromObj, 1)
 
