@@ -93,6 +93,13 @@ RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, 
 
 ##########################################################################
 ##########################################################################
+# Global Promethee Class
+
+#setClass(
+#  "RPromethee",
+#  contains = c("RPrometheeI", "RPrometheeII")
+#)
+
 
 #Define the Method
 setGeneric(
@@ -646,33 +653,24 @@ setMethod(
 
 
 ##### General Plot Function
+if(!isGeneric("plot")){
+  setGeneric("plot", function(x, y, ...) standardGeneric("plot"))}
+
 
 #Define the Method
-setGeneric(
-  "RPrometheePlot",
-  function(object, type) {
-    standardGeneric("RPrometheePlot")
+
+
+setMethod(f="plot",
+  signature("RPrometheeI"),
+  definition = function(x,y,...) {
+    PrometheeIPlot(x)
   }
 )
 
-# Method for a function that call other plot functions
-setMethod(
-  "RPrometheePlot",
-  signature("RPrometheeArguments", type="numeric"),
-  function(object, type) {
-
-    if(is.numeric(type)==FALSE){
-      return("The type of plot must be an integer. See help() for more information about each category of Promethee Plot.")
-    } else if(type == 1){
-      results <- PrometheeIPlot(object)
-    } else if(type == 2){
-      results <- PrometheeIIPlot(object)
-    } else if(type == 3){
-      results <- WalkingWeightsPlot(object)
-    } else
-      results <- "Please select a valid type of Promethee Plot. See help() for more information about each category."
-
-    return(results)
+setMethod(f="plot",
+          signature("RPrometheeII"),
+          definition = function(x,y,...) {
+            PrometheeIIPlot(x)
   }
 )
 

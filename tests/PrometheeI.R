@@ -16,8 +16,8 @@ str(res)
 
 PrometheeIPlot(res)
 
-RPrometheePlot(PromObj, 1)
-
 show(res)
 
 show(PromObj)
+
+plot(res)

@@ -16,3 +16,5 @@ PrometheeIIPlot(res)
 WalkingWeightsPlot(res)
 
 show(res)
+plot(res)
+
