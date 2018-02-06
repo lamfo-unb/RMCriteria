@@ -12,4 +12,3 @@ res <- RPrometheeIII(PromObj)
 str(res)
 
 
-PromObj <- new("RPrometheeArguments", datMat=dados, vecWeights=c(0.3,0.7), vecMaximiz=c(F,T), prefFunction=c(0,0), alphaVector=c(1,1,1), parms=parms, normalize=FALSE)

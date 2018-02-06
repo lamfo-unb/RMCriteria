@@ -233,9 +233,11 @@ setMethod(
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
     results <- RMCriteria::PrometheeIII(datMat, vecWeights, prefFunction, alphaVector, parms)
+    phiResults <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
 
     #Set the class
-    resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]])
+    resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]],
+                        PhiPlus = phiResults[[1]], PhiMinus = phiResults[[2]])
     #Return the class
     return(resultsClass)
   }
@@ -245,10 +247,14 @@ setMethod(
 setClass(
   Class = "RPrometheeIII",
   slots = c(limInf        = "numeric" ,
-            limSup       = "numeric"),
+            limSup        = "numeric",
+            PhiPlus       = "numeric",
+            PhiMinus      = "numeric"),
   prototype = list(
-    limInf   = numeric(0),
-    limSup   = numeric(0)),
+    limInf     = numeric(0),
+    limSup     = numeric(0),
+    PhiPlus    = numeric(0),
+    PhiMinus   = numeric(0)),
   validity=function(object)
   {
     if(length(object@limSup)!=length(object@limInf)) {
@@ -589,7 +595,6 @@ setMethod(
 )
 
 
-
 ##### Walking Weights Plot
 
 #Define the Method
@@ -777,7 +782,7 @@ setMethod(f = "show", signature = "RPrometheeII",
 setMethod(f = "show", signature = "RPrometheeIII",
           definition <-  function(object) {
             Phi <- object@Phi
-            cat("Promethee II object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)))
+            cat("Promethee III object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)))
             invisible(NULL)
           })
 

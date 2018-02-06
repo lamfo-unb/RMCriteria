@@ -8,8 +8,7 @@ Description: Multicriteria Analysis <http://lamfo.unb.br/>
 Depends: R (>= 3.1.0)
 License: What license is it under?
 LazyData: TRUE
-LinkingTo: Rcpp, RcppEigen, RcppNumerical, linprog, lpSolve, ggplot2, gridExtra, 
-ggnetwork, network
+LinkingTo: Rcpp, RcppEigen, RcppNumerical, linprog, lpSolve, ggplot2, gridExtra
 Imports:
     Rcpp,
     RcppEigen,
