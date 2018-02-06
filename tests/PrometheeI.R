@@ -21,3 +21,5 @@ show(res)
 show(PromObj)
 
 plot(res)
+
+NetworkPlot(res)

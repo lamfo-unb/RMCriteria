@@ -400,16 +400,16 @@ setMethod(
     results <- RMCriteria::PrometheeV(datMat, vecWeights, prefFunction, parms, bounds, normalize)
 
     #Set the class
-    resultsClass <- new("RPrometheeV", results)
+    resultsClass <- new("RPrometheeV", Result = results)
     #Return the class
     return(resultsClass)
   }
 )
 
-#setClass(
-#  Class = "RPrometheeV",
-#  slots = c(ObjFunction    = "lp.object"))
-#)
+setClass(
+  Class = "RPrometheeV",
+  slots = c(Result    = "character"))
+
 
 
 # ################################################################################
@@ -643,13 +643,79 @@ setMethod(
             axis.ticks = element_blank()) +
       labs(x = "Criterias", y = "Weights")
 
-    results <- grid.arrange(plot_a, plot_b, nrow = 2, ncol = 1,
-                 heights = unit(c(0.7, 0.3), "npc"))
+    results <- grid.arrange(plot_a, plot_b, nrow = 2, ncol = 1, heights = unit(c(0.7, 0.3), "npc"))
 
     #Return the class
     return(results)
   }
 )
+
+
+##### Network Plot
+
+#Define the Method
+setGeneric(
+  "NetworkPlot",
+  function(object) {
+    standardGeneric("NetworkPlot")
+  }
+)
+
+# Complete Ranking Promethee II - Method
+setMethod(
+  "NetworkPlot",
+  signature("RPrometheeI"),
+  function(object) {
+    PhiPlus        <-   object@PhiPlus
+    PhiMinus       <-   object@PhiMinus
+
+
+    #Step 1: Create the edges
+    #Step 1.1: Find the rank
+    rank<-data.frame("Phi"=object@PhiPlus-object@PhiMinus,"Phi.Plus"=object@PhiPlus,
+                     "Phi.Minus"= object@PhiMinus,"Alternative"=seq(1,length(object@PhiPlus)))
+    #Step 1.2: Order data
+    rank <- rank[order(-rank$Phi),]
+
+    #Step 1.3: Defining the eges
+    adjMatrix<-matrix(0,ncol=nrow(rank),nrow=nrow(rank))
+    invisible(capture.output(for(row1 in 1:(nrow(rank)-1)){
+      for(row2 in (row1+1):nrow(rank)){
+        print(paste(row1,row2))
+        if(rank[row1,"Phi.Plus"]>rank[row2,"Phi.Minus"] & rank[row1,"Phi.Minus"]<rank[row2,"Phi.Minus"]){
+          adjMatrix[row1,row2]<-1
+        }
+      }
+    }))
+
+    #Step 1.4: Create the network
+    net <- as.network(x = adjMatrix,
+                      directed = TRUE,
+                      loops = FALSE,
+                      matrix.type =    "adjacency")
+
+    #Naming the vertices
+    network.vertex.names(net) <- rank$Alternative
+
+    #Tipos de redes
+    net1<-ggnetwork(net)
+    net2<-ggnetwork(net, layout = "fruchtermanreingold", cell.jitter = 0.75)
+    net3<-ggnetwork(net, layout = "target", niter = 100)
+
+
+    results <- ggplot(net, aes(x = x, y = y, xend = xend, yend = yend)) +
+      geom_edges(arrow = arrow(length = unit(6, "pt"), type = "closed")) +
+      geom_nodes(color = "turquoise4", size = 10) +
+      geom_nodetext(aes(label =  vertex.names),
+                    fontface = "bold", color = "white") +
+      theme_blank()
+
+    #Return the class
+    return(results)
+  }
+)
+
+
 
 
 ##### General Plot Function
@@ -702,6 +768,13 @@ setMethod(f = "show", signature = "RPrometheeI",
           })
 
 setMethod(f = "show", signature = "RPrometheeII",
+          definition <-  function(object) {
+            Phi <- object@Phi
+            cat("Promethee II object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)))
+            invisible(NULL)
+          })
+
+setMethod(f = "show", signature = "RPrometheeIII",
           definition <-  function(object) {
             Phi <- object@Phi
             cat("Promethee II object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)))

@@ -3,6 +3,7 @@ library(RMCriteria)
 library(ggplot2)
 library(dplyr)
 library(network)
+library(ggnetwork)
 library(gridExtra)
 
 # Examplo Ishizaka - Cap 6
