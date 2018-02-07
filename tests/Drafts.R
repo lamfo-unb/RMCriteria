@@ -213,11 +213,11 @@ resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus, "limInf" = limInf, "li
     # Create a dataframe with results from RPrometheeI and arguments
     phiLabels <- c(rep("PhiPlus", nrow(resDF)), rep("PhiMinus", nrow(resDF)))
     phiNums <- c(resDF[,1], resDF[,2])
-    errorNums <- c(resDF[,3], resDF[,4])
-    errorLabels <- c(rep("limInf", nrow(resDF)), rep("limSup", nrow(resDF)))
+    errorMin <- c(rep(resDF[,3], 2))
+    errorMax <- c(rep(resDF[,4], 2))
     alternatives <- c(as.character(rep(1:nrow(resDF),2)))
 
-    resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorLabels, errorNums)
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorMin, errorMax)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
 
@@ -232,8 +232,6 @@ resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus, "limInf" = limInf, "li
     limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
     resultsPlot[,2] <- factor(resultsPlot[,2],
                               levels = c("PhiPlus", "PhiMinus"))
-    resultsPlot[,4] <- factor(resultsPlot[,4],
-                              levels = c("limInf", "limSup"))
 
     # Partial bars as in Visual-Promethee
     ggplot(limits) +
@@ -243,12 +241,10 @@ resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus, "limInf" = limInf, "li
                  stat = "identity") +
       geom_line(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 group = resultsPlot[,1], stat = "identity") +
-#      geom_errorbar(data = resultsPlot,
-#                    aes(x = errorLabels,
-#                        ymin = filter(resultsPlot, errorLabels == "limInf")[,5],
-#                        ymax = filter(resultsPlot, errorLabels == "limSup")[,5])) +
       geom_errorbar(data = resultsPlot,
-                    aes(ymin = errorNums, ymax = errorNums), group = errorLabels) +
+                    aes(x = phiLabels,
+                        ymin = errorMin, ymax = errorMax, width = 0.2),
+                    color = alternatives) +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = sprintf("%0.3f",
                                 round(resultsPlot$phiNums, digits = 3),
@@ -263,9 +259,73 @@ resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus, "limInf" = limInf, "li
       labs(y = "Alternative/Phi")
 
 
+###########################################
+
+    dados<-matrix(c(5.2,-3.5,
+                    4.3,-1.2,
+                    6.7,-2.0),byrow = T, ncol=2,nrow=3)
+
+    parms<-matrix(c(NA,
+                    NA),byrow=TRUE,ncol=1,nrow=2)
+
+    PromObj <- RPrometheeConstructor(datMat=dados, vecWeights=c(0.3,0.7), vecMaximiz=c(F,T), prefFunction=c(0,0), parms=parms, normalize=FALSE, alphaVector=c(1,1,1))
+
+    res <- RPrometheeIII(PromObj)
+    str(res)
 
 
+    Phi       <- res@Phi
+    limInf     <- res@limInf
+    limSup     <- res@limSup
 
+    # Create dataframes
+    resDF <- data.frame("Phi" = Phi, "limInf" = limInf, "limSup" = limSup)
+
+    phiLabels <- c(rep("Phi", nrow(resDF)))
+    phiNums <- c(resDF[,1])
+    errorMin <- c(rep(resDF[,2]))
+    errorMax <- c(rep(resDF[,3]))
+    alternatives <- c(as.character(1:nrow(resDF)))
+
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorMin, errorMax)
+    resultsPlot[,2] <- as.factor(resultsPlot[,2])
+
+
+    # Create a dataframe to use as source for the plot
+    limits <- data.frame(
+      class = c("Phi", "Phi"),
+      boundaries = c(-1, 1),
+      pos_neg = c("Neg", "Pos"))
+
+    # Change order of factors
+    limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
+
+    resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
+
+    # Full Ranking bar as in Visual-Promethee
+    ggplot(limits) +
+      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+               stat = "identity", width = 0.3) +
+      geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                 stat = "identity") +
+      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                label = sprintf("%0.3f",
+                                round(resultsPlot$phiNums, digits = 3)),
+                hjust = 0, nudge_x = 0.03) +
+      geom_errorbar(data = resultsPlot, aes(x = phiLabels,
+                                            ymin = errorMin,
+                                            ymax = errorMax),
+                    colour = alternatives, width = 0.07, size = 1) +
+      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      geom_text(data = resultsPlot, aes(x = phiLabels,
+                                        y = resultsPlot$phiNums),
+                label = resultsPlot$alternatives,
+                hjust = 1, nudge_x = -0.03) +
+      theme(axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks = element_blank(),
+            axis.title.x = element_blank()) +
+      labs(y = "Alternative Phi")
 
 
 

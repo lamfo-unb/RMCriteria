@@ -11,4 +11,6 @@ PromObj <- RPrometheeConstructor(datMat=dados, vecWeights=c(0.3,0.7), vecMaximiz
 res <- RPrometheeIII(PromObj)
 str(res)
 
+PrometheeIIIPlot(res)
+plot(res)
 

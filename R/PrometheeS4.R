@@ -233,11 +233,11 @@ setMethod(
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
     results <- RMCriteria::PrometheeIII(datMat, vecWeights, prefFunction, alphaVector, parms)
-    phiResults <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
+    phiResults <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
 
     #Set the class
     resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]],
-                        PhiPlus = phiResults[[1]], PhiMinus = phiResults[[2]])
+                        Phi = phiResults)
     #Return the class
     return(resultsClass)
   }
@@ -248,13 +248,11 @@ setClass(
   Class = "RPrometheeIII",
   slots = c(limInf        = "numeric" ,
             limSup        = "numeric",
-            PhiPlus       = "numeric",
-            PhiMinus      = "numeric"),
+            Phi           = "numeric"),
   prototype = list(
     limInf     = numeric(0),
     limSup     = numeric(0),
-    PhiPlus    = numeric(0),
-    PhiMinus   = numeric(0)),
+    Phi        = numeric(0)),
   validity=function(object)
   {
     if(length(object@limSup)!=length(object@limInf)) {
@@ -595,6 +593,79 @@ setMethod(
 )
 
 
+##### Promethee III Complete Ranking
+
+#Define the Method
+setGeneric(
+  "PrometheeIIIPlot",
+  function(object) {
+    standardGeneric("PrometheeIIIPlot")
+  }
+)
+
+# Complete Ranking Promethee II - Method
+setMethod(
+  "PrometheeIIIPlot",
+  signature("RPrometheeIII"),
+  function(object) {
+    Phi       <- object@Phi
+    limInf     <- object@limInf
+    limSup     <- object@limSup
+
+    # Create dataframes
+    resDF <- data.frame("Phi" = Phi, "limInf" = limInf, "limSup" = limSup)
+
+    phiLabels <- c(rep("Phi", nrow(resDF)))
+    phiNums <- c(resDF[,1])
+    errorMin <- c(rep(resDF[,2]))
+    errorMax <- c(rep(resDF[,3]))
+    alternatives <- c(as.character(1:nrow(resDF)))
+
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorMin, errorMax)
+    resultsPlot[,2] <- as.factor(resultsPlot[,2])
+
+
+    # Create a dataframe to use as source for the plot
+    limits <- data.frame(
+      class = c("Phi", "Phi"),
+      boundaries = c(-1, 1),
+      pos_neg = c("Neg", "Pos"))
+
+    # Change order of factors
+    limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
+
+    resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
+
+    # Full Ranking bar as in Visual-Promethee
+    results <- ggplot(limits) +
+      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+               stat = "identity", width = 0.3) +
+      geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                 stat = "identity") +
+      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                label = sprintf("%0.3f",
+                                round(resultsPlot$phiNums, digits = 3)),
+                hjust = 0, nudge_x = 0.03) +
+      geom_errorbar(data = resultsPlot, aes(x = phiLabels,
+                                            ymin = errorMin,
+                                            ymax = errorMax),
+                    colour = alternatives, width = 0.07, size = 1) +
+      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      geom_text(data = resultsPlot, aes(x = phiLabels,
+                                        y = resultsPlot$phiNums),
+                label = resultsPlot$alternatives,
+                hjust = 1, nudge_x = -0.03) +
+      theme(axis.text.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.ticks = element_blank(),
+            axis.title.x = element_blank()) +
+      labs(y = "Alternative Phi")
+
+    #Return the class
+    return(results)
+  }
+)
+
 ##### Walking Weights Plot
 
 #Define the Method
@@ -735,6 +806,7 @@ setMethod(f="plot",
   signature("RPrometheeI"),
   definition = function(x,y,...) {
     PrometheeIPlot(x)
+
   }
 )
 
@@ -743,6 +815,13 @@ setMethod(f="plot",
           definition = function(x,y,...) {
             PrometheeIIPlot(x)
   }
+)
+
+setMethod(f="plot",
+          signature("RPrometheeIII"),
+          definition = function(x,y,...) {
+            PrometheeIIIPlot(x)
+          }
 )
 
 ########################################################################
