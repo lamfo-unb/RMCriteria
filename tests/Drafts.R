@@ -18,6 +18,8 @@ datMatDF <- data.frame(PromObj@datMat)
 vecWeightsDF <- data.frame(PromObj@vecWeights)
 parmsDF <- data.frame(PromObj@parms)
 resDF <- data.frame("PhiPlus" = res@PhiPlus, "PhiMinus" = res@PhiMinus)
+alternatives <- c("Alt 1","Alt 2","Alt 3")
+rownames(datMatDF) <- alternatives
 
 
 phiLabels <- c(rep("PhiPlus", nrow(datMatDF)), rep("PhiMinus", nrow(datMatDF)))
@@ -303,29 +305,21 @@ resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus, "limInf" = limInf, "li
     resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
 
     # Full Ranking bar as in Visual-Promethee
-    ggplot(limits) +
-      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
-               stat = "identity", width = 0.3) +
-      geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                 stat = "identity") +
-      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                label = sprintf("%0.3f",
-                                round(resultsPlot$phiNums, digits = 3)),
+    ggplot(resultsPlot) +
+      geom_point(aes(x = alternatives, y = phiNums), stat = "identity", color = "red") +
+      geom_errorbar(aes(x = alternatives, ymin = errorMin, ymax = errorMax),
+                    width = 0.15, size = 1) +
+      geom_text(aes(x = alternatives, y = phiNums),
+                label = sprintf("%0.3f", round(resultsPlot$phiNums, digits = 3)),
                 hjust = 0, nudge_x = 0.03) +
-      geom_errorbar(data = resultsPlot, aes(x = phiLabels,
-                                            ymin = errorMin,
-                                            ymax = errorMax),
-                    colour = alternatives, width = 0.07, size = 1) +
-      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
-      geom_text(data = resultsPlot, aes(x = phiLabels,
-                                        y = resultsPlot$phiNums),
-                label = resultsPlot$alternatives,
-                hjust = 1, nudge_x = -0.03) +
-      theme(axis.text.x = element_blank(),
-            axis.text.y = element_blank(),
-            axis.ticks = element_blank(),
-            axis.title.x = element_blank()) +
-      labs(y = "Alternative Phi")
+      geom_text(aes(x = alternatives, y = errorMin),
+                label = sprintf("%0.3f", round(errorMin, digits=3)),
+                vjust = 1.5) +
+      geom_text(aes(x = alternatives, y = errorMax),
+                label = sprintf("%0.3f", round(errorMax, digits=3)),
+                vjust = -1) +
+      xlab("Alternatives") +
+      ylab("Phi")
 
 
 

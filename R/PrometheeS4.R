@@ -18,7 +18,8 @@ setClass(
             alphaVector   = "NULLmeric",
             band          = "matrixNULL",
             constraintDir = "charNULL",
-            bounds        = "NULLmeric"),
+            bounds        = "NULLmeric",
+            alternatives  = "charNULL"),
 
   prototype = list(
     datMat        = matrix(0) ,
@@ -30,7 +31,8 @@ setClass(
     alphaVector   = NULL,
     band          = NULL,
     constraintDir = NULL,
-    bounds        = NULL)
+    bounds        = NULL,
+    alternatives  = NULL)
 )
 
 validRPromethee <- function(object) {
@@ -70,36 +72,30 @@ validRPromethee <- function(object) {
 #Assign the function as the validity method for the class
 setValidity("RPrometheeArguments", validRPromethee)
 
-#Constructor
-RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector, band, constraintDir, bounds){
-  ## I and II
+RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector, band, constraintDir, bounds, alternatives){
+  if(missing(alternatives)){alternatives <- as.character(1:nrow(datMat))}
+
   if(missing(alphaVector) && missing(band) && missing(constraintDir) && missing(bounds)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize,
+        alternatives = alternatives)
   }
   ## III
   else if(missing(band) && missing(constraintDir) && missing(bounds)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, alternatives = alternatives)
   }
   ## IV Kernel
   else if(missing(alphaVector) && missing(constraintDir) && missing(bounds)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band, alternatives = alternatives)
   }
   ## V
   else if(missing(alphaVector) && missing(band)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
   }
-}
-
+  }
 
 ##########################################################################
 ##########################################################################
 # Global Promethee Class
-
-#setClass(
-#  "RPromethee",
-#  contains = c("RPrometheeI", "RPrometheeII")
-#)
-
 
 #Define the Method
 setGeneric(
@@ -120,6 +116,8 @@ setMethod(
       prefFunction <- object@prefFunction
       parms        <- object@parms
       normalize    <- object@normalize
+      alternatives <- object@alternatives
+
     #Validate the object
     validRPromethee(object)
     #Fix orientation
@@ -127,7 +125,8 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeI", PhiPlus=results[[1]], PhiMinus=results[[2]])
+    resultsClass <- new("RPrometheeI", PhiPlus=results[[1]], PhiMinus=results[[2]],
+                        alternatives = alternatives)
     #Return the class
     return(resultsClass)
   }
@@ -136,11 +135,13 @@ setMethod(
 #Promethee I - Results
 setClass(
   Class = "RPrometheeI",
-  slots = c(PhiPlus        = "numeric" ,
-            PhiMinus       = "numeric"),
+  slots = c(PhiPlus        = "numeric",
+            PhiMinus       = "numeric",
+            alternatives   = "character"),
   prototype = list(
-    PhiPlus   = numeric(0),
-    PhiMinus   = numeric(0)),
+    PhiPlus      = numeric(0),
+    PhiMinus     = numeric(0),
+    alternatives = character(0)),
   validity=function(object)
   {
     if(length(object@PhiPlus)!=length(object@PhiMinus)) {
@@ -160,13 +161,15 @@ setClass(
   Class = "RPrometheeII",
 
   # Define the slots - in this case it is numeric
-  slots = c(Phi = "numeric",
-            vecWeights = "numeric"),
+  slots = c(Phi            = "numeric",
+            vecWeights     = "numeric",
+            alternatives   = "character"),
 
   # Set the default values for the slots. (optional)
   prototype=list(
-    Phi = numeric(0),
-    vecWeights = numeric(0))
+    Phi            = numeric(0),
+    vecWeights     = numeric(0),
+    alternatives   = character(0))
 )
 
 #Define the Method
@@ -188,6 +191,8 @@ setMethod(
     prefFunction <- object@prefFunction
     parms        <- object@parms
     normalize    <- object@normalize
+    alternatives <- object@alternatives
+
     #Validate the object
     validRPromethee(object)
     #Fix orientation
@@ -195,7 +200,8 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeII", Phi = results, vecWeights = vecWeights)
+    resultsClass <- new("RPrometheeII", Phi = results, vecWeights = vecWeights,
+                        alternatives = alternatives)
     #Return the class
     return(resultsClass)
   }
@@ -229,6 +235,8 @@ setMethod(
     parms        <- object@parms
     alphaVector  <- object@alphaVector
     normalize    <- object@normalize
+    alternatives <- object@alternatives
+
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
@@ -237,7 +245,7 @@ setMethod(
 
     #Set the class
     resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]],
-                        Phi = phiResults)
+                        Phi = phiResults, alternatives = alternatives)
     #Return the class
     return(resultsClass)
   }
@@ -246,13 +254,15 @@ setMethod(
 #Promethee III - Results
 setClass(
   Class = "RPrometheeIII",
-  slots = c(limInf        = "numeric" ,
-            limSup        = "numeric",
-            Phi           = "numeric"),
+  slots = c(limInf         = "numeric" ,
+            limSup         = "numeric",
+            Phi            = "numeric",
+            alternatives   = "character"),
   prototype = list(
-    limInf     = numeric(0),
-    limSup     = numeric(0),
-    Phi        = numeric(0)),
+    limInf       = numeric(0),
+    limSup       = numeric(0),
+    Phi          = numeric(0),
+    alternatives = character(0)),
   validity=function(object)
   {
     if(length(object@limSup)!=length(object@limInf)) {
@@ -264,7 +274,7 @@ setClass(
 
 #
 # ################################################################################
-# ###########################       RPromethee 4    #############################
+# ###########################       RPromethee 4    ##############################
 # ################################################################################
 
 #Promethee IV - Results
@@ -273,15 +283,17 @@ setClass(
   Class = "RPrometheeIV",
 
   # Define the slots - in this case it is numeric
-  slots = c(PhiPlus = "numeric",
-            PhiMinus = "numeric",
-            Index = "numeric"),
+  slots = c(PhiPlus         = "numeric",
+            PhiMinus        = "numeric",
+            Index           = "numeric",
+            alternatives    = "character"),
 
 
   # Set the default values for the slots. (optional)
-  prototype=list(PhiPlus   = numeric(0),
-                 PhiMinus  = numeric(0),
-                 Index     = numeric(0))
+  prototype=list(PhiPlus        = numeric(0),
+                 PhiMinus       = numeric(0),
+                 Index          = numeric(0),
+                 alternatives   = character(0))
 )
 #Define the Method
 setGeneric(
@@ -302,6 +314,8 @@ setMethod(
     prefFunction <- object@prefFunction
     parms        <- object@parms
     normalize    <- object@normalize
+    alternatives <- object@alternatives
+
     #Validate the object
     validRPromethee(object)
     #Fix orientation
@@ -309,7 +323,7 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeIV(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]])
+    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives)
     #Return the class
     return(resultsClass)
   }
@@ -341,13 +355,15 @@ setMethod(
     parms        <- object@parms
     band         <- object@band
     normalize    <- object@normalize
+    alternatives <- object@alternatives
+
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
     results <- RMCriteria::PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
 
     #Set the class
-    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]])
+    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives)
     #Return the class
     return(resultsClass)
   }
@@ -358,11 +374,13 @@ setClass(
   Class = "RPrometheeIVKernel",
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
-            Index          = "numeric"),
+            Index          = "numeric",
+            alternatives   = "character"),
   prototype = list(
-    PhiPlus    = numeric(0),
-    PhiMinus   = numeric(0),
-    Index      = numeric(0)),
+    PhiPlus        = numeric(0),
+    PhiMinus       = numeric(0),
+    Index          = numeric(0),
+    alternatives   = character(0)),
   validity=function(object)
   {
     if(length(object@PhiPlus)!=length(object@PhiMinus)) {
@@ -398,6 +416,8 @@ setMethod(
     normalize     <- object@normalize
     constraintDir <- object@constraintDir
     bounds        <- object@bounds
+    alternatives  <- object@alternatives
+
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee V
@@ -440,6 +460,8 @@ setMethod(
     prefFunction <- object@prefFunction
     parms        <- object@parms
     normalize    <- object@normalize
+    alternatives <- object@alternatives
+
     #Validate the object
     validRPromethee(object)
     #Fix orientation
@@ -460,7 +482,9 @@ setMethod(
 # ###########################          Plots         #############################
 # ################################################################################
 
-##### Promethee I Partial Ranking
+#################################################
+######  Promethee I Partial Ranking  ############
+#################################################
 
 #Define the Method
 setGeneric(
@@ -475,8 +499,9 @@ setMethod(
   "PrometheeIPlot",
   signature("RPrometheeI"),
   function(object) {
-    Plus       <- object@PhiPlus
-    Minus      <- object@PhiMinus
+    Plus          <- object@PhiPlus
+    Minus         <- object@PhiMinus
+    alternatives  <- object@alternatives
 
     # Create dataframes
     resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus)
@@ -484,7 +509,7 @@ setMethod(
     # Create a dataframe with results from RPrometheeI and arguments
     phiLabels <- c(rep("PhiPlus", nrow(resDF)), rep("PhiMinus", nrow(resDF)))
     phiNums <- c(resDF[,1], resDF[,2])
-    alternatives <- c(as.character(rep(1:nrow(resDF),2)))
+    alternatives <- c(as.character(rep(alternatives,2)))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
@@ -526,8 +551,9 @@ setMethod(
   }
 )
 
-
-##### Promethee II Complete Ranking
+#################################################
+######  Promethee II Complete Ranking  ##########
+#################################################
 
 #Define the Method
 setGeneric(
@@ -542,7 +568,8 @@ setMethod(
   "PrometheeIIPlot",
   signature("RPrometheeII"),
   function(object) {
-    Phi     <-   object@Phi
+    Phi           <-   object@Phi
+    alternatives  <-   object@alternatives
 
         # Create dataframes
     resDF <- data.frame("Phi" = Phi)
@@ -550,7 +577,7 @@ setMethod(
     # Create a dataframe with results from RPrometheeII
     phiLabels <- c(rep("Phi", nrow(resDF)))
     phiNums <- c(resDF[,1])
-    alternatives <- c(as.character((1:nrow(resDF))))
+    alternatives <- c(as.character(alternatives))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
@@ -592,8 +619,9 @@ setMethod(
   }
 )
 
-
-##### Promethee III Complete Ranking
+#################################################
+######  Promethee III Complete Ranking  #########
+#################################################
 
 #Define the Method
 setGeneric(
@@ -608,9 +636,10 @@ setMethod(
   "PrometheeIIIPlot",
   signature("RPrometheeIII"),
   function(object) {
-    Phi       <- object@Phi
-    limInf     <- object@limInf
-    limSup     <- object@limSup
+    Phi          <- object@Phi
+    limInf       <- object@limInf
+    limSup       <- object@limSup
+    alternatives <- object@alternatives
 
     # Create dataframes
     resDF <- data.frame("Phi" = Phi, "limInf" = limInf, "limSup" = limSup)
@@ -637,29 +666,92 @@ setMethod(
     resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
 
     # Full Ranking bar as in Visual-Promethee
+    results <- ggplot(resultsPlot) +
+      geom_point(aes(x = alternatives, y = phiNums), stat = "identity", color = "red") +
+      geom_errorbar(aes(x = alternatives, ymin = errorMin, ymax = errorMax),
+                    width = 0.15, size = 1) +
+      geom_text(aes(x = alternatives, y = phiNums),
+                label = sprintf("%0.3f", round(resultsPlot$phiNums, digits = 3)),
+                hjust = 0, nudge_x = 0.03) +
+      geom_text(aes(x = alternatives, y = errorMin),
+                label = sprintf("%0.3f", round(errorMin, digits=3)),
+                vjust = 1.5) +
+      geom_text(aes(x = alternatives, y = errorMax),
+                label = sprintf("%0.3f", round(errorMax, digits=3)),
+                vjust = -1) +
+      xlab("Alternatives") +
+      ylab("Phi")
+
+    #Return the class
+    return(results)
+  }
+)
+
+
+#################################################
+######  Promethee IV Complete Ranking  ##########
+#################################################
+
+#Define the Method
+setGeneric(
+  "PrometheeIVPlot",
+  function(object) {
+    standardGeneric("PrometheeIVPlot")
+  }
+)
+
+# Complete Ranking Promethee II - Method
+setMethod(
+  "PrometheeIVPlot",
+  signature("RPrometheeIV"),
+  function(object) {
+    Plus         <-   object@PhiPlus
+    Minus        <-   object@PhiMinus
+    Index        <-   object@Index
+    alternatives <-   object@alternatives
+
+    # Create dataframes
+    resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus)
+
+    # Create a dataframe with results from RPrometheeI and arguments
+    phiLabels <- c(rep("PhiPlus", nrow(resDF)), rep("PhiMinus", nrow(resDF)))
+    phiNums <- c(resDF[,1], resDF[,2])
+    alternatives <- c(as.character(rep(alternatives,2)))
+    resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
+    resultsPlot[,2] <- as.factor(resultsPlot[,2])
+
+    # Create a dataframe to use as source for the plot
+    limits <- data.frame(
+      class = c("PhiPlus", "PhiPlus", "PhiMinus", "PhiMinus"),
+      boundaries = c(0.5, 0.5, 0.5, 0.5),
+      pos_neg = c("Pos", "Neg", "Pos", "Neg"))
+
+    # Change order of factors and levels
+    limits$class <- factor(limits$class, levels = c("PhiPlus", "PhiMinus"))
+    limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
+    resultsPlot[,2] <- factor(resultsPlot[,2],
+                              levels = c("PhiPlus", "PhiMinus"))
+
+    # Partial bars as in Visual-Promethee
     results <- ggplot(limits) +
       geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
-               stat = "identity", width = 0.3) +
+               stat = "identity", width = 0.5) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
+      geom_line(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                group = resultsPlot[,1], stat = "identity") +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = sprintf("%0.3f",
-                                round(resultsPlot$phiNums, digits = 3)),
-                hjust = 0, nudge_x = 0.03) +
-      geom_errorbar(data = resultsPlot, aes(x = phiLabels,
-                                            ymin = errorMin,
-                                            ymax = errorMax),
-                    colour = alternatives, width = 0.07, size = 1) +
+                                round(resultsPlot$phiNums, digits = 3),
+                                position = position_dodge(width = 0.9)),
+                hjust = 0, nudge_x = 0.05) +
       scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
-      geom_text(data = resultsPlot, aes(x = phiLabels,
-                                        y = resultsPlot$phiNums),
-                label = resultsPlot$alternatives,
-                hjust = 1, nudge_x = -0.03) +
-      theme(axis.text.x = element_blank(),
-            axis.text.y = element_blank(),
+      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
+                label = alternatives, hjust = 1, nudge_x = -0.05) +
+      theme(axis.text.y = element_blank(),
             axis.ticks = element_blank(),
             axis.title.x = element_blank()) +
-      labs(y = "Alternative Phi")
+      labs(y = "Alternative/Phi")
 
     #Return the class
     return(results)
@@ -681,8 +773,9 @@ setMethod(
   "WalkingWeightsPlot",
   signature("RPrometheeII"),
   function(object) {
-    Phi       <-   object@Phi
-    weights   <-   object@vecWeights
+    Phi           <-   object@Phi
+    weights       <-   object@vecWeights
+    alternatives  <-   object@alternatives
 
     # Create dataframes
     resDF <- data.frame("Phi" = Phi)
@@ -691,7 +784,7 @@ setMethod(
     # Create a dataframe with results from RPrometheeII
     phiLabels <- c(rep("Phi", nrow(resDF)))
     phiNums <- c(resDF[,1])
-    alternatives <- c(as.character((1:nrow(resDF))))
+    alternatives <- c(as.character(alternatives))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
     resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
@@ -792,8 +885,6 @@ setMethod(
 )
 
 
-
-
 ##### General Plot Function
 if(!isGeneric("plot")){
   setGeneric("plot", function(x, y, ...) standardGeneric("plot"))}
@@ -806,7 +897,6 @@ setMethod(f="plot",
   signature("RPrometheeI"),
   definition = function(x,y,...) {
     PrometheeIPlot(x)
-
   }
 )
 
@@ -861,7 +951,9 @@ setMethod(f = "show", signature = "RPrometheeII",
 setMethod(f = "show", signature = "RPrometheeIII",
           definition <-  function(object) {
             Phi <- object@Phi
-            cat("Promethee III object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)))
+            limInf <- object@limInf
+            limSup <- object@limSup
+            cat("Promethee III object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)), "\nUpper Limit: ", sprintf("%0.3f", round(limSup, digits = 3)), "\nBottom Limit: ", sprintf("%0.3f", round(limInf, digits = 3)))
             invisible(NULL)
           })
 
