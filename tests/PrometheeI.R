@@ -63,3 +63,8 @@ show(PromObj)
 plot(res)
 
 NetworkPlot(res)
+
+newAlt <- c("Alt A", "Dos", "Alternative 3")
+
+res <- UpdateRPrometheeAlternatives(res, newAlt)
+str(res)

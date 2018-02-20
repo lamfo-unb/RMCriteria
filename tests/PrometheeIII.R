@@ -14,3 +14,6 @@ str(res)
 PrometheeIIIPlot(res)
 plot(res)
 
+alt <- c("A", "B", "C")
+
+res <- UpdateRPrometheeAlternatives(res, alt)
