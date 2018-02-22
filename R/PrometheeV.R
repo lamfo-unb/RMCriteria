@@ -4,6 +4,7 @@ PrometheeV<-function(datMat, vecWeights, prefFunction, parms, bounds, normalize)
   f.dir <- rep("<=", ncol(datMat))
   f.con <- t(datMat)
   f.rhs <- bounds
-  return(lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE))
+  res<-lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
+  return(res$solution)
 }
 

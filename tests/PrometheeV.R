@@ -7,13 +7,15 @@ parms<-matrix(c(NA,
 
 constraintDir <- rep("<=", ncol(dados))
 
+#datMat<-dados
+#vecWeights<-c(0.3,0.7)
+#prefFunction<-c(0,0)
+#parms<-parms
+#bounds<-c(7,-1)
+#normalize<-FALSE
+
+
 teste <- RMCriteria::PrometheeV(dados,c(0.3,0.7),c(0,0),parms,c(7,-1), FALSE)
-
-PromObj <- new("RPrometheeArguments", datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms, normalize=F, constraintDir=constraintDir, bounds = c(7,-1))
-
-res <- RPrometheeV(PromObj)
-str(res)
-
-
+teste
 
 
