@@ -411,7 +411,7 @@ setClass(
 #Define the Method
 setGeneric(
   "RPrometheeV",
-  function(object) {
+  function(object, method = "PrometheeII") {
     standardGeneric("RPrometheeV")
   }
 )
@@ -420,7 +420,7 @@ setGeneric(
 setMethod(
   "RPrometheeV",
   signature("RPrometheeArguments"),
-  function(object) {
+  function(object, method = "PrometheeII") {
     datMat        <- object@datMat
     vecWeights    <- object@vecWeights
     vecMaximiz    <- object@vecMaximiz
@@ -433,17 +433,33 @@ setMethod(
 
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
-    #Execute Promethee V
-    PromV <- RMCriteria::PrometheeV(datMat, vecWeights, prefFunction, parms, bounds, normalize)
-    Phi <- PromV$objective
-    Ranking <- order(Phi)
 
 
+    #Run chosen method
+    if(method == "PrometheeII"){
+      f.temp <- RPrometheeII(object)
+      f.obj  <- f.temp@Phi
+      f.dir  <- rep("<=", ncol(datMat))
+      f.con  <- t(datMat)
+      f.rhs  <- bounds
+      PromV  <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
+    }
 
-#    corr <- cor()
+    else if(method == "PrometheeIV"){
+      f.temp <- RPrometheeIV(object)
+      f.obj <- f.temp@PhiPlus - f.temp@PhiMinus
+      f.dir <- rep("<=", ncol(datMat))
+      f.con <- t(datMat)
+      f.rhs <- bounds
+      PromV <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
+    }
+    else res<-"Please select a valid Promethee method. See help() for more information."
+
+    Phi   <- PromV$objective
+    Solution <- PromV$solution
 
     #Set the class
-    resultsClass <- new("RPrometheeV", ObjFunction = obj)
+    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution)
     #Return the class
     return(resultsClass)
   }
@@ -452,10 +468,8 @@ setMethod(
 setClass(
   Class = "RPrometheeV",
   slots = c(Phi            = "numeric",
-            ObjFunction    = "numeric",
-            Correlation    = "numeric")
+            Solution       = "numeric")
   )
-
 
 
 # ################################################################################
