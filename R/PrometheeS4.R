@@ -373,6 +373,7 @@ setMethod(
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
+    if(is.null(band)){band <- as.matrix(apply(datMat,2,bw.nrd0))}
     results <- RMCriteria::PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
 
     #Set the class
@@ -439,8 +440,11 @@ setMethod(
     if(method == "PrometheeII"){
       f.temp <- RPrometheeII(object)
       f.obj  <- f.temp@Phi
-      f.dir  <- rep("<=", ncol(datMat))
       f.con  <- t(datMat)
+      if(missing(constraintDir) | is.null(constraintDir)){
+        f.dir <- rep("<=", ncol(datMat))
+      }
+      else f.dir <- constraintDir
       f.rhs  <- bounds
       PromV  <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
     }
@@ -448,7 +452,10 @@ setMethod(
     else if(method == "PrometheeIV"){
       f.temp <- RPrometheeIV(object)
       f.obj <- f.temp@PhiPlus - f.temp@PhiMinus
-      f.dir <- rep("<=", ncol(datMat))
+      if(missing(constraintDir)){
+        f.dir <- rep("<=", ncol(datMat))
+      }
+      else f.dir <- constraintDir
       f.con <- t(datMat)
       f.rhs <- bounds
       PromV <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)

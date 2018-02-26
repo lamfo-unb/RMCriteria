@@ -13,6 +13,14 @@ prefFunction <- c(0,0)
 normalize <- FALSE
 alternatives <- c("alt 1", "alt 2", "alt 3")
 
+#########################################################
+
+#Step 1: Construct the RPrometheeArguments
+PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
+
+res <- RPrometheeI(PromObj)
+str(res)
+
 ########################################################
 # New values for tests cases
 
@@ -21,19 +29,13 @@ dadosNew<-matrix(c(2,8,
                    1.8,5.5),byrow = T, ncol=2,nrow=3)
 
 parmsNew<-matrix(c(1,
-                NA),byrow=TRUE,ncol=1,nrow=2)
+                   NA),byrow=TRUE,ncol=1,nrow=2)
 
 vecWeightsNew <- c(0.5,0.5)
 vecMaximizNew <- c(T,F)
 prefFunctionNew <- c(1,1)
 normalizeNew <- TRUE
 alternativesNew <- c("Car 1", "Car 2", "Car 3")
-#########################################################
-
-#Step 1: Construct the RPrometheeArguments
-PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
-
-res <- RPrometheeI(PromObj)
 
 ##############################################################################
 # Test cases for update functions
@@ -53,18 +55,3 @@ PromObj <- UpdateRPrometheeArguments(object = PromObj, element = "normalize", ne
 PromObj <- UpdateRPrometheeArguments(object = PromObj, element = "alternatives", newValue = alternativesNew)
 
 ##############################################################################
-
-PrometheeIPlot(res)
-
-show(res)
-
-show(PromObj)
-
-plot(res)
-
-NetworkPlot(res)
-
-newAlt <- c("Alt A", "Dos", "Alternative 3")
-
-res <- UpdateRPrometheeAlternatives(res, newAlt)
-str(res)

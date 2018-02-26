@@ -1,30 +1,22 @@
-\name{PrometheeI}
-\alias{RPrometheeI}
-\alias{PrometheeI}
-\title{PROMETHEE I}
+\name{PrometheeII}
+\alias{PrometheeII}
+\alias{RPrometheeII}
+\title{PROMETHEE II}
 \description{
-  Proposed by Brans and Vincke (1985), PROMETHEE I method aims to solve sorting problems. According to PROMETHEE I the better alternative is the one with the higher leaving flow and the lower entering flow. Through this result it is possible to obtain a partial preorder  where some alternatives remain incomparable.
+  Proposed by Brans and Vincke (1985), PROMETHEE II method aims to solve sorting problems. The PROMETHEE II method performs a total ordering of the alternatives set by calculating the net outranking flow (HENDRIKS et al., 1992), with the objective of solving the problem that no unambiguous solution can be given due to incomparability.
 }
 \usage{
-
-\S4method{RPrometheeI}{RPrometheeArguments}(RPrometheeArguments)
+\S4method{RPrometheeII}{RPrometheeArguments}(RPrometheeArguments)
 }
 
 \arguments{
   \item{RPrometheeArguments}{an object with all RPromethee arguments. See \code{\link{RPrometheeConstructor}} for more information.}
-  }
-
-\value{
-  \item{PhiPlus}{The resulting PhiPlus from the alternatives for all criterias.}
-  \item{PhiMinus}{The resulting PhiMinus from the alternatives for all criterias}
-  \item{alternatives}{The alternatives names.}
 }
 
-
 \details{
-  The method created by Brans et al. (1985) is based on a set of alternatives \eqn{A = {a1,a2,...,an}} that will be ordered and a set of criteria \eqn{F = { f1, f2, . . ., fm }}. Two alternatives, \eqn{ai} and \eqn{a_j}, will be pairwise compared. The intensity of the preference between \eqn{ai} over \eqn{aj} \eqn{(Pk(dk)}, \eqn{dk = fk (ai) − fk (aj))} is determined. \eqn{Pk} is considered the preference function for the \eqn{kth} criterion. The evaluation of the alternative \eqn{ai}, which corresponds to criterion \eqn{fk}, is \eqn{fk(ai)} (Hsu, Lin, 2014).\cr
-  Six types of preference functions were proposed by Brans et al. (1985). The preference scales values range from 0 (no preference) to 1 (strong preference).\cr
-  While anylising the entering and leaving flows, it can be observed that an alternative is better than the other when it has the higher leaving flow and the lower entering flow. PROMETHEE I method create a partial pre-order that can be acquired by comparing the leaving and entering flow (Brans and Mareschal 2005).
+
+The application of method created by Brans et al. (1985) starts with the same procedure used in PROMETHEE I. Then, the net outranking flow is introduced between alternatives, by calculating the difference between negative and positive flows, previously obtained in PROMETHEE I. The greater the flow, better the alternative (GOMES et al., 2004).
+Thus, a final ordering of the alternatives is performed, from the most preferable to the least preferred, according to a decreasing order of the values, resulting in a total pre-order of the alternatives (GOMES et al., 2004).
 
 }
 \note{Data is scaled internally by default, usually yielding better results.}
