@@ -13,8 +13,7 @@ constraintDir <- rep("<=", ncol(dados))
 # datMat<-dados
 vecWeights<-c(0.3,0.7)
 prefFunction<-c(0,0)
-parms<-parms
-bounds<-c(7,-1)
+bounds<-c(4,-1)
 normalize<-FALSE
 
 

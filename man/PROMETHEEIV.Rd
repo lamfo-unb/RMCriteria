@@ -1,26 +1,27 @@
-\name{PrometheeII}
-\alias{PrometheeII}
-\alias{RPrometheeII}
-\title{PROMETHEE II}
+\name{PrometheeIV}
+\alias{PrometheeIV}
+\alias{RPrometheeIV}
+\title{PROMETHEE IV}
 \description{
-  Proposed by Brans and Vincke (1985), PROMETHEE II method aims to solve sorting problems. The PROMETHEE II method performs a total ordering of the alternatives set by calculating the net outranking flow (HENDRIKS et al., 1992), with the objective of solving the problem that no unambiguous solution can be given due to incomparability.
+  The PROMETHEE IV method was developed as an extension of PROMETHEE I and II. It deals with a set of continuous alternatives, using the same outranking relation from other methods but on a subset from \eqn{R^n}. In order to develop the method for a continuous set of alternatives, integration is performed.
 }
+
 \usage{
-\S4method{RPrometheeII}{RPrometheeArguments}(RPrometheeArguments)
+\S4method{RPrometheeIV}{RPrometheeArguments}(RPrometheeArguments)
 }
 
 \arguments{
-  \item{RPrometheeArguments}{an object with all RPromethee arguments. See \code{\link{RPrometheeConstructor}} for more information.}
+  \item{RPrometheeArguments}{an object with all RPromethee arguments. It's important that \code{parms} argument isn't compound of NA values. See \code{\link{RPrometheeConstructor}} for more information.}
 }
 
-\details{
-
-The application of method created by Brans et al. (1985) starts with the same procedure used in PROMETHEE I. Then, the net outranking flow is introduced between alternatives, by calculating the difference between negative and positive flows, previously obtained in PROMETHEE I. The greater the flow, better the alternative (GOMES et al., 2004).
-Thus, a final ordering of the alternatives is performed, from the most preferable to the least preferred, according to a decreasing order of the values, resulting in a total pre-order of the alternatives (GOMES et al., 2004).
-
-}
 \references{
   \itemize{
+    \item
+      M. Behzadian et al. \cr
+       \emph{PROMETHEE: A comprehensive literature review on methodologies and applications}\cr
+       European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+
     \item
        J. P. Brans, Ph. Vincke\cr
       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method for Multiple Criteria Decision-Making)}\cr
@@ -48,7 +49,7 @@ Thus, a final ordering of the alternatives is performed, from the most preferabl
   Mariana Rosa Montenegro\cr
   \email{mrosamontenegro@gmail.com}
 }
-\seealso{\code{\link{RPrometheeConstructor}}, \code{\link{RPrometheeII}}, \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIV}}, \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}}
+\seealso{\code{\link{RPrometheeConstructor}}, \code{\link{RPrometheeI}}, \code{\link{RPrometheeII}}, \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}}
 
 \keyword{decision-method}
 \keyword{mcda}
@@ -57,12 +58,12 @@ Thus, a final ordering of the alternatives is performed, from the most preferabl
 
 \examples{
 ## Create objects for each argument
-data <-matrix(c(5.2,-3.5,
+data <- matrix(c(5.2,-3.5,
                 4.3,-1.2,
                 6.7,-2.0), byrow = T, ncol=2, nrow=3)
 
-parms <- matrix(c(NA,
-                NA),byrow=TRUE,ncol=1,nrow=2)
+parms <- matrix(c(1.0,
+                1.3),byrow=TRUE,ncol=1,nrow=2)
 
 vecWeights <- c(0.3,0.7)
 vecMaximiz <- c(F,T)
@@ -73,20 +74,18 @@ alternatives <- c("Alt 1", "Alt 2", "Alt 3")
 ## Create RPrometheeArguments object
 PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
 
-# Run RPrometheeII
-result <- RPrometheeII(PromObj)
+# Run RPrometheeIV
+result <- RPrometheeIV(PromObj)
 
-# There are two alternatives two plot a RPrometheeII object:
+# There are two alternatives two plot a RPrometheeIV object:
 plot(result)
-PrometheeIIPlot(result)
-
+PrometheeIVPlot(result)
 
 # Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C")
 result <- UpdateRPrometheeAlternatives(results, newAlternatives)
 
 # Updating any argument using UpdateRPrometheeArguments
-newWeights <- c(0.1, 0.9)
-result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
-
+newPrefFunction <- c(1, 1)
+result <- UpdateRPrometheeArguments(result, "prefFunction", newPrefFunction)
 }

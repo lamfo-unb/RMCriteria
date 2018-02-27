@@ -27,7 +27,6 @@
   While anylising the entering and leaving flows, it can be observed that an alternative is better than the other when it has the higher leaving flow and the lower entering flow. PROMETHEE I method create a partial pre-order that can be acquired by comparing the leaving and entering flow (Brans and Mareschal 2005).
 
 }
-\note{Data is scaled internally by default, usually yielding better results.}
 \references{
   \itemize{
     \item
@@ -65,6 +64,36 @@
 \keyword{promethee}
 
 \examples{
-##
+## Create objects for each argument
+data <-matrix(c(5.2,-3.5,
+                4.3,-1.2,
+                6.7,-2.0), byrow = T, ncol=2, nrow=3)
+
+parms <- matrix(c(NA,
+                NA),byrow=TRUE,ncol=1,nrow=2)
+
+vecWeights <- c(0.3,0.7)
+vecMaximiz <- c(F,T)
+prefFunction <- c(0,0)
+normalize <- FALSE
+alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+
+## Create RPrometheeArguments object
+PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
+
+# Run RPrometheeI
+(result <- RPrometheeI(PromObj))
+
+# There are two alternatives two plot a RPrometheeI object:
+plot(result)
+PrometheeIPlot(result)
+
+# Updating alternatives name using UpdateRPrometheeAlternatives
+newAlternatives <- c("A", "B", "C")
+result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+
+# Updating any argument using UpdateRPrometheeArguments
+newWeights <- c(0.5, 0.5)
+result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
 
 }
