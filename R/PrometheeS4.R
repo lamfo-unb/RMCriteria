@@ -1100,7 +1100,7 @@ setMethod(
 
 
 setClassUnion("RPromethee", c("RPrometheeI", "RPrometheeII", "RPrometheeIII",
-                              "RPrometheeIV", "RPrometheeV"))
+                              "RPrometheeIV", "RPrometheeIVKernel", "RPrometheeV"))
 
 ## RPrometheeArguments update functions
 setGeneric(
