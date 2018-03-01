@@ -486,38 +486,61 @@ setClass(
 
 #Define the Method
 setGeneric(
-  "SensitiveAnalysis",
+  "SensitivityAnalysis",
   function(object) {
-    standardGeneric("SensitiveAnalysis")
+    standardGeneric("SensitivityAnalysis")
   }
 )
 
 #Sensitive Analysis - Method
 setMethod(
-  "SensitiveAnalysis",
+  "SensitivityAnalysis",
   signature("RPrometheeArguments"),
   function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
-    alternatives <- object@alternatives
+    datMat        <- object@datMat
+    vecWeights    <- object@vecWeights
+    vecMaximiz    <- object@vecMaximiz
+    prefFunction  <- object@prefFunction
+    parms         <- object@parms
+    normalize     <- object@normalize
+    alternatives  <- object@alternatives
+    nCriteria     <- ncol(datMat)
+    nAlternatives <- nrow(datMat)
 
     #Validate the object
     validRPromethee(object)
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee I
-    results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
-    #Execute Sensitive Analysis
-    sensitiveResults <- RMCriteria::SensitiveAnalysis(results)
+    Phi <- RPrometheeII(object)@Phi
+
+    #Step 2 - Which is the worst alternative
+    iWorst<-which(unlist(Phi)==min(unlist(Phi)))
+    p.Diff<-lapply(Phi,function(x)x[iWorst]-x)
+
+    #Step 3 - Formulating the Linear Programming Problem
+    A1<-matrix(0,ncol=nCriteria,nrow=nAlternatives)
+    for(i in 1:nCriteria)
+    {
+      A1[,i]<-unlist(p.Diff[i])
+    }
+    A<-cbind(A1,-A1)
+    b<-apply(A1,1,function(x)-as.numeric(x)%*%as.numeric(vecWeights))
+    c<-rep(1,2*nCriteria)
+
+    lp<-linprog::solveLP(cvec=c, bvec=b,lpSolve = TRUE, Amat=A,maxiter = 1000, maximum = FALSE, const.dir = rep( ">=", length(b)))
+    sensitiveResults <- lp$solution
+
     #Set the class
-    resultsClass <- new("SensitiveAnalysis",Phi=sensitiveResults)
+    resultsClass <- new("SensitivityAnalysis",Phi=sensitiveResults)
     #Return the class
     return(resultsClass)
   }
+)
+
+setClass(
+  Class = "SensitivityAnalysis",
+  slots = c(Phi            = "numeric")
 )
 
 
