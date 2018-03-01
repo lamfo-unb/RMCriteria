@@ -19,6 +19,10 @@ alternatives <- c("alt 1", "alt 2", "alt 3")
 PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
 
 res <- RPrometheeI(PromObj)
+summary(res)
+print(res)
+plot(res)
+show(res)
 str(res)
 
 ########################################################
