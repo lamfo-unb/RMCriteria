@@ -2,6 +2,9 @@ dados<-matrix(c(5.2,-3.5,
                 4.3,-1.2,
                 6.7,-2.0),byrow = T, ncol=2,nrow=3)
 
+colnames(dados)<-c("Criteria 1","Criteria 2")
+rownames(dados)<-c("Alternative 1", "Alternative 2", "Alternative 3")
+
 parms<-matrix(c(NA,
                 NA),byrow=TRUE,ncol=1,nrow=2)
 
