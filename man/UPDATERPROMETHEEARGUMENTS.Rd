@@ -16,7 +16,7 @@
 
 \details{The updated arguments can be \code{datMat}, \code{vecWeights}, \code{vecMaximiz}, \code{prefFunction}, \code{parms}, \code{normalize}, \code{alphaVector}, \code{band}, \code{constraintDir} or \code{bounds}.
   }
-}
+
 
     \value{A RPrometheeArguments object. Used for all RPromethee methods.}
 
