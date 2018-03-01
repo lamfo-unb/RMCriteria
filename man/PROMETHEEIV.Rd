@@ -43,11 +43,9 @@
 }
 \author{
   Pedro Henrique Melo Albuquerque\cr
-  \email{pedro.melo.albuquerque@gmail.com}\cr
+  \email{pedroa@unb.br}\cr
   Gustavo Monteiro Pereira\cr
-  \email{monteirogustavop@gmail.com}\cr
-  Mariana Rosa Montenegro\cr
-  \email{mrosamontenegro@gmail.com}
+  \email{monteirogustavop@gmail.com}
 }
 \seealso{\code{\link{RPrometheeConstructor}}, \code{\link{RPrometheeI}}, \code{\link{RPrometheeII}}, \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}}
 

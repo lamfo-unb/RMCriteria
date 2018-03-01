@@ -3,10 +3,11 @@ Type: Package
 Title: Multicriteria Package
 Version: 0.1.0
 Author: Pedro Albuquerque and Gustavo Monteiro
+BugReports: https://github.com/lamfo-unb/RMCriteria
 Maintainer: Pedro Albuquerque <pedroa@unb.br>
-Description: Multicriteria Analysis <http://lamfo.unb.br/>
+Description: This package implement most of the Multicriteria Analysis models and methods <http://lamfo.unb.br/>
 Depends: R (>= 3.1.0)
-License: What license is it under?
+License: GPL-2
 LazyData: TRUE
 LinkingTo: Rcpp, RcppEigen, RcppNumerical, linprog, lpSolve, ggplot2, gridExtra
 Imports:

@@ -42,11 +42,9 @@ Thus, a final ordering of the alternatives is performed, from the most preferabl
 }
 \author{
   Pedro Henrique Melo Albuquerque\cr
-  \email{pedro.melo.albuquerque@gmail.com}\cr
+  \email{pedroa@unb.br}\cr
   Gustavo Monteiro Pereira\cr
-  \email{monteirogustavop@gmail.com}\cr
-  Mariana Rosa Montenegro\cr
-  \email{mrosamontenegro@gmail.com}
+  \email{monteirogustavop@gmail.com}
 }
 \seealso{\code{\link{RPrometheeConstructor}}, \code{\link{RPrometheeII}}, \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIV}}, \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}}
 
