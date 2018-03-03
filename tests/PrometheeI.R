@@ -1,8 +1,8 @@
-library(ggplot2)
-library(gridExtra)
 dados<-matrix(c(5.2,-3.5,
                 4.3,-1.2,
                 6.7,-2.0),byrow = T, ncol=2,nrow=3)
+
+rownames(dados) <- c("Alt 1", "Alt 2", "Alt 3")
 
 parms<-matrix(c(NA,
                 NA),byrow=TRUE,ncol=1,nrow=2)
@@ -11,12 +11,11 @@ vecWeights <- c(0.3,0.7)
 vecMaximiz <- c(F,T)
 prefFunction <- c(0,0)
 normalize <- FALSE
-alternatives <- c("alt 1", "alt 2", "alt 3")
 
 #########################################################
 
 #Step 1: Construct the RPrometheeArguments
-PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
+PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize)
 
 res <- RPrometheeI(PromObj)
 summary(res)

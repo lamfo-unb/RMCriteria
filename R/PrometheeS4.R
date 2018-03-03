@@ -72,9 +72,9 @@ validRPromethee <- function(object) {
 #Assign the function as the validity method for the class
 setValidity("RPrometheeArguments", validRPromethee)
 
-RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector = NULL, band = NULL, constraintDir = NULL, bounds = NULL, alternatives = NULL){
-   if(missing(alternatives)){alternatives <- as.character(1:nrow(datMat))}
-
+RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector = NULL, band = NULL, constraintDir = NULL, bounds = NULL){
+   if(is.null(rownames(datMat))){alternatives <- as.character(1:nrow(datMat))}
+  else alternatives <- as.character(rownames(datMat))
    if(missing(alphaVector) && missing(band) && missing(constraintDir) && missing(bounds)){
      new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
    }
@@ -714,7 +714,6 @@ setMethod(
     phiNums <- c(resDF[,1])
     errorMin <- c(rep(resDF[,2]))
     errorMax <- c(rep(resDF[,3]))
-    alternatives <- c(as.character(1:nrow(resDF)))
 
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorMin, errorMax)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
@@ -782,7 +781,7 @@ setMethod(
     # Create a dataframe with results from RPrometheeI and arguments
     phiLabels <- c(rep("PhiPlus", nrow(resDF)), rep("PhiMinus", nrow(resDF)))
     phiNums <- c(resDF[,1], resDF[,2])
-    alternatives <- c(as.character(rep(alternatives,2)))
+    alternatives <- rep(alternatives,2)
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
@@ -850,7 +849,6 @@ setMethod(
     # Create a dataframe with results from RPrometheeII
     phiLabels <- c(rep("Phi", nrow(resDF)))
     phiNums <- c(resDF[,1])
-    alternatives <- c(as.character(alternatives))
     resultsPlot <- data.frame(alternatives, phiLabels, phiNums)
     resultsPlot[,2] <- as.factor(resultsPlot[,2])
     resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
@@ -1082,37 +1080,37 @@ setMethod(
     alternatives  <- object@alternatives
 
     if(as.character(element) == "datMat"){
-      results <- RPrometheeConstructor(datMat = newValue, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = newValue, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "vecWeights"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = newValue, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = newValue, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "vecMaximiz"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = newValue, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = newValue, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "prefFunction"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = newValue, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = newValue, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "parms"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = newValue, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = newValue, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "normalize"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = newValue, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = newValue, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "alphaVector"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = newValue, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = newValue, band = band, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "band"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = newValue, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = newValue, constraintDir = constraintDir, bounds = bounds)
     }
     else if(as.character(element) == "constraintDir"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = newValue, bounds = bounds, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = newValue, bounds = bounds)
     }
     else if(as.character(element) == "bounds"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = newValue, alternatives = alternatives)
+      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = newValue)
     }
     else if(as.character(element) == "alternatives"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds, alternatives = newValue)
+      object@alternatives <- newValue
     }
     else{results <- "Insert a valid object element to be replaced."}
 

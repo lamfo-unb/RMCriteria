@@ -7,7 +7,7 @@
 }
 \usage{PrometheeConstructor(datMat, vecWeights, vecMaximiz, prefFunction,
 parms, normalize, alphaVector = NULL, band = NULL, constraintDir = NULL,
-bounds = NULL, alternatives = NULL)
+bounds = NULL)
 }
 
 \arguments{
@@ -42,7 +42,6 @@ bounds = NULL, alternatives = NULL)
   \item{band}{a numerical matrix with m rows corresponding to each criteria and one column corresponding to the bandwitch estimated for that criteria. This bandwitch is used for Kernel Density Estimation in Promethee IV Kernel. By default, it is calculated using \code{bw.nrd0}.}
   \item{constraintDir}{a character vector with the direction of constraints to be optimized in Promethee V. The values must be combinations of \code{>}, \code{<} and \code{=} operators. If missing, it's calculated using \code{"<="} for all criterias}
   \item{bounds}{a numeric vector used in Promethee V for the right-hand sides of the constraints.}
-  \item{alternatives}{a character vector with the names of the alternatives. If not provided, the alternatives are going to be named 1 to n, where n is the number of alternatives.}
   }
 
 \details{This function is used to create a \code{RPrometheeArguments} object. This object is used by all RPromethee methods, being necessary to include only the arguments that are used by the desired method. The arguments \code{datMat}, \code{vecWeights}, \code{vecMaximiz}, \code{prefFunction}, \code{parms}, \code{normalize} must be specified for all methods. The following methods use additional arguments:
@@ -87,6 +86,6 @@ normalize <- FALSE
 alternatives <- c("Alt 1", "Alt 2", "Alt 3")
 
 ## Create RPrometheeArguments object to be used by RPrometheeI, II and IV.
-PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
+PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize)
 
 }
