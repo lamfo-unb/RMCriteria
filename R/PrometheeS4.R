@@ -19,7 +19,8 @@ setClass(
             band          = "matrixNULL",
             constraintDir = "charNULL",
             bounds        = "NULLmeric",
-            alternatives  = "charNULL"),
+            alternatives  = "charNULL",
+            criterias     = "charNULL"),
 
   prototype = list(
     datMat        = matrix(0) ,
@@ -32,7 +33,8 @@ setClass(
     band          = NULL,
     constraintDir = NULL,
     bounds        = NULL,
-    alternatives  = NULL)
+    alternatives  = NULL,
+    criterias     = NULL)
 )
 
 validRPromethee <- function(object) {
@@ -65,6 +67,12 @@ validRPromethee <- function(object) {
   if(length(object@bounds) != ncol(object@datMat)){
     stop("All criterias must have bounds.")
   }
+  if(length(object@alternatives) != nrow(object@datMat)){
+    stop("The number of alternatives must be at the same size of rows in the data table.")
+  }
+  if(length(object@criterias) != ncol(object@datMat)){
+    stop("The number of criterias must be at the same size of columns in the data table.")
+  }
 
   return(TRUE)
 }
@@ -75,32 +83,34 @@ setValidity("RPrometheeArguments", validRPromethee)
 RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector = NULL, band = NULL, constraintDir = NULL, bounds = NULL){
    if(is.null(rownames(datMat))){alternatives <- as.character(1:nrow(datMat))}
   else alternatives <- as.character(rownames(datMat))
+  if(is.null(colnames(datMat))){criterias <- as.character(1:ncol(datMat))}
+  else criterias <- as.character(colnames(datMat))
    if(missing(alphaVector) && missing(band) && missing(constraintDir) && missing(bounds)){
-     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
+     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives, criterias = criterias)
    }
    else if(is.null(alphaVector) && is.null(band) && is.null(constraintDir) && missing(bounds)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives, criterias = criterias)
   }
    ## III
    else if(missing(band) && missing(constraintDir) && missing(bounds)){
-     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, alternatives = alternatives)
+     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, alternatives = alternatives, criterias = criterias)
    }
   else if(is.null(band) && is.null(constraintDir) && is.null(bounds)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, alternatives = alternatives)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, alternatives = alternatives, criterias = criterias)
   }
    ## IV Kernel
    else if(missing(alphaVector) && missing(constraintDir) && missing(bounds)){
-     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band, alternatives = alternatives)
+     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band, alternatives = alternatives, criterias = criterias)
    }
   else if(is.null(alphaVector) && is.null(constraintDir) && is.null(bounds)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band, alternatives = alternatives)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = band, alternatives = alternatives, criterias = criterias)
   }
    ## V
    else if(missing(alphaVector) && missing(band)){
-     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+     new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives, criterias = criterias)
    }
   else if(is.null(alphaVector) && is.null(band)){
-    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives)
+    new("RPrometheeArguments", datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, constraintDir = constraintDir, bounds = bounds, alternatives = alternatives, criterias = criterias)
   }
 }
 
@@ -130,6 +140,7 @@ setMethod(
       parms        <- object@parms
       normalize    <- object@normalize
       alternatives <- object@alternatives
+      criterias    <- object@criterias
 
     #Validate the object
     validRPromethee(object)
@@ -139,7 +150,7 @@ setMethod(
     results <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
     resultsClass <- new("RPrometheeI", PhiPlus=results[[1]], PhiMinus=results[[2]],
-                        alternatives = alternatives)
+                        alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -150,11 +161,13 @@ setClass(
   Class = "RPrometheeI",
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
-            alternatives   = "character"),
+            alternatives   = "character",
+            criterias      = "character"),
   prototype = list(
     PhiPlus      = numeric(0),
     PhiMinus     = numeric(0),
-    alternatives = character(0)),
+    alternatives = character(0),
+    criterias    = character(0)),
   validity=function(object)
   {
     if(length(object@PhiPlus)!=length(object@PhiMinus)) {
@@ -176,13 +189,15 @@ setClass(
   # Define the slots - in this case it is numeric
   slots = c(Phi            = "numeric",
             vecWeights     = "numeric",
-            alternatives   = "character"),
+            alternatives   = "character",
+            criterias      = "character"),
 
   # Set the default values for the slots. (optional)
   prototype=list(
     Phi            = numeric(0),
     vecWeights     = numeric(0),
-    alternatives   = character(0))
+    alternatives   = character(0),
+    criterias      = character(0))
 )
 
 #Define the Method
@@ -205,6 +220,7 @@ setMethod(
     parms        <- object@parms
     normalize    <- object@normalize
     alternatives <- object@alternatives
+    criterias    <- object@criterias
 
     #Validate the object
     validRPromethee(object)
@@ -214,7 +230,7 @@ setMethod(
     results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
     resultsClass <- new("RPrometheeII", Phi = results, vecWeights = vecWeights,
-                        alternatives = alternatives)
+                        alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -249,6 +265,7 @@ setMethod(
     alphaVector  <- object@alphaVector
     normalize    <- object@normalize
     alternatives <- object@alternatives
+    criterias    <- object@criterias
 
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
@@ -258,7 +275,7 @@ setMethod(
 
     #Set the class
     resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]],
-                        Phi = phiResults, alternatives = alternatives)
+                        Phi = phiResults, alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -270,12 +287,14 @@ setClass(
   slots = c(limInf         = "numeric" ,
             limSup         = "numeric",
             Phi            = "numeric",
-            alternatives   = "character"),
+            alternatives   = "character",
+            criterias      = "character"),
   prototype = list(
     limInf       = numeric(0),
     limSup       = numeric(0),
     Phi          = numeric(0),
-    alternatives = character(0)),
+    alternatives = character(0),
+    criterias    = character(0)),
   validity=function(object)
   {
     if(length(object@limSup)!=length(object@limInf)) {
@@ -299,14 +318,16 @@ setClass(
   slots = c(PhiPlus         = "numeric",
             PhiMinus        = "numeric",
             Index           = "numeric",
-            alternatives    = "character"),
+            alternatives    = "character",
+            criterias       = "character"),
 
 
   # Set the default values for the slots. (optional)
   prototype=list(PhiPlus        = numeric(0),
                  PhiMinus       = numeric(0),
                  Index          = numeric(0),
-                 alternatives   = character(0))
+                 alternatives   = character(0),
+                 criterias      = character(0))
 )
 #Define the Method
 setGeneric(
@@ -328,6 +349,7 @@ setMethod(
     parms        <- object@parms
     normalize    <- object@normalize
     alternatives <- object@alternatives
+    criterias    <- object@criterias
 
     #Validate the object
     validRPromethee(object)
@@ -336,7 +358,7 @@ setMethod(
     #Execute Promethee I
     results <- RMCriteria::PrometheeIV(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives)
+    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -369,6 +391,7 @@ setMethod(
     band         <- object@band
     normalize    <- object@normalize
     alternatives <- object@alternatives
+    criterias    <- object@criterias
 
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
@@ -377,7 +400,7 @@ setMethod(
     results <- RMCriteria::PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
 
     #Set the class
-    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives)
+    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -389,12 +412,14 @@ setClass(
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
             Index          = "numeric",
-            alternatives   = "character"),
+            alternatives   = "character",
+            criterias      = "character"),
   prototype = list(
     PhiPlus        = numeric(0),
     PhiMinus       = numeric(0),
     Index          = numeric(0),
-    alternatives   = character(0)),
+    alternatives   = character(0),
+    criterias      = character(0)),
   validity=function(object)
   {
     if(length(object@PhiPlus)!=length(object@PhiMinus)) {
@@ -431,6 +456,7 @@ setMethod(
     constraintDir <- object@constraintDir
     bounds        <- object@bounds
     alternatives  <- object@alternatives
+    criterias     <- object@criterias
 
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
@@ -466,7 +492,7 @@ setMethod(
     Solution <- PromV$solution
 
     #Set the class
-    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution)
+    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution, alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -475,7 +501,9 @@ setMethod(
 setClass(
   Class = "RPrometheeV",
   slots = c(Phi            = "numeric",
-            Solution       = "numeric")
+            Solution       = "numeric",
+            alternatives   = "character",
+            criterias      = "character")
   )
 
 
@@ -504,6 +532,7 @@ setMethod(
     parms         <- object@parms
     normalize     <- object@normalize
     alternatives  <- object@alternatives
+    criterias     <- object@criterias
     nCriteria     <- ncol(datMat)
     nAlternatives <- nrow(datMat)
 
@@ -532,7 +561,7 @@ setMethod(
     sensitiveResults <- lp$solution
 
     #Set the class
-    resultsClass <- new("SensitivityAnalysis",Phi=sensitiveResults)
+    resultsClass <- new("SensitivityAnalysis",Phi=sensitiveResults, alternatives = alternatives, criterias = criterias)
     #Return the class
     return(resultsClass)
   }
@@ -540,7 +569,9 @@ setMethod(
 
 setClass(
   Class = "SensitivityAnalysis",
-  slots = c(Phi            = "numeric")
+  slots = c(Phi            = "numeric",
+            alternatives   = "character",
+            criterias      = "character")
 )
 
 
@@ -1049,6 +1080,24 @@ setMethod(f = "show", signature = "RPrometheeIV",
 #             invisible(NULL)
 #           })
 
+
+## summary() method for PrometheeClass
+
+setMethod(f = "summary", signature = "RPrometheeI",
+          definition <-  function(object) {
+            Plus           <- object@PhiPlus
+            Minus          <- object@PhiMinus
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+
+            cat("##############################\n##### Promethee I object #####\n##############################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Phi Plus:", sprintf("%0.3f", round(Plus, digits = 3)),
+                "\n# Phi Minus:", sprintf("%0.3f", round(Minus, digits = 3)))
+            invisible(NULL)
+          })
+summary(res)
 
 
 ########################################################################
