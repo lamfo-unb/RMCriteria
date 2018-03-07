@@ -13,7 +13,6 @@ prefFunction <- c(0,0)
 normalize <- FALSE
 
 #########################################################
-
 #Step 1: Construct the RPrometheeArguments
 PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize)
 

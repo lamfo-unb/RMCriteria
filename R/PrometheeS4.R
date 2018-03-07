@@ -1083,6 +1083,27 @@ setMethod(f = "show", signature = "RPrometheeIV",
 
 ## summary() method for PrometheeClass
 
+setMethod(f = "summary", signature = "RPrometheeArguments",
+          definition <-  function(object) {
+            data           <- object@datMat;
+            weights        <- object@vecWeights;
+            max            <- object@vecMaximiz;
+            pref           <- object@prefFunction;
+            parms          <- object@parms;
+            normalize      <- object@normalize
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+
+            cat("#######################################\n##### RPromethee Arguments object #####\n#######################################
+                \n# Criterias:", criterias,
+                "\n# Criterias Weights:", weights,
+                "\n# Alternatives:", alternatives,
+                "\n# First values from data matrix are:\n", head(data))
+            invisible(NULL)
+          })
+
+
+
 setMethod(f = "summary", signature = "RPrometheeI",
           definition <-  function(object) {
             Plus           <- object@PhiPlus
@@ -1097,7 +1118,56 @@ setMethod(f = "summary", signature = "RPrometheeI",
                 "\n# Phi Minus:", sprintf("%0.3f", round(Minus, digits = 3)))
             invisible(NULL)
           })
-summary(res)
+
+
+setMethod(f = "summary", signature = "RPrometheeII",
+          definition <-  function(object) {
+            Phi           <- object@Phi
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+
+            cat("###############################\n##### Promethee II object #####\n###############################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Phi:", sprintf("%0.3f", round(Phi, digits = 3)))
+            invisible(NULL)
+          })
+
+
+setMethod(f = "summary", signature = "RPrometheeIII",
+          definition <-  function(object) {
+            Phi            <- object@Phi
+            limInf         <- object@limInf
+            limSup         <- object@limSup
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+
+            cat("################################\n##### Promethee III object #####\n################################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Phi:", sprintf("%0.3f", round(Phi, digits = 3)),
+                "\n# Superior Limit:", sprintf("%0.3f", round(limSup, digits = 3)),
+                "\n# Inferior Limit:", sprintf("%0.3f", round(limInf, digits = 3)))
+            invisible(NULL)
+          })
+
+setMethod(f = "summary", signature = "RPrometheeIV",
+          definition <-  function(object) {
+            Plus           <- object@PhiPlus
+            Minus          <- object@PhiMinus
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+
+            cat("###############################\n##### Promethee IV object #####\n###############################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Phi Plus:", sprintf("%0.3f", round(Plus, digits = 3)),
+                "\n# Phi Minus:", sprintf("%0.3f", round(Minus, digits = 3)))
+            invisible(NULL)
+          })
+
+
+
 
 
 ########################################################################
