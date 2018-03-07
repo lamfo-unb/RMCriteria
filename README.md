@@ -2,7 +2,7 @@
 
 ## Overview
 
-`RMCriteria` is a package to solve Multiple-Criteria Decision Analysis (MCDA) problems. For now, it only supports Promethee methods, but other methods such as AHP and ELECTRE may be developed in the future.
+`RMCriteria` is a package to solve Multiple-Criteria Decision Analysis (MCDA) problems. For now, it only supports Promethee methods, but other methods may be developed in the future.
 
 ## Installation
 
@@ -14,7 +14,7 @@ devtools::install_github("lamfo-unb/RMCriteria")
 
 ## Usage
 
-Using `RMCriteria` is quite simple. The general idea is to create a `RPrometheeArguments` object, with all parameters such as the criterias and alternatives and then applying this object to a choosen method, like `RPrometheeI`.
+Using `RMCriteria` is quite simple. The general idea is to create a `RPrometheeArguments` object, with all parameters such as the criterias and alternatives and then applying this object to the chosen method, like `RPrometheeI`.
 
 ```R
 ## Create objects for each argument
