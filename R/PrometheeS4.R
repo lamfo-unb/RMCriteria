@@ -465,28 +465,17 @@ setMethod(
     #Run chosen method
     if(method == "PrometheeII"){
       f.temp <- RPrometheeII(object)
-      f.obj  <- f.temp@Phi
-      f.con  <- t(datMat)
-      if(missing(constraintDir) | is.null(constraintDir)){
-        f.dir <- rep("<=", ncol(datMat))
-      }
-      else f.dir <- constraintDir
-      f.rhs  <- bounds
-      PromV  <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
-    }
-
-    else if(method == "PrometheeIV"){
+    } else if(method == "PrometheeIV"){
       f.temp <- RPrometheeIV(object)
-      f.obj <- f.temp@PhiPlus - f.temp@PhiMinus
-      if(missing(constraintDir)){
-        f.dir <- rep("<=", ncol(datMat))
-      }
-      else f.dir <- constraintDir
-      f.con <- t(datMat)
-      f.rhs <- bounds
-      PromV <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
-    }
-    else res<-"Please select a valid Promethee method. See help() for more information."
+    } else return("Please select a valid Promethee method. See help() for more information.")
+
+    f.obj  <- f.temp@Phi
+    f.con  <- t(datMat)
+    if(missing(constraintDir) | is.null(constraintDir)){
+      f.dir <- rep("<=", ncol(datMat))
+    } else f.dir <- constraintDir
+    f.rhs  <- bounds
+    PromV  <- lpSolve::lp("max", f.obj, f.con, f.dir, f.rhs, all.bin=TRUE)
 
     Phi   <- PromV$objective
     Solution <- PromV$solution
@@ -511,26 +500,22 @@ setClass(
 # ##########################   Sensitivity Analysis   ############################
 # ################################################################################
 
-
 #Define the Method
 setGeneric(
   "SensitivityAnalysis",
-  function(object) {
+  function(object, method = "PrometheeII") {
     standardGeneric("SensitivityAnalysis")
   }
 )
 
-#Sensitive Analysis - Method
+#Sensitivity Analysis - Method
 setMethod(
   "SensitivityAnalysis",
   signature("RPrometheeArguments"),
-  function(object) {
+  function(object, method = "PrometheeII") {
     datMat        <- object@datMat
     vecWeights    <- object@vecWeights
     vecMaximiz    <- object@vecMaximiz
-    prefFunction  <- object@prefFunction
-    parms         <- object@parms
-    normalize     <- object@normalize
     alternatives  <- object@alternatives
     criterias     <- object@criterias
     nCriteria     <- ncol(datMat)
@@ -540,12 +525,17 @@ setMethod(
     validRPromethee(object)
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
-    #Execute Promethee II
-    Phi <- RPrometheeII(PromObj)@Phi
+    #Execute Promethee
+    if(method == "PrometheeII"){
+      Phi <- RPrometheeII(PromObj)@Phi
+    } else if(method == "PrometheeIV"){
+      Phi <- RPrometheeIV(PromObj)
+      Phi <- Phi@PhiPlus - Phi@PhiMinus
+    } else return("Please select a valid Promethee method. See help() for more information.")
 
     #Step 2 - Which is the worst alternative
-    iWorst<-which(Phi==min(Phi))
-    p.Diff<-lapply(Phi,function(x)x[iWorst]-x)
+    iWorst<-which(Phi==min(Phi))[1]
+    p.Diff<-Phi[iWorst] - Phi
 
     #Step 3 - Formulating the Linear Programming Problem
     A1<-matrix(0,ncol=nCriteria,nrow=nAlternatives)
@@ -560,7 +550,7 @@ setMethod(
     sensitivityResults <- lp$solution
 
     #Set the class
-    resultsClass <- new("SensitivityAnalysis",Phi=sensitivityResults, alternatives = alternatives, criterias = criterias)
+    resultsClass <- new("SensitivityAnalysis",Solution=sensitivityResults, alternatives = alternatives, criterias = criterias)
 
     #Return the class
     return(resultsClass)
@@ -569,7 +559,7 @@ setMethod(
 
 setClass(
   Class = "SensitivityAnalysis",
-  slots = c(Phi            = "numeric",
+  slots = c(Solution       = "numeric",
             alternatives   = "character",
             criterias      = "character")
 )
