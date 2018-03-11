@@ -31,9 +31,9 @@
 
    \item
       J. P. Brans, B. Mareschal \cr
-       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds) Multiple criteria decision analysis: state of the art surveys.}\cr
-       Springer Science, Business Media Inc., Boston pp 163–195.\cr
-       \url{http://www.springer.com/la/book/9780387230818}
+       \emph{Promethee V: MCDM Problems With Segmentation Constraints}\cr
+       INFOR: Information Systems and Operational Research, v. 30, p. 85-96, 1992.\cr
+       \url{https://www.tandfonline.com/doi/abs/10.1080/03155986.1992.11732186}
 
      \item
      Tsuen-Ho Hsu, Ling-Zhong Lin\cr

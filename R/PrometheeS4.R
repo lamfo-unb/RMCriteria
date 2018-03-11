@@ -508,7 +508,7 @@ setClass(
 
 
 # ################################################################################
-# ###########################   Sensitive Analysis   #############################
+# ##########################   Sensitivity Analysis   ############################
 # ################################################################################
 
 
@@ -540,28 +540,28 @@ setMethod(
     validRPromethee(object)
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
-    #Execute Promethee I
-    Phi <- RPrometheeII(object)@Phi
+    #Execute Promethee II
+    Phi <- RPrometheeII(PromObj)@Phi
 
     #Step 2 - Which is the worst alternative
-    iWorst<-which(unlist(Phi)==min(unlist(Phi)))
+    iWorst<-which(Phi==min(Phi))
     p.Diff<-lapply(Phi,function(x)x[iWorst]-x)
 
     #Step 3 - Formulating the Linear Programming Problem
     A1<-matrix(0,ncol=nCriteria,nrow=nAlternatives)
-    for(i in 1:nCriteria)
-    {
-      A1[,i]<-unlist(p.Diff[i])
+    for(i in 1:nAlternatives){
+      A1[i,]<-unlist(p.Diff[i])
     }
     A<-cbind(A1,-A1)
     b<-apply(A1,1,function(x)-as.numeric(x)%*%as.numeric(vecWeights))
     c<-rep(1,2*nCriteria)
 
     lp<-linprog::solveLP(cvec=c, bvec=b,lpSolve = TRUE, Amat=A,maxiter = 1000, maximum = FALSE, const.dir = rep( ">=", length(b)))
-    sensitiveResults <- lp$solution
+    sensitivityResults <- lp$solution
 
     #Set the class
-    resultsClass <- new("SensitivityAnalysis",Phi=sensitiveResults, alternatives = alternatives, criterias = criterias)
+    resultsClass <- new("SensitivityAnalysis",Phi=sensitivityResults, alternatives = alternatives, criterias = criterias)
+
     #Return the class
     return(resultsClass)
   }
