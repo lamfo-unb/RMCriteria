@@ -467,7 +467,7 @@ setMethod(
       f.temp <- RPrometheeII(object)
     } else if(method == "PrometheeIV"){
       f.temp <- RPrometheeIV(object)
-    } else return("Please select a valid Promethee method. See help() for more information.")
+    } else stop("Please select a valid Promethee method. See help() for more information.")
 
     f.obj  <- f.temp@Phi
     f.con  <- t(datMat)
@@ -529,9 +529,12 @@ setMethod(
     if(method == "PrometheeII"){
       Phi <- RPrometheeII(PromObj)@Phi
     } else if(method == "PrometheeIV"){
+      if(any(is.na(object@parms))){
+        stop("Please, insert parameters for PrometheeIV calculation.")
+      }
       Phi <- RPrometheeIV(PromObj)
       Phi <- Phi@PhiPlus - Phi@PhiMinus
-    } else return("Please select a valid Promethee method. See help() for more information.")
+    } else stop("Please select a valid Promethee method. See help() for more information.")
 
     #Step 2 - Which is the worst alternative
     iWorst<-which(Phi==min(Phi))[1]

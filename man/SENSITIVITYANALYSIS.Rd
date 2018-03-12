@@ -1,18 +1,17 @@
-\name{PrometheeV}
-\alias{PrometheeV}
-\alias{RPrometheeV}
-\title{PROMETHEE V}
+\name{SensitivityAnalysis}
+\title{SENSITIVITY ANALYSIS}
 \description{
-   PROMETHEE V deals with a subset of alternatives considerating a set of restrictions. First, the PROMETHEE II is calculated to get a complete pre-order. Then, binary linear programming is used to select a subset that maximizes the net outranking flow, according to restrictions. The first step can be calculated using PROMETHEE II or PROMETHEE IV, this is defined by the user through the argument \code{method}. The second step is done using the package \code{\link{lp}}.
+  Sensitivity Analysis is a method developed by Wolters & Mareschal (1995) to evaluate how \code{\link{RPrometheeII}} and \code{\link{RPrometheeIV}} results are sensitive to changes in weights of criterias. That is, how the solution to the decision problem can be affected by the distribution of criterias weights.
 }
 
 \usage{
-\S4method{RPrometheeV}{RPrometheeArguments}(RPrometheeArguments, method = "RPrometheeII")
+\S4method{SensitivityAnalysis}{RPrometheeArguments}(RPrometheeArgumentsmethod = "RPrometheeII")
+\
 }
 
 \arguments{
-  \item{RPrometheeArguments}{an object with all RPromethee arguments. In PROMETHEE V, the object must have the arguments \code{constraintDir} and \code{bounds}, in order to create the subset of alternatives. See \code{\link{RPrometheeConstructor}} for more information.}
-  \item{method}{a character object used to choose how the RPrometheeV is going to be calculated. The method can be \code{"PrometheeII"} or \code{"PrometheeIV"}. The standard is \code{"RPrometheeII"}.}
+  \item{RPrometheeArguments}{an object with all RPromethee arguments. For PROMETHEE IV, it's important that \code{parms} argument isn't compound of NA values. See \code{\link{RPrometheeConstructor}} for more information.}
+  \item{method}{a character object used to choose how the SensitivityAnalysis is going to be calculated. The method can be \code{"RPrometheeII"} or \code{"RPrometheeIV"}. The standard is \code{"RPrometheeII"}}
 }
 
 \references{
@@ -40,6 +39,12 @@
       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the Risk Perception}.\cr
       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+
+     \item
+     W.T.M. Wolters, B. Mareschal\cr
+      \emph{Novel types of sensitivity analysis for additive MCDM methods}.\cr
+      European Journal of Operational Research, v. 81, p. 281-290, 1995.\cr
+      \url{https://www.sciencedirect.com/science/article/abs/pii/0377221793E0343V}
   }
 }
 \author{
@@ -78,18 +83,9 @@ alternatives <- c("Alt 1", "Alt 2", "Alt 3")
 ## Create RPrometheeArguments object
 PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alternatives = alternatives, bounds = bounds, constraintDir = constraintDir)
 
-# Run RPrometheeV using standard method ("RPrometheeII")
-result <- RPrometheeV(PromObj)
+# Run SensitivityAnalysis using standard method (RPrometheeII)
+result <- SensitivityAnalysis(PromObj)
 
-# Run RPrometheeV using "RPrometheeIV
-result <- RPrometheeV(PromObj, method = "RPrometheeIV")
-
-
-# Updating alternatives name using UpdateRPrometheeAlternatives
-newAlternatives <- c("A", "B", "C", "D", "E", "F")
-result <- UpdateRPrometheeAlternatives(results, newAlternatives)
-
-# Updating any argument using UpdateRPrometheeArguments
-newBounds <- c(5, -2)
-result <- UpdateRPrometheeArguments(result, "bounds", newBounds)
+# Run SensitivityAnalysis using RPrometheeIV
+result <- SensitivityAnalysis(PromObj, "PrometheeIV")
 }
