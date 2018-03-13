@@ -19,7 +19,10 @@ PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMax
 res <- RPrometheeI(PromObj)
 summary(res)
 print(res)
+PrometheeIPlot(res)
+NetworkPlot(res).
 plot(res)
+
 show(res)
 str(res)
 

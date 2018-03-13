@@ -984,14 +984,18 @@ if(!isGeneric("plot")){
 setMethod(f="plot",
   signature("RPrometheeI"),
   definition = function(x,y,...) {
-    PrometheeIPlot(x)
+    print(PrometheeIPlot(x))
+    par(ask = TRUE)
+    print(NetworkPlot(x))
   }
 )
 
 setMethod(f="plot",
-          signature("RPrometheeII"),
-          definition = function(x,y,...) {
-            PrometheeIIPlot(x)
+  signature("RPrometheeII"),
+  definition = function(x,y,...) {
+    print(PrometheeIIPlot(x))
+    par(ask = TRUE)
+    print(WalkingWeightsPlot(x))
   }
 )
 

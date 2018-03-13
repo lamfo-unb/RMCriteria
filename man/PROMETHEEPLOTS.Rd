@@ -6,6 +6,11 @@
 \alias{PrometheeIVKernelPlot}
 \alias{WalkingWeightsPlot}
 \alias{NetworkPlot}
+\alias{plot.PrometheeI}
+\alias{plot.PrometheeII}
+\alias{plot.PrometheeII}
+\alias{plot.PrometheeIV}
+\alias{plot.PrometheeIVKernel}
 \title{PROMETHEE PLOTS}
 \description{
   Creates plots from PROMETHEE results.
