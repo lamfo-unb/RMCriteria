@@ -465,11 +465,12 @@ setMethod(
     #Run chosen method
     if(method == "PrometheeII"){
       f.temp <- RPrometheeII(object)
+      f.obj <- f.temp@Phi
     } else if(method == "PrometheeIV"){
       f.temp <- RPrometheeIV(object)
+      f.obj  <- f.temp@PhiPlus - f.temp@PhiMinus
     } else stop("Please select a valid Promethee method. See help() for more information.")
 
-    f.obj  <- f.temp@Phi
     f.con  <- t(datMat)
     if(missing(constraintDir) | is.null(constraintDir)){
       f.dir <- rep("<=", ncol(datMat))
@@ -1068,14 +1069,15 @@ setMethod(f = "show", signature = "RPrometheeIV",
             invisible(NULL)
           })
 
-# setMethod(f = "show", signature = "RPrometheeV",
-#           definition <-  function(object) {
-#             Phi <- object@Phi
-#             limInf <- object@limInf
-#             limSup <- object@limSup
-#             cat("Promethee IV object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)), "\nPhi Plus: ", sprintf("%0.3f", round(PhiPlus, digits = 3)), "\Phi Minus: ", sprintf("%0.3f", round(PhiMinus, digits = 3)))
-#             invisible(NULL)
-#           })
+ setMethod(f = "show", signature = "RPrometheeV",
+           definition <-  function(object) {
+             Phi            <- object@Phi
+             alternatives   <- object@alternatives
+             solution       <- object@Solution
+
+             cat("Promethee II object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)), "\nThe alternatives are:", alternatives, "\nSolution to lp problem:", solution)
+             invisible(NULL)
+           })
 
 
 ## summary() method for PrometheeClass
@@ -1163,6 +1165,36 @@ setMethod(f = "summary", signature = "RPrometheeIV",
             invisible(NULL)
           })
 
+
+setMethod(f = "summary", signature = "RPrometheeIVKernel",
+          definition <-  function(object) {
+            Plus           <- object@PhiPlus
+            Minus          <- object@PhiMinus
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+
+            cat("###############################\n##### Promethee IV Kernel object #####\n###############################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Phi Plus:", sprintf("%0.3f", round(Plus, digits = 3)),
+                "\n# Phi Minus:", sprintf("%0.3f", round(Minus, digits = 3)))
+            invisible(NULL)
+          })
+
+setMethod(f = "summary", signature = "RPrometheeV",
+          definition <-  function(object) {
+            Phi            <- object@Phi
+            alternatives   <- object@alternatives
+            criterias      <- object@criterias
+            solution       <- object@Solution
+
+            cat("###############################\n##### Promethee V object #####\n###############################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Phi:", sprintf("%0.3f", round(Phi, digits = 3)),
+                "\n# Solution:", solution)
+            invisible(NULL)
+          })
 
 
 
