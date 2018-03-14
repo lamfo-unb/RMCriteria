@@ -13,8 +13,10 @@ parms<-matrix(c(NA,
 #Step 1: Construct the RPrometheeArguments
 PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms,normalize=FALSE)
 res <- RPrometheeII(PromObj)
-str(res)
 summary(res)
+print(res)
+show(res)
+str(res)
 
 PrometheeIIPlot(res)
 WalkingWeightsPlot(res)

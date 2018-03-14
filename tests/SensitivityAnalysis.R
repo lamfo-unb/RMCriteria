@@ -5,8 +5,8 @@ dados<-matrix(c(5.2,-3.5,
 colnames(dados)<-c("Criteria 1","Criteria 2")
 rownames(dados)<-c("Alternative 1", "Alternative 2", "Alternative 3")
 
-parms<-matrix(c(NA,
-                NA),byrow=TRUE,ncol=1,nrow=2)
+parms<-matrix(c(1.0,
+                -2.3),byrow=TRUE,ncol=1,nrow=2)
 
 #RMCriteria::PrometheeII(dados,c(0.3,0.7),c(0,0),parms,FALSE)
 
@@ -15,5 +15,7 @@ PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c
 res <- SensitivityAnalysis(PromObj)
 res <- SensitivityAnalysis(PromObj, "PrometheeII")
 res <- SensitivityAnalysis(PromObj, "PrometheeIV")
-str(res)
 summary(res)
+print(res)
+show(res)
+str(res)

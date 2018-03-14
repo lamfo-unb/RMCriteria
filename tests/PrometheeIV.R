@@ -15,6 +15,8 @@ parms<-matrix(c(1.0,
 
 PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.5,0.5),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms,normalize=FALSE)
 res <- RPrometheeIV(PromObj)
-str(res)
 summary(res)
+print(res)
+show(res)
+str(res)
 PrometheeIVPlot(res)

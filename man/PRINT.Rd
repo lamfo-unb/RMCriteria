@@ -1,27 +1,29 @@
-\name{show}
-\alias{show.RPrometheeArguments}
-\alias{show.PrometheeI}
-\alias{show.PrometheeII}
-\alias{show.PrometheeIII}
-\alias{show.PrometheeIV}
-\alias{show.PrometheeIVKernel}
-\alias{show.PrometheeV}
-\alias{show.SensitivityAnalysis}
-\alias{show.RPrometheeI}
-\alias{show.RPrometheeII}
-\alias{show.RPrometheeIII}
-\alias{show.RPrometheeIV}
-\alias{show.RPrometheeIVKernel}
-\alias{show.RPrometheeV}
-\title{Provide information about RPromethee object.}
+\name{print}
+\alias{print.RPrometheeArguments}
+\alias{print.PrometheeI}
+\alias{print.PrometheeII}
+\alias{print.PrometheeIII}
+\alias{print.PrometheeIV}
+\alias{print.PrometheeIVKernel}
+\alias{print.PrometheeV}
+\alias{print.SensitivityAnalysis}
+\alias{print.RPrometheeI}
+\alias{print.RPrometheeII}
+\alias{print.RPrometheeIII}
+\alias{print.RPrometheeIV}
+\alias{print.RPrometheeIVKernel}
+\alias{print.RPrometheeV}
+
+\title{Provide general information about the object.}
+
 \description{
-Takes a \code{RPromethee} object and shows some information from it.
+Takes a \code{RPromethee} object and gives a small description of it.
 }
 \usage{
-  \method{show}{Promethee}(object, ...)
+  \method{print}{Promethee}(object, ...)
 }
 \arguments{
-  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI}.}
+  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI} or by \code{RPrometheeArguments.}
   \item{...}{ other arguments may be useful.}
 }
 
@@ -61,6 +63,6 @@ PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaxi
 # Run RPrometheeI
 (result <- RPrometheeI(PromObj))
 
-# Run show()
-show(result)
+# Run print
+print(result)
 }

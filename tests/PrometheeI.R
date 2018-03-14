@@ -3,12 +3,13 @@ dados<-matrix(c(5.2,-3.5,
                 6.7,-2.0),byrow = T, ncol=2,nrow=3)
 
 rownames(dados) <- c("Alt 1", "Alt 2", "Alt 3")
+colnames(dados) <- c("Criteria 1", "Criteria 2")
 
 parms<-matrix(c(NA,
                 NA),byrow=TRUE,ncol=1,nrow=2)
 
 vecWeights <- c(0.3,0.7)
-vecMaximiz <- c(F,T)
+vecMaximiz <- c(T,T)
 prefFunction <- c(0,0)
 normalize <- FALSE
 
@@ -18,13 +19,15 @@ PromObj <- RPrometheeConstructor(datMat = dados, vecWeights = vecWeights, vecMax
 
 res <- RPrometheeI(PromObj)
 summary(res)
+summary(PromObj)
 print(res)
-PrometheeIPlot(res)
-NetworkPlot(res).
-plot(res)
-
 show(res)
 str(res)
+
+PrometheeIPlot(res)
+NetworkPlot(res)
+plot(res)
+
 
 ########################################################
 # New values for tests cases

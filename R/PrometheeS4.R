@@ -144,13 +144,15 @@ setMethod(
 
     #Validate the object
     validRPromethee(object)
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee I
     results <- RMCriteria::PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
     resultsClass <- new("RPrometheeI", PhiPlus=results[[1]], PhiMinus=results[[2]],
-                        alternatives = alternatives, criterias = criterias)
+                        alternatives = alternatives, criterias = criterias, data = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -162,12 +164,14 @@ setClass(
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
             alternatives   = "character",
-            criterias      = "character"),
+            criterias      = "character",
+            data           = "matrix"),
   prototype = list(
     PhiPlus      = numeric(0),
     PhiMinus     = numeric(0),
     alternatives = character(0),
-    criterias    = character(0)),
+    criterias    = character(0),
+    data         = matrix(0)),
   validity=function(object)
   {
     if(length(object@PhiPlus)!=length(object@PhiMinus)) {
@@ -190,14 +194,16 @@ setClass(
   slots = c(Phi            = "numeric",
             vecWeights     = "numeric",
             alternatives   = "character",
-            criterias      = "character"),
+            criterias      = "character",
+            data           = "matrix"),
 
   # Set the default values for the slots. (optional)
   prototype=list(
     Phi            = numeric(0),
     vecWeights     = numeric(0),
     alternatives   = character(0),
-    criterias      = character(0))
+    criterias      = character(0),
+    data           = matrix(0))
 )
 
 #Define the Method
@@ -224,13 +230,15 @@ setMethod(
 
     #Validate the object
     validRPromethee(object)
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee I
     results <- RMCriteria::PrometheeII(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
     resultsClass <- new("RPrometheeII", Phi = results, vecWeights = vecWeights,
-                        alternatives = alternatives, criterias = criterias)
+                        alternatives = alternatives, criterias = criterias, data = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -267,6 +275,8 @@ setMethod(
     alternatives <- object@alternatives
     criterias    <- object@criterias
 
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
@@ -275,7 +285,7 @@ setMethod(
 
     #Set the class
     resultsClass <- new("RPrometheeIII",limInf=results[[1]], limSup=results[[2]],
-                        Phi = phiResults, alternatives = alternatives, criterias = criterias)
+                        Phi = phiResults, alternatives = alternatives, criterias = criterias, data = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -288,13 +298,15 @@ setClass(
             limSup         = "numeric",
             Phi            = "numeric",
             alternatives   = "character",
-            criterias      = "character"),
+            criterias      = "character",
+            data           = "matrix"),
   prototype = list(
     limInf       = numeric(0),
     limSup       = numeric(0),
     Phi          = numeric(0),
     alternatives = character(0),
-    criterias    = character(0)),
+    criterias    = character(0),
+    data         = matrix(0)),
   validity=function(object)
   {
     if(length(object@limSup)!=length(object@limInf)) {
@@ -319,7 +331,8 @@ setClass(
             PhiMinus        = "numeric",
             Index           = "numeric",
             alternatives    = "character",
-            criterias       = "character"),
+            criterias       = "character",
+            data            = "matrix"),
 
 
   # Set the default values for the slots. (optional)
@@ -327,7 +340,8 @@ setClass(
                  PhiMinus       = numeric(0),
                  Index          = numeric(0),
                  alternatives   = character(0),
-                 criterias      = character(0))
+                 criterias      = character(0),
+                 data           = matrix(0))
 )
 #Define the Method
 setGeneric(
@@ -353,12 +367,14 @@ setMethod(
 
     #Validate the object
     validRPromethee(object)
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee I
     results <- RMCriteria::PrometheeIV(datMat, vecWeights, prefFunction, parms, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias)
+    resultsClass <- new("RPrometheeIV",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias, data = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -393,6 +409,8 @@ setMethod(
     alternatives <- object@alternatives
     criterias    <- object@criterias
 
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee III
@@ -400,7 +418,7 @@ setMethod(
     results <- RMCriteria::PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
 
     #Set the class
-    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias)
+    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias, data = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -413,13 +431,15 @@ setClass(
             PhiMinus       = "numeric",
             Index          = "numeric",
             alternatives   = "character",
-            criterias      = "character"),
+            criterias      = "character",
+            data           = "matrix"),
   prototype = list(
     PhiPlus        = numeric(0),
     PhiMinus       = numeric(0),
     Index          = numeric(0),
     alternatives   = character(0),
-    criterias      = character(0)),
+    criterias      = character(0),
+    data           = matrix(0)),
   validity=function(object)
   {
     if(length(object@PhiPlus)!=length(object@PhiMinus)) {
@@ -458,9 +478,10 @@ setMethod(
     alternatives  <- object@alternatives
     criterias     <- object@criterias
 
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
-
 
     #Run chosen method
     if(method == "PrometheeII"){
@@ -482,7 +503,7 @@ setMethod(
     Solution <- PromV$solution
 
     #Set the class
-    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution, alternatives = alternatives, criterias = criterias)
+    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution, alternatives = alternatives, criterias = criterias, data = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -493,8 +514,18 @@ setClass(
   slots = c(Phi            = "numeric",
             Solution       = "numeric",
             alternatives   = "character",
-            criterias      = "character")
+            criterias      = "character",
+            data           = "matrix"),
+
+
+  prototype = list(
+    Phi            = numeric(0),
+    Solution       = numeric(0),
+    alternatives   = character(0),
+    criterias      = character(0),
+    data           = matrix(0))
   )
+
 
 
 # ################################################################################
@@ -524,6 +555,8 @@ setMethod(
 
     #Validate the object
     validRPromethee(object)
+    #Save original dataMatrix
+    datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee
@@ -554,7 +587,7 @@ setMethod(
     sensitivityResults <- lp$solution
 
     #Set the class
-    resultsClass <- new("SensitivityAnalysis",Solution=sensitivityResults, alternatives = alternatives, criterias = criterias)
+    resultsClass <- new("SensitivityAnalysis",Solution=sensitivityResults, alternatives = alternatives, criterias = criterias, data = datMat_temp)
 
     #Return the class
     return(resultsClass)
@@ -565,7 +598,13 @@ setClass(
   Class = "SensitivityAnalysis",
   slots = c(Solution       = "numeric",
             alternatives   = "character",
-            criterias      = "character")
+            criterias      = "character",
+            data           = "matrix"),
+
+  prototype = c(Solution       = numeric(0),
+                alternatives   = character(0),
+                criterias      = character(0),
+                data           = matrix(0))
 )
 
 
@@ -1011,6 +1050,7 @@ setMethod(f="plot",
 ##################### Standard Methods #################################
 ########################################################################
 
+##############################################
 ## show() method for PrometheeClass
 
 setMethod(f = "show", signature = "RPrometheeArguments",
@@ -1069,6 +1109,16 @@ setMethod(f = "show", signature = "RPrometheeIV",
             invisible(NULL)
           })
 
+setMethod(f = "show", signature = "RPrometheeIVKernel",
+          definition <-  function(object) {
+            Plus           <- object@PhiPlus
+            Minus          <- object@PhiMinus
+            alternatives   <- object@alternatives
+
+            cat("Promethee IV object with", length(Plus), "alternatives.", "\nPhi Plus: ", sprintf("%0.3f", round(Plus, digits = 3)), "\nPhi Minus: ", sprintf("%0.3f", round(Minus, digits = 3)), "\nThe alternatives are:", alternatives)
+            invisible(NULL)
+          })
+
  setMethod(f = "show", signature = "RPrometheeV",
            definition <-  function(object) {
              Phi            <- object@Phi
@@ -1080,18 +1130,28 @@ setMethod(f = "show", signature = "RPrometheeIV",
            })
 
 
-## summary() method for PrometheeClass
-
-setMethod(f = "summary", signature = "RPrometheeArguments",
+setMethod(f = "show", signature = "SensitivityAnalysis",
           definition <-  function(object) {
-            data           <- object@datMat;
-            weights        <- object@vecWeights;
-            max            <- object@vecMaximiz;
-            pref           <- object@prefFunction;
-            parms          <- object@parms;
-            normalize      <- object@normalize
             alternatives   <- object@alternatives
-            criterias      <- object@criterias
+            solution       <- object@Solution
+
+            cat("Promethee II object with", length(alternatives), "alternatives.", "\nThe alternatives are:", alternatives, "\nSolution to lp problem:", solution)
+            invisible(NULL)
+          })
+
+##############################################
+## print() method for PrometheeClass
+
+setMethod(f = "print", signature = "RPrometheeArguments",
+          definition <-  function(x) {
+            data           <- x@datMat;
+            weights        <- x@vecWeights;
+            max            <- x@vecMaximiz;
+            pref           <- x@prefFunction;
+            parms          <- x@parms;
+            normalize      <- x@normalize
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
 
             cat("#######################################\n##### RPromethee Arguments object #####\n#######################################
                 \n# Criterias:", criterias,
@@ -1103,12 +1163,12 @@ setMethod(f = "summary", signature = "RPrometheeArguments",
 
 
 
-setMethod(f = "summary", signature = "RPrometheeI",
-          definition <-  function(object) {
-            Plus           <- object@PhiPlus
-            Minus          <- object@PhiMinus
-            alternatives   <- object@alternatives
-            criterias      <- object@criterias
+setMethod(f = "print", signature = "RPrometheeI",
+          definition <-  function(x) {
+            Plus           <- x@PhiPlus
+            Minus          <- x@PhiMinus
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
 
             cat("##############################\n##### Promethee I object #####\n##############################
                 \n# Criterias:", criterias,
@@ -1119,11 +1179,11 @@ setMethod(f = "summary", signature = "RPrometheeI",
           })
 
 
-setMethod(f = "summary", signature = "RPrometheeII",
-          definition <-  function(object) {
-            Phi           <- object@Phi
-            alternatives   <- object@alternatives
-            criterias      <- object@criterias
+setMethod(f = "print", signature = "RPrometheeII",
+          definition <-  function(x) {
+            Phi            <- x@Phi
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
 
             cat("###############################\n##### Promethee II object #####\n###############################
                 \n# Criterias:", criterias,
@@ -1133,13 +1193,13 @@ setMethod(f = "summary", signature = "RPrometheeII",
           })
 
 
-setMethod(f = "summary", signature = "RPrometheeIII",
-          definition <-  function(object) {
-            Phi            <- object@Phi
-            limInf         <- object@limInf
-            limSup         <- object@limSup
-            alternatives   <- object@alternatives
-            criterias      <- object@criterias
+setMethod(f = "print", signature = "RPrometheeIII",
+          definition <-  function(x) {
+            Phi            <- x@Phi
+            limInf         <- x@limInf
+            limSup         <- x@limSup
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
 
             cat("################################\n##### Promethee III object #####\n################################
                 \n# Criterias:", criterias,
@@ -1150,12 +1210,12 @@ setMethod(f = "summary", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
-setMethod(f = "summary", signature = "RPrometheeIV",
-          definition <-  function(object) {
-            Plus           <- object@PhiPlus
-            Minus          <- object@PhiMinus
-            alternatives   <- object@alternatives
-            criterias      <- object@criterias
+setMethod(f = "print", signature = "RPrometheeIV",
+          definition <-  function(x) {
+            Plus           <- x@PhiPlus
+            Minus          <- x@PhiMinus
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
 
             cat("###############################\n##### Promethee IV object #####\n###############################
                 \n# Criterias:", criterias,
@@ -1166,14 +1226,14 @@ setMethod(f = "summary", signature = "RPrometheeIV",
           })
 
 
-setMethod(f = "summary", signature = "RPrometheeIVKernel",
-          definition <-  function(object) {
-            Plus           <- object@PhiPlus
-            Minus          <- object@PhiMinus
-            alternatives   <- object@alternatives
-            criterias      <- object@criterias
+setMethod(f = "print", signature = "RPrometheeIVKernel",
+          definition <-  function(x) {
+            Plus           <- x@PhiPlus
+            Minus          <- x@PhiMinus
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
 
-            cat("###############################\n##### Promethee IV Kernel object #####\n###############################
+            cat("######################################\n##### Promethee IV Kernel object #####\n######################################
                 \n# Criterias:", criterias,
                 "\n# Alternatives:", alternatives,
                 "\n# Phi Plus:", sprintf("%0.3f", round(Plus, digits = 3)),
@@ -1181,12 +1241,12 @@ setMethod(f = "summary", signature = "RPrometheeIVKernel",
             invisible(NULL)
           })
 
-setMethod(f = "summary", signature = "RPrometheeV",
-          definition <-  function(object) {
-            Phi            <- object@Phi
-            alternatives   <- object@alternatives
-            criterias      <- object@criterias
-            solution       <- object@Solution
+setMethod(f = "print", signature = "RPrometheeV",
+          definition <-  function(x) {
+            Phi            <- x@Phi
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
+            solution       <- x@Solution
 
             cat("###############################\n##### Promethee V object #####\n###############################
                 \n# Criterias:", criterias,
@@ -1196,6 +1256,104 @@ setMethod(f = "summary", signature = "RPrometheeV",
             invisible(NULL)
           })
 
+setMethod(f = "print", signature = "SensitivityAnalysis",
+          definition <-  function(x) {
+            alternatives   <- x@alternatives
+            criterias      <- x@criterias
+            solution       <- x@Solution
+
+            cat("#######################################\n##### Sensitivity Analysis object #####\n#######################################
+                \n# Criterias:", criterias,
+                "\n# Alternatives:", alternatives,
+                "\n# Solution:", solution)
+            invisible(NULL)
+          })
+
+
+
+##############################################
+## summary() method for PrometheeClass
+
+setMethod(f = "summary", signature = "RPrometheeArguments",
+          definition <-  function(object) {
+            data           <- object@datMat;
+            weights        <- object@vecWeights;
+            max            <- object@vecMaximiz;
+            pref           <- object@prefFunction;
+            parms          <- object@parms;
+            normalize      <- object@normalize;
+            alternatives   <- object@alternatives;
+
+            pastecs::stat.desc(data)
+          })
+
+setMethod(f = "summary", signature = "RPrometheeI",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
+
+setMethod(f = "summary", signature = "RPrometheeII",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
+
+
+setMethod(f = "summary", signature = "RPrometheeIII",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
+
+
+setMethod(f = "summary", signature = "RPrometheeIV",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
+
+setMethod(f = "summary", signature = "RPrometheeIVKernel",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
+
+
+
+setMethod(f = "summary", signature = "RPrometheeV",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
+
+
+setMethod(f = "summary", signature = "SensitivityAnalysis",
+          definition <-  function(object) {
+            datMat         <- object@data;
+            alternatives   <- object@alternatives;
+            criterias      <- object@criterias;
+
+            pastecs::stat.desc(datMat)
+          })
 
 
 

@@ -19,6 +19,11 @@ normalize<-FALSE
 
 PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=vecWeights,vecMaximiz=c(F,T),prefFunction=c(0,0),constraintDir=constraintDir,bounds=bounds,parms=parms,normalize=FALSE)
 
-RPrometheeV(PromObj, method = "PrometheeII")
+res <- RPrometheeV(PromObj, method = "PrometheeII")
 RPrometheeV(PromObj, method = "PrometheeIV")
 RPrometheeV(PromObj)
+
+summary(res)
+print(res)
+show(res)
+str(res)

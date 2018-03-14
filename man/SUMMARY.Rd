@@ -6,15 +6,22 @@
 \alias{summary.PrometheeIV}
 \alias{summary.PrometheeIVKernel}
 \alias{summary.PrometheeV}
+\alias{summary.SensitivityAnalysis}
+\alias{summary.RPrometheeI}
+\alias{summary.RPrometheeII}
+\alias{summary.RPrometheeIII}
+\alias{summary.RPrometheeIV}
+\alias{summary.RPrometheeIVKernel}
+\alias{summary.RPrometheeV}
 \title{Provide summary information.}
 \description{
-Takes a \code{RPromethee} object and produces a summary from it.
+Takes a \code{RPromethee} object and produces a summary with some statistics for the object.
 }
 \usage{
   \method{summary}{Promethee}(object, ...)
 }
 \arguments{
-  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI}.}
+  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI} or \code{RPrometheeArguments.}
   \item{...}{ other arguments may be useful.}
 }
 

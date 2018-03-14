@@ -9,8 +9,10 @@ parms<-matrix(c(NA,
 
 PromObj <- RPrometheeConstructor(datMat=dados, vecWeights=c(0.3,0.7), vecMaximiz=c(F,T), prefFunction=c(0,0), parms=parms, normalize=FALSE, alphaVector=c(1,2,1))
 res <- RPrometheeIII(PromObj)
-str(res)
 summary(res)
+print(res)
+show(res)
+str(res)
 
 PrometheeIIIPlot(res)
 plot(res)
