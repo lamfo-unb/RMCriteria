@@ -23,7 +23,7 @@ Takes a \code{RPromethee} object and gives a small description of it.
   \method{print}{Promethee}(object, ...)
 }
 \arguments{
-  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI} or by \code{RPrometheeArguments.}
+  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI} or by \code{RPrometheeArguments.}}
   \item{...}{ other arguments may be useful.}
 }
 

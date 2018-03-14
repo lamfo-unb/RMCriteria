@@ -1284,7 +1284,13 @@ setMethod(f = "summary", signature = "RPrometheeArguments",
             normalize      <- object@normalize;
             alternatives   <- object@alternatives;
 
-            pastecs::stat.desc(data)
+            res<-pastecs::stat.desc(data)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 setMethod(f = "summary", signature = "RPrometheeI",
@@ -1293,7 +1299,13 @@ setMethod(f = "summary", signature = "RPrometheeI",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 setMethod(f = "summary", signature = "RPrometheeII",
@@ -1302,7 +1314,13 @@ setMethod(f = "summary", signature = "RPrometheeII",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 
@@ -1312,7 +1330,13 @@ setMethod(f = "summary", signature = "RPrometheeIII",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 
@@ -1322,7 +1346,13 @@ setMethod(f = "summary", signature = "RPrometheeIV",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 setMethod(f = "summary", signature = "RPrometheeIVKernel",
@@ -1331,7 +1361,13 @@ setMethod(f = "summary", signature = "RPrometheeIVKernel",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 
@@ -1342,7 +1378,13 @@ setMethod(f = "summary", signature = "RPrometheeV",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 
@@ -1352,7 +1394,13 @@ setMethod(f = "summary", signature = "SensitivityAnalysis",
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(datMat)
+            res<-res[-11,]
+            rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
+                             "Total number of alternatives with NA","Minimum","Maximum","Range",
+                             "Sum","Median","Mean","Standard Error for the mean","Variance",
+                             "Standard Deviation","Coefficient of variation")
+            res
           })
 
 

@@ -21,7 +21,7 @@ Takes a \code{RPromethee} object and produces a summary with some statistics for
   \method{summary}{Promethee}(object, ...)
 }
 \arguments{
-  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI} or \code{RPrometheeArguments.}
+  \item{object}{a \code{RPromethee} object as produced by \code{RPrometheeI} or \code{RPrometheeArguments.}}
   \item{...}{ other arguments may be useful.}
 }
 
