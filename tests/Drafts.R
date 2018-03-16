@@ -204,61 +204,51 @@ res <- RPrometheeIII(PromObj)
 str(res)
 
 
-Plus       <- res@PhiPlus
-Minus      <- res@PhiMinus
-limInf     <- res@limInf
-limSup     <- res@limSup
+Phi          <- res@Phi
+limInf       <- res@limInf
+limSup       <- res@limSup
+alternatives <- res@alternatives
 
-    # Create dataframes
-resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus, "limInf" = limInf, "limSup" = limSup)
+# Create dataframes
+resDF <- data.frame("Phi" = Phi, "limInf" = limInf, "limSup" = limSup)
 
-    # Create a dataframe with results from RPrometheeI and arguments
-    phiLabels <- c(rep("PhiPlus", nrow(resDF)), rep("PhiMinus", nrow(resDF)))
-    phiNums <- c(resDF[,1], resDF[,2])
-    errorMin <- c(rep(resDF[,3], 2))
-    errorMax <- c(rep(resDF[,4], 2))
-    alternatives <- c(as.character(rep(1:nrow(resDF),2)))
+phiLabels <- c(rep("Phi", nrow(resDF)))
+phiNums <- c(resDF[,1])
+errorMin <- c(rep(resDF[,2]))
+errorMax <- c(rep(resDF[,3]))
 
-    resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorMin, errorMax)
-    resultsPlot[,2] <- as.factor(resultsPlot[,2])
+resultsPlot <- data.frame(alternatives, phiLabels, phiNums, errorMin, errorMax)
+resultsPlot[,2] <- as.factor(resultsPlot[,2])
 
 
-    # Create a dataframe to use as source for the plot
-    limits <- data.frame(
-      class = c("PhiPlus", "PhiPlus", "PhiMinus", "PhiMinus"),
-      boundaries = c(0.5, 0.5, 0.5, 0.5),
-      pos_neg = c("Pos", "Neg", "Pos", "Neg"))
+# Create a dataframe to use as source for the plot
+limits <- data.frame(
+  class = c("Phi", "Phi"),
+  boundaries = c(-1, 1),
+  pos_neg = c("Neg", "Pos"))
 
-    # Change order of factors and levels
-    limits$class <- factor(limits$class, levels = c("PhiPlus", "PhiMinus"))
-    limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
-    resultsPlot[,2] <- factor(resultsPlot[,2],
-                              levels = c("PhiPlus", "PhiMinus"))
+# Change order of factors
+limits$pos_neg <- factor(limits$pos_neg, levels = c("Pos", "Neg"))
 
-    # Partial bars as in Visual-Promethee
-    ggplot(limits) +
-      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
-               stat = "identity", width = 0.5) +
-      geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                 stat = "identity") +
-      geom_line(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                group = resultsPlot[,1], stat = "identity") +
-      geom_errorbar(data = resultsPlot,
-                    aes(x = phiLabels,
-                        ymin = errorMin, ymax = errorMax, width = 0.2),
-                    color = alternatives) +
-      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                label = sprintf("%0.3f",
-                                round(resultsPlot$phiNums, digits = 3),
-                                position = position_dodge(width = 0.9)),
-                hjust = 0, nudge_x = 0.05) +
-      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
-      geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
-                label = alternatives, hjust = 1, nudge_x = -0.05) +
-      theme(axis.text.y = element_blank(),
-            axis.ticks = element_blank(),
-            axis.title.x = element_blank()) +
-      labs(y = "Alternative/Phi")
+resultsPlot[,2] <- factor(resultsPlot[,2], levels = "Phi")
+
+# Full Ranking bar as in Visual-Promethee
+ggplot(resultsPlot) +
+  geom_point(aes(x = alternatives, y = phiNums, color = "red"), stat = "identity") +
+  scale_color_identity(name = "", guide = "legend", label = "Phi") +
+  geom_errorbar(aes(x = alternatives, ymin = errorMin, ymax = errorMax),
+                width = 0.15, size = 1) +
+  geom_text(aes(x = alternatives, y = phiNums),
+            label = sprintf("%0.3f", round(resultsPlot$phiNums, digits = 3)),
+            hjust = 0, nudge_x = 0.03) +
+  geom_text(aes(x = alternatives, y = errorMin),
+            label = sprintf("%0.3f", round(errorMin, digits=3)),
+            vjust = 1.5) +
+  geom_text(aes(x = alternatives, y = errorMax),
+            label = sprintf("%0.3f", round(errorMax, digits=3)),
+            vjust = -1) +
+  xlab("Alternatives") +
+  ylab("Phi")
 
 
 ###########################################

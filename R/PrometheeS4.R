@@ -761,7 +761,7 @@ setGeneric(
   }
 )
 
-# Complete Ranking Promethee II - Method
+# Promethee III Plot - Method
 setMethod(
   "PrometheeIIIPlot",
   signature("RPrometheeIII"),
@@ -796,7 +796,8 @@ setMethod(
 
     # Full Ranking bar as in Visual-Promethee
     results <- ggplot(resultsPlot) +
-      geom_point(aes(x = alternatives, y = phiNums), stat = "identity", color = "red") +
+      geom_point(aes(x = alternatives, y = phiNums, color = "red"), stat = "identity") +
+      scale_color_identity(name = "", guide = "legend", label = "Phi") +
       geom_errorbar(aes(x = alternatives, ymin = errorMin, ymax = errorMax),
                     width = 0.15, size = 1) +
       geom_text(aes(x = alternatives, y = phiNums),
@@ -810,6 +811,8 @@ setMethod(
                 vjust = -1) +
       xlab("Alternatives") +
       ylab("Phi")
+
+
 
     #Return the class
     return(results)
@@ -969,8 +972,7 @@ setMethod(
 
     #Step 1: Create the edges
     #Step 1.1: Find the rank
-    rank<-data.frame("Phi"=object@PhiPlus-object@PhiMinus,"Phi.Plus"=object@PhiPlus,
-                     "Phi.Minus"= object@PhiMinus,"Alternative"=seq(1,length(object@PhiPlus)))
+    rank<-data.frame("Phi"=object@PhiPlus-object@PhiMinus,"Phi.Plus"=object@PhiPlus, "Phi.Minus"= object@PhiMinus,"Alternative"=seq(1,length(object@PhiPlus)))
     #Step 1.2: Order data
     rank <- rank[order(-rank$Phi),]
 
@@ -1205,8 +1207,8 @@ setMethod(f = "print", signature = "RPrometheeIII",
                 \n# Criterias:", criterias,
                 "\n# Alternatives:", alternatives,
                 "\n# Phi:", sprintf("%0.3f", round(Phi, digits = 3)),
-                "\n# Superior Limit:", sprintf("%0.3f", round(limSup, digits = 3)),
-                "\n# Inferior Limit:", sprintf("%0.3f", round(limInf, digits = 3)))
+                "\n# Upper Limit Limit:", sprintf("%0.3f", round(limSup, digits = 3)),
+                "\n# Bottom Limit:", sprintf("%0.3f", round(limInf, digits = 3)))
             invisible(NULL)
           })
 
