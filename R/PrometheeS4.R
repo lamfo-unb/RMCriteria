@@ -1029,6 +1029,7 @@ setMethod(f="plot",
     print(PrometheeIPlot(x))
     par(ask = TRUE)
     print(NetworkPlot(x))
+    par(ask = FALSE)
   }
 )
 
@@ -1038,6 +1039,7 @@ setMethod(f="plot",
     print(PrometheeIIPlot(x))
     par(ask = TRUE)
     print(WalkingWeightsPlot(x))
+    par(ask = FALSE)
   }
 )
 
