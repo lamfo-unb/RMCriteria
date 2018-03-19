@@ -18,6 +18,8 @@ Imports:
     ggplot2,
     gridExtra,
     ggnetwork,
-    network
+    network,
+    RcppEigen,
+    pastecs
 SystemRequirements: GNU make
 RoxygenNote: 6.0.1
