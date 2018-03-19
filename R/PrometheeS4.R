@@ -1026,20 +1026,22 @@ if(!isGeneric("plot")){
 setMethod(f="plot",
   signature("RPrometheeI"),
   definition = function(x,y,...) {
+    old <- options(stringsAsFactors = FALSE)
     print(PrometheeIPlot(x))
     par(ask = TRUE)
     print(NetworkPlot(x))
-    par(ask = FALSE)
+    on.exit(options(old), add = TRUE)
   }
 )
 
 setMethod(f="plot",
   signature("RPrometheeII"),
   definition = function(x,y,...) {
+    old <- options(stringsAsFactors = FALSE)
     print(PrometheeIIPlot(x))
     par(ask = TRUE)
     print(WalkingWeightsPlot(x))
-    par(ask = FALSE)
+    on.exit(options(old), add = TRUE)
   }
 )
 
