@@ -123,7 +123,7 @@ RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, 
 #Define the Method
 setGeneric(
   "RPrometheeI",
-  function(object) {
+  function(RPrometheeArguments) {
     standardGeneric("RPrometheeI")
   }
 )
@@ -132,18 +132,18 @@ setGeneric(
 setMethod(
   "RPrometheeI",
   signature("RPrometheeArguments"),
-  function(object) {
-      datMat       <- object@datMat
-      vecWeights   <- object@vecWeights
-      vecMaximiz   <- object@vecMaximiz
-      prefFunction <- object@prefFunction
-      parms        <- object@parms
-      normalize    <- object@normalize
-      alternatives <- object@alternatives
-      criterias    <- object@criterias
+  function(RPrometheeArguments) {
+      datMat       <- RPrometheeArguments@datMat
+      vecWeights   <- RPrometheeArguments@vecWeights
+      vecMaximiz   <- RPrometheeArguments@vecMaximiz
+      prefFunction <- RPrometheeArguments@prefFunction
+      parms        <- RPrometheeArguments@parms
+      normalize    <- RPrometheeArguments@normalize
+      alternatives <- RPrometheeArguments@alternatives
+      criterias    <- RPrometheeArguments@criterias
 
     #Validate the object
-    validRPromethee(object)
+    validRPromethee(RPrometheeArguments)
     #Save original dataMatrix
     datMat_temp <- datMat
     #Fix orientation
@@ -209,7 +209,7 @@ setClass(
 #Define the Method
 setGeneric(
   "RPrometheeII",
-  function(object) {
+  function(RPrometheeArguments) {
     standardGeneric("RPrometheeII")
   }
 )
@@ -218,18 +218,18 @@ setGeneric(
 setMethod(
   "RPrometheeII",
   signature("RPrometheeArguments"),
-  function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
-    alternatives <- object@alternatives
-    criterias    <- object@criterias
+  function(RPrometheeArguments) {
+    datMat       <- RPrometheeArguments@datMat
+    vecWeights   <- RPrometheeArguments@vecWeights
+    vecMaximiz   <- RPrometheeArguments@vecMaximiz
+    prefFunction <- RPrometheeArguments@prefFunction
+    parms        <- RPrometheeArguments@parms
+    normalize    <- RPrometheeArguments@normalize
+    alternatives <- RPrometheeArguments@alternatives
+    criterias    <- RPrometheeArguments@criterias
 
     #Validate the object
-    validRPromethee(object)
+    validRPromethee(RPrometheeArguments)
     #Save original dataMatrix
     datMat_temp <- datMat
     #Fix orientation
@@ -255,7 +255,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "RPrometheeIII",
-  function(object) {
+  function(RPrometheeArguments) {
     standardGeneric("RPrometheeIII")
   }
 )
@@ -264,16 +264,16 @@ setGeneric(
 setMethod(
   "RPrometheeIII",
   signature("RPrometheeArguments"),
-  function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    alphaVector  <- object@alphaVector
-    normalize    <- object@normalize
-    alternatives <- object@alternatives
-    criterias    <- object@criterias
+  function(RPrometheeArguments) {
+    datMat       <- RPrometheeArguments@datMat
+    vecWeights   <- RPrometheeArguments@vecWeights
+    vecMaximiz   <- RPrometheeArguments@vecMaximiz
+    prefFunction <- RPrometheeArguments@prefFunction
+    parms        <- RPrometheeArguments@parms
+    alphaVector  <- RPrometheeArguments@alphaVector
+    normalize    <- RPrometheeArguments@normalize
+    alternatives <- RPrometheeArguments@alternatives
+    criterias    <- RPrometheeArguments@criterias
 
     #Save original dataMatrix
     datMat_temp <- datMat
@@ -346,7 +346,7 @@ setClass(
 #Define the Method
 setGeneric(
   "RPrometheeIV",
-  function(object) {
+  function(RPrometheeArguments) {
     standardGeneric("RPrometheeIV")
   }
 )
@@ -355,18 +355,18 @@ setGeneric(
 setMethod(
   "RPrometheeIV",
   signature("RPrometheeArguments"),
-  function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    normalize    <- object@normalize
-    alternatives <- object@alternatives
-    criterias    <- object@criterias
+  function(RPrometheeArguments) {
+    datMat       <- RPrometheeArguments@datMat
+    vecWeights   <- RPrometheeArguments@vecWeights
+    vecMaximiz   <- RPrometheeArguments@vecMaximiz
+    prefFunction <- RPrometheeArguments@prefFunction
+    parms        <- RPrometheeArguments@parms
+    normalize    <- RPrometheeArguments@normalize
+    alternatives <- RPrometheeArguments@alternatives
+    criterias    <- RPrometheeArguments@criterias
 
     #Validate the object
-    validRPromethee(object)
+    validRPromethee(RPrometheeArguments)
     #Save original dataMatrix
     datMat_temp <- datMat
     #Fix orientation
@@ -389,7 +389,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "RPrometheeIVKernel",
-  function(object) {
+  function(RPrometheeArguments) {
     standardGeneric("RPrometheeIVKernel")
   }
 )
@@ -398,16 +398,16 @@ setGeneric(
 setMethod(
   "RPrometheeIVKernel",
   signature("RPrometheeArguments"),
-  function(object) {
-    datMat       <- object@datMat
-    vecWeights   <- object@vecWeights
-    vecMaximiz   <- object@vecMaximiz
-    prefFunction <- object@prefFunction
-    parms        <- object@parms
-    band         <- object@band
-    normalize    <- object@normalize
-    alternatives <- object@alternatives
-    criterias    <- object@criterias
+  function(RPrometheeArguments) {
+    datMat       <- RPrometheeArguments@datMat
+    vecWeights   <- RPrometheeArguments@vecWeights
+    vecMaximiz   <- RPrometheeArguments@vecMaximiz
+    prefFunction <- RPrometheeArguments@prefFunction
+    parms        <- RPrometheeArguments@parms
+    band         <- RPrometheeArguments@band
+    normalize    <- RPrometheeArguments@normalize
+    alternatives <- RPrometheeArguments@alternatives
+    criterias    <- RPrometheeArguments@criterias
 
     #Save original dataMatrix
     datMat_temp <- datMat
@@ -457,7 +457,7 @@ setClass(
 #Define the Method
 setGeneric(
   "RPrometheeV",
-  function(object, method = "PrometheeII") {
+  function(RPrometheeArguments, method = "PrometheeII") {
     standardGeneric("RPrometheeV")
   }
 )
@@ -466,17 +466,17 @@ setGeneric(
 setMethod(
   "RPrometheeV",
   signature("RPrometheeArguments"),
-  function(object, method = "PrometheeII") {
-    datMat        <- object@datMat
-    vecWeights    <- object@vecWeights
-    vecMaximiz    <- object@vecMaximiz
-    prefFunction  <- object@prefFunction
-    parms         <- object@parms
-    normalize     <- object@normalize
-    constraintDir <- object@constraintDir
-    bounds        <- object@bounds
-    alternatives  <- object@alternatives
-    criterias     <- object@criterias
+  function(RPrometheeArguments, method = "RPrometheeII") {
+    datMat        <- RPrometheeArguments@datMat
+    vecWeights    <- RPrometheeArguments@vecWeights
+    vecMaximiz    <- RPrometheeArguments@vecMaximiz
+    prefFunction  <- RPrometheeArguments@prefFunction
+    parms         <- RPrometheeArguments@parms
+    normalize     <- RPrometheeArguments@normalize
+    constraintDir <- RPrometheeArguments@constraintDir
+    bounds        <- RPrometheeArguments@bounds
+    alternatives  <- RPrometheeArguments@alternatives
+    criterias     <- RPrometheeArguments@criterias
 
     #Save original dataMatrix
     datMat_temp <- datMat
@@ -484,11 +484,11 @@ setMethod(
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
 
     #Run chosen method
-    if(method == "PrometheeII"){
-      f.temp <- RPrometheeII(object)
+    if(method == "RPrometheeII"){
+      f.temp <- RPrometheeII(RPrometheeArguments)
       f.obj <- f.temp@Phi
-    } else if(method == "PrometheeIV"){
-      f.temp <- RPrometheeIV(object)
+    } else if(method == "RPrometheeIV"){
+      f.temp <- RPrometheeIV(RPrometheeArguments)
       f.obj  <- f.temp@PhiPlus - f.temp@PhiMinus
     } else stop("Please select a valid Promethee method. See help() for more information.")
 
@@ -535,7 +535,7 @@ setClass(
 #Define the Method
 setGeneric(
   "SensitivityAnalysis",
-  function(object, method = "PrometheeII") {
+  function(RPrometheeArguments, method = "RPrometheeII") {
     standardGeneric("SensitivityAnalysis")
   }
 )
@@ -544,29 +544,29 @@ setGeneric(
 setMethod(
   "SensitivityAnalysis",
   signature("RPrometheeArguments"),
-  function(object, method = "PrometheeII") {
-    datMat        <- object@datMat
-    vecWeights    <- object@vecWeights
-    vecMaximiz    <- object@vecMaximiz
-    alternatives  <- object@alternatives
-    criterias     <- object@criterias
+  function(RPrometheeArguments, method = "RPrometheeII") {
+    datMat        <- RPrometheeArguments@datMat
+    vecWeights    <- RPrometheeArguments@vecWeights
+    vecMaximiz    <- RPrometheeArguments@vecMaximiz
+    alternatives  <- RPrometheeArguments@alternatives
+    criterias     <- RPrometheeArguments@criterias
     nCriteria     <- ncol(datMat)
     nAlternatives <- nrow(datMat)
 
     #Validate the object
-    validRPromethee(object)
+    validRPromethee(RPrometheeArguments)
     #Save original dataMatrix
     datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
     #Execute Promethee
-    if(method == "PrometheeII"){
-      Phi <- RPrometheeII(PromObj)@Phi
-    } else if(method == "PrometheeIV"){
-      if(any(is.na(object@parms))){
-        stop("Please, insert parameters for PrometheeIV calculation.")
+    if(method == "RPrometheeII"){
+      Phi <- RPrometheeII(RPrometheeArguments)@Phi
+    } else if(method == "RPrometheeIV"){
+      if(any(is.na(RPrometheeArguments@parms))){
+        stop("Please, insert parameters for RPrometheeIV calculation.")
       }
-      Phi <- RPrometheeIV(PromObj)
+      Phi <- RPrometheeIV(RPrometheeArguments)
       Phi <- Phi@PhiPlus - Phi@PhiMinus
     } else stop("Please select a valid Promethee method. See help() for more information.")
 
@@ -619,7 +619,7 @@ setClass(
 #Define the Method
 setGeneric(
   "PrometheeIPlot",
-  function(object) {
+  function(RPrometheeI) {
     standardGeneric("PrometheeIPlot")
   }
 )
@@ -628,10 +628,10 @@ setGeneric(
 setMethod(
   "PrometheeIPlot",
   signature("RPrometheeI"),
-  function(object) {
-    Plus          <- object@PhiPlus
-    Minus         <- object@PhiMinus
-    alternatives  <- object@alternatives
+  function(RPrometheeI) {
+    Plus          <- RPrometheeI@PhiPlus
+    Minus         <- RPrometheeI@PhiMinus
+    alternatives  <- RPrometheeI@alternatives
 
     # Create dataframes
     resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus)
@@ -657,7 +657,7 @@ setMethod(
 
     # Partial bars as in Visual-Promethee
     results <- ggplot(limits) +
-      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+      geom_bar(aes_string(x = "class.values", y = "boundaries.values", fill = "pos_neg.values"),
                stat = "identity", width = 0.5) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
@@ -668,7 +668,7 @@ setMethod(
                                 round(resultsPlot$phiNums, digits = 3),
                                 position = position_dodge(width = 0.9)),
                 hjust = 0, nudge_x = 0.05) +
-      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      scale_fill_manual(aes_string(x = "class.values", y = "boundaries.values"), values = c("#a1d99b", "#F57170")) +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = alternatives, hjust = 1, nudge_x = -0.05) +
       theme(axis.text.y = element_blank(),
@@ -688,7 +688,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "PrometheeIIPlot",
-  function(object) {
+  function(RPrometheeII) {
     standardGeneric("PrometheeIIPlot")
   }
 )
@@ -697,9 +697,9 @@ setGeneric(
 setMethod(
   "PrometheeIIPlot",
   signature("RPrometheeII"),
-  function(object) {
-    Phi           <-   object@Phi
-    alternatives  <-   object@alternatives
+  function(RPrometheeII) {
+    Phi           <-   RPrometheeII@Phi
+    alternatives  <-   RPrometheeII@alternatives
 
         # Create dataframes
     resDF <- data.frame("Phi" = Phi)
@@ -725,7 +725,7 @@ setMethod(
 
     # Full Ranking bar as in Visual-Promethee
     results <- ggplot(limits) +
-      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+      geom_bar(aes_string(x = "class.values", y = "boundaries.values", fill = "pos_neg.values"),
                stat = "identity", width = 0.3) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
@@ -733,7 +733,7 @@ setMethod(
                 label = sprintf("%0.3f",
                                 round(resultsPlot$phiNums, digits = 3)),
                 hjust = 0, nudge_x = 0.03) +
-      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      scale_fill_manual(aes_string(x = "class.values", y = "boundaries.values"), values = c("#a1d99b", "#F57170")) +
       geom_text(data = resultsPlot, aes(x = phiLabels,
                                         y = resultsPlot$phiNums),
                 label = resultsPlot$alternatives,
@@ -756,7 +756,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "PrometheeIIIPlot",
-  function(object) {
+  function(RPrometheeIII) {
     standardGeneric("PrometheeIIIPlot")
   }
 )
@@ -765,11 +765,11 @@ setGeneric(
 setMethod(
   "PrometheeIIIPlot",
   signature("RPrometheeIII"),
-  function(object) {
-    Phi          <- object@Phi
-    limInf       <- object@limInf
-    limSup       <- object@limSup
-    alternatives <- object@alternatives
+  function(RPrometheeIII) {
+    Phi          <- RPrometheeIII@Phi
+    limInf       <- RPrometheeIII@limInf
+    limSup       <- RPrometheeIII@limSup
+    alternatives <- RPrometheeIII@alternatives
 
     # Create dataframes
     resDF <- data.frame("Phi" = Phi, "limInf" = limInf, "limSup" = limSup)
@@ -827,7 +827,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "PrometheeIVPlot",
-  function(object) {
+  function(RPrometheeIV) {
     standardGeneric("PrometheeIVPlot")
   }
 )
@@ -836,11 +836,11 @@ setGeneric(
 setMethod(
   "PrometheeIVPlot",
   signature("RPrometheeIV"),
-  function(object) {
-    Plus         <-   object@PhiPlus
-    Minus        <-   object@PhiMinus
-    Index        <-   object@Index
-    alternatives <-   object@alternatives
+  function(RPrometheeIV) {
+    Plus         <-   RPrometheeIV@PhiPlus
+    Minus        <-   RPrometheeIV@PhiMinus
+    Index        <-   RPrometheeIV@Index
+    alternatives <-   RPrometheeIV@alternatives
 
     # Create dataframes
     resDF <- data.frame("PhiPlus" = Plus, "PhiMinus" = Minus)
@@ -866,7 +866,7 @@ setMethod(
 
     # Partial bars as in Visual-Promethee
     results <- ggplot(limits) +
-      geom_bar(aes(x = class, y = boundaries, fill = pos_neg),
+      geom_bar(aes_string(x = "class.values", y = "boundaries.values", fill = "pos_neg.values"),
                stat = "identity", width = 0.5) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
@@ -877,7 +877,7 @@ setMethod(
                                 round(resultsPlot$phiNums, digits = 3),
                                 position = position_dodge(width = 0.9)),
                 hjust = 0, nudge_x = 0.05) +
-      scale_fill_manual(aes(x = class, y = boundaries), values = c("#a1d99b", "#F57170")) +
+      scale_fill_manual(aes_string(x = "class.values", y = "boundaries.values"), values = c("#a1d99b", "#F57170")) +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = alternatives, hjust = 1, nudge_x = -0.05) +
       theme(axis.text.y = element_blank(),
@@ -895,7 +895,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "WalkingWeightsPlot",
-  function(object) {
+  function(RPrometheeII) {
     standardGeneric("WalkingWeightsPlot")
   }
 )
@@ -904,10 +904,10 @@ setGeneric(
 setMethod(
   "WalkingWeightsPlot",
   signature("RPrometheeII"),
-  function(object) {
-    Phi           <-   object@Phi
-    weights       <-   object@vecWeights
-    alternatives  <-   object@alternatives
+  function(RPrometheeII) {
+    Phi           <-   RPrometheeII@Phi
+    weights       <-   RPrometheeII@vecWeights
+    alternatives  <-   RPrometheeII@alternatives
 
     # Create dataframes
     resDF <- data.frame("Phi" = Phi)
@@ -934,8 +934,8 @@ setMethod(
       labs(x = "Alternatives", y = "Phi")
 
     plot_b <- ggplot(weightsDF) +
-      geom_bar(aes(x = as.character(criterias), y = weights), stat = "identity", width = 0.5) +
-      geom_text(aes(x = as.character(criterias), y = weights,
+      geom_bar(aes_string(x = as.character("criterias.value"), y = weights), stat = "identity", width = 0.5) +
+      geom_text(aes_string(x = as.character("criterias.value"), y = weights,
                     label = sprintf("%0.2f%%", 100*weights),
                     vjust = 1)) +
       theme(axis.text.x = element_blank(),
@@ -956,7 +956,7 @@ setMethod(
 #Define the Method
 setGeneric(
   "NetworkPlot",
-  function(object) {
+  function(RPrometheeI) {
     standardGeneric("NetworkPlot")
   }
 )
@@ -965,14 +965,14 @@ setGeneric(
 setMethod(
   "NetworkPlot",
   signature("RPrometheeI"),
-  function(object) {
-    PhiPlus        <-   object@PhiPlus
-    PhiMinus       <-   object@PhiMinus
+  function(RPrometheeI) {
+    PhiPlus        <-   RPrometheeI@PhiPlus
+    PhiMinus       <-   RPrometheeI@PhiMinus
 
 
     #Step 1: Create the edges
     #Step 1.1: Find the rank
-    rank<-data.frame("Phi"=object@PhiPlus-object@PhiMinus,"Phi.Plus"=object@PhiPlus, "Phi.Minus"= object@PhiMinus,"Alternative"=seq(1,length(object@PhiPlus)))
+    rank<-data.frame("Phi"=RPrometheeI@PhiPlus-RPrometheeI@PhiMinus,"Phi.Plus"=RPrometheeI@PhiPlus, "Phi.Minus"= RPrometheeI@PhiMinus,"Alternative"=seq(1,length(RPrometheeI@PhiPlus)))
     #Step 1.2: Order data
     rank <- rank[order(-rank$Phi),]
 
@@ -1002,10 +1002,10 @@ setMethod(
     net3<-ggnetwork(net, layout = "target", niter = 100)
 
 
-    results <- ggplot(net, aes(x = x, y = y, xend = xend, yend = yend)) +
+    results <- ggplot(net, aes_string(x = "x.values", y = "y.values", xend = "xend.values", yend = "yend.values")) +
       geom_edges(arrow = arrow(length = unit(6, "pt"), type = "closed")) +
       geom_nodes(color = "turquoise4", size = 10) +
-      geom_nodetext(aes(label =  vertex.names),
+      geom_nodetext(aes_string(label =  "vertex.names.values"),
                     fontface = "bold", color = "white") +
       theme_blank()
 
@@ -1026,22 +1026,20 @@ if(!isGeneric("plot")){
 setMethod(f="plot",
   signature("RPrometheeI"),
   definition = function(x,y,...) {
-    old <- options(stringsAsFactors = FALSE)
     print(PrometheeIPlot(x))
     par(ask = TRUE)
     print(NetworkPlot(x))
-    on.exit(options(old), add = TRUE)
+    par(ask = FALSE)
   }
 )
 
 setMethod(f="plot",
   signature("RPrometheeII"),
   definition = function(x,y,...) {
-    old <- options(stringsAsFactors = FALSE)
     print(PrometheeIIPlot(x))
     par(ask = TRUE)
     print(WalkingWeightsPlot(x))
-    on.exit(options(old), add = TRUE)
+    par(ask = FALSE)
   }
 )
 
