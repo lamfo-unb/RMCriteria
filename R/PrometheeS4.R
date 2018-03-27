@@ -3,9 +3,6 @@
 ################################################################################
 
 ### Global Promethee Arguments
-setClassUnion("NULLmeric", c("numeric", "NULL"))
-setClassUnion("matrixNULL", c("matrix", "NULL"))
-setClassUnion("charNULL", c("character", "NULL"))
 
 setClass(
   Class = "RPrometheeArguments",
@@ -15,12 +12,12 @@ setClass(
             prefFunction  = "numeric",
             parms         = "matrix" ,
             normalize     = "logical",
-            alphaVector   = "NULLmeric",
-            band          = "matrixNULL",
-            constraintDir = "charNULL",
-            bounds        = "NULLmeric",
-            alternatives  = "charNULL",
-            criterias     = "charNULL"),
+            alphaVector   = "numeric",
+            band          = "matrix",
+            constraintDir = "character",
+            bounds        = "numeric",
+            alternatives  = "character",
+            criterias     = "character"),
 
   prototype = list(
     datMat        = matrix(0) ,
@@ -80,6 +77,79 @@ validRPromethee <- function(object) {
 #Assign the function as the validity method for the class
 setValidity("RPrometheeArguments", validRPromethee)
 
+#' @title RPrometheeConstructor
+#'
+#' @description
+#'   Create a \code{RPrometheeArguments} object to be used by \code{RPromethee}
+#'   methods.
+#'
+#' @details
+#'   This function is used to create a \code{RPrometheeArguments} object. This
+#'   object is used by all RPromethee methods, being necessary to include only
+#'   the arguments that are used by the desired method. The arguments
+#'   \code{datMat}, \code{vecWeights}, \code{vecMaximiz}, \code{prefFunction},
+#'   \code{parms}, \code{normalize} must be specified for all methods. The
+#'   following methods use additional arguments:
+#'   \itemize{
+#'     \item{\code{RPrometheeIII} uses \code{alphaVector}}
+#'     \item{\code{RPrometheeIVKernel} uses \code{band}}
+#'     \item{\code{RPrometheeV} uses \code{constraintDir} and \code{bounds}}
+#'   }
+#' @family RPromethee methods
+#' @seealso \code{\link{RPrometheeI}}, \code{\link{RPrometheeII}},
+#'  \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIV}},
+#'  \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}
+#'
+#' @aliases RPrometheeConstructor RPrometheeArguments
+#'
+#' @param datMat A matrix containing the data from criterias and alternatives.
+#' @param vecWeights A vector of weights for each criteria.
+#' @param vecMaximiz A logical vector to indicate if the criteria should be
+#'  maximized or minimized.
+#' @param prefFunction A numerical vector to indicate the type of the
+#'  Preference Function:
+#'    \itemize{
+#'      \item \code{prefFunction=0}  Gaussian Preference Function
+#'      \item \code{prefFunction=1}  Usual Preference Function
+#'      \item \code{prefFunction=2}  U-Shape Preference Function
+#'      \item \code{prefFunction=3}  V-Shape Preference Function
+#'      \item \code{prefFunction=4}  Level Preference Function
+#'      \item \code{prefFunction=5}  V-Shape Preference and Indiference Function
+#'      }
+#'
+#' @param parms a numerical matrix with parameters associated to the Preference
+#'   Function. They're defined as a matrix of n columns and m rows. The maximum
+#'   number of parameters is 3 and m is the number of criterias. The parameters
+#'   are:
+#'    \itemize{
+#'      \item{Indifference Threshold (\code{q})}
+#'      \item{Preference Threshold (\code{p})}
+#'      \item{Gaussian Threshold (\code{s})}
+#'    }
+#'
+#' @param normalize A boolean to normalize the index.
+#' @param alphaVector A numerical vector to indicate the size of the interval
+#'   for each alternative in Promethee III ranking.
+#' @param band A numerical matrix with m rows corresponding to each criteria
+#'   and one column corresponding to the bandwitch estimated for that criteria.
+#'   This bandwitch is used for Kernel Density Estimation in Promethee IV Kernel.
+#'   By default, it is calculated using \code{bw.nrd0}.
+#' @param constraintDir A character vector with the direction of constraints to
+#'   be optimized in Promethee V. The values must be combinations of \code{>},
+#'   \code{<} and \code{=} operators. If missing, it's calculated using
+#'   \code{"<="} for all criterias.
+#' @param bounds A numeric vector used in Promethee V for the right-hand sides
+#'   of the constraints.
+#'
+#' @keywords decision-method
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @export
+
+
+
 RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, parms, normalize, alphaVector = NULL, band = NULL, constraintDir = NULL, bounds = NULL){
    if(is.null(rownames(datMat))){alternatives <- as.character(1:nrow(datMat))}
   else alternatives <- as.character(rownames(datMat))
@@ -119,6 +189,80 @@ RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, 
 ##########################################################################
 ##########################################################################
 # Global Promethee Class
+
+#' @title RPrometheeI
+#'
+#' @description
+#'   Proposed by Brans and Vincke (1985), PROMETHEE I method aims to solve
+#'   sorting problems. According to PROMETHEE I the better alternative is the
+#'   one with the higher leaving flow and the lower entering flow. Through this
+#'   result it is possible to obtain a partial preorder  where some alternatives
+#'   remain incomparable.
+#'
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeI PrometheeI
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. See
+#' \code{\link{RPrometheeConstructor}} for more information.
+#'
+#' @return
+#'  \itemize{
+#'   \item {PhiPlus} {The resulting PhiPlus from the alternatives for all
+#'   criterias.}
+#'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
+#'   criterias}
+#'   \item{alternatives} {The alternatives names.}
+#'  }
+#'
+#' @details
+#'   The method created by Brans et al. (1985) is based on a set of alternatives
+#'   \eqn{A = {a1,a2,...,an}} that will be ordered and a set of criteria
+#'   \eqn{F = { f1, f2, . . ., fm }}. Two alternatives, \eqn{ai} and \eqn{a_j},
+#'   will be pairwise compared. The intensity of the preference between \eqn{ai}
+#'   over \eqn{aj} \eqn{(Pk(dk)}, \eqn{dk = fk (ai) − fk (aj))} is determined.
+#'   \eqn{Pk} is considered the preference function for the \eqn{kth} criterion. The evaluation of the alternative \eqn{ai}, which corresponds to criterion
+#'   \eqn{fk}, is \eqn{fk(ai)} (Hsu, Lin, 2014).\cr
+#'   Six types of preference functions were proposed by Brans et al. (1985). The
+#'   preference scales values range from 0 (no preference) to 1 (strong
+#'   preference).\cr
+#'   While anylising the entering and leaving flows, it can be observed that an
+#'   alternative is better than the other when it has the higher leaving flow
+#'   and the lower entering flow. PROMETHEE I method create a partial pre-order
+#'   that can be acquired by comparing the leaving and entering flow (Brans and
+#'   Mareschal 2005).
+#'
+#' @keywords decision-method
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
 
 #Define the Method
 setGeneric(
@@ -184,6 +328,81 @@ setClass(
 # ################################################################################
 # ###########################       RPromethee 2     #############################
 # ################################################################################
+
+#' @title RPrometheeII
+#'
+#' @description
+#'   Proposed by Brans and Vincke (1985), PROMETHEE II method aims to solve
+#'   sorting problems. The PROMETHEE II method performs a total ordering of the
+#'   alternatives set by calculating the net outranking flow (HENDRIKS et al.,
+#'   1992), with the objective of solving the problem that no unambiguous
+#'   solution can be given due to incomparability.
+#'
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeII PrometheeII
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. See
+#' \code{\link{RPrometheeConstructor}} for more information.
+#'
+#' @return
+#'  \itemize{
+#'   \item {PhiPlus} {The resulting PhiPlus from the alternatives for all
+#'   criterias.}
+#'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
+#'   criterias}
+#'   \item{alternatives} {The alternatives names.}
+#'  }
+#'
+#' @details
+#'   The method created by Brans et al. (1985) is based on a set of alternatives
+#'   \eqn{A = {a1,a2,...,an}} that will be ordered and a set of criteria
+#'   \eqn{F = { f1, f2, . . ., fm }}. Two alternatives, \eqn{ai} and \eqn{a_j},
+#'   will be pairwise compared. The intensity of the preference between \eqn{ai}
+#'   over \eqn{aj} \eqn{(Pk(dk)}, \eqn{dk = fk (ai) − fk (aj))} is determined.
+#'   \eqn{Pk} is considered the preference function for the \eqn{kth} criterion. The evaluation of the alternative \eqn{ai}, which corresponds to criterion
+#'   \eqn{fk}, is \eqn{fk(ai)} (Hsu, Lin, 2014).\cr
+#'   Six types of preference functions were proposed by Brans et al. (1985). The
+#'   preference scales values range from 0 (no preference) to 1 (strong
+#'   preference).\cr
+#'   While anylising the entering and leaving flows, it can be observed that an
+#'   alternative is better than the other when it has the higher leaving flow
+#'   and the lower entering flow. PROMETHEE I method create a partial pre-order
+#'   that can be acquired by comparing the leaving and entering flow (Brans and
+#'   Mareschal 2005).
+#'
+#' @keywords decision-method
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
+
 
 #Promethee II - Results
 setClass(
@@ -1478,8 +1697,8 @@ setMethod(
 )
 
 
-setClassUnion("RPromethee", c("RPrometheeI", "RPrometheeII", "RPrometheeIII",
-                              "RPrometheeIV", "RPrometheeIVKernel", "RPrometheeV"))
+#setClassUnion("RPromethee", c("RPrometheeI", "RPrometheeII", "RPrometheeIII",
+#                              "RPrometheeIV", "RPrometheeIVKernel", "RPrometheeV"))
 
 ## RPrometheeArguments update functions
 setGeneric(
@@ -1491,9 +1710,54 @@ setGeneric(
 
 setMethod(
   "UpdateRPrometheeAlternatives",
-  signature("RPromethee"),
+  signature("RPrometheeI"),
   function(object, alternatives) {
     object@alternatives <- alternatives
     return(object)
     }
+)
+
+setMethod(
+  "UpdateRPrometheeAlternatives",
+  signature("RPrometheeII"),
+  function(object, alternatives) {
+    object@alternatives <- alternatives
+    return(object)
+  }
+)
+
+setMethod(
+  "UpdateRPrometheeAlternatives",
+  signature("RPrometheeIII"),
+  function(object, alternatives) {
+    object@alternatives <- alternatives
+    return(object)
+  }
+)
+
+setMethod(
+  "UpdateRPrometheeAlternatives",
+  signature("RPrometheeIV"),
+  function(object, alternatives) {
+    object@alternatives <- alternatives
+    return(object)
+  }
+)
+
+setMethod(
+  "UpdateRPrometheeAlternatives",
+  signature("RPrometheeIVKernel"),
+  function(object, alternatives) {
+    object@alternatives <- alternatives
+    return(object)
+  }
+)
+
+setMethod(
+  "UpdateRPrometheeAlternatives",
+  signature("RPrometheeV"),
+  function(object, alternatives) {
+    object@alternatives <- alternatives
+    return(object)
+  }
 )
