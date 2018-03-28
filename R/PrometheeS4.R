@@ -190,6 +190,29 @@ RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, 
 ##########################################################################
 # Global Promethee Class
 
+#Promethee I - Class
+setClass(
+  Class = "RPrometheeI",
+  slots = c(PhiPlus        = "numeric",
+            PhiMinus       = "numeric",
+            alternatives   = "character",
+            criterias      = "character",
+            data           = "matrix"),
+  prototype = list(
+    PhiPlus      = numeric(0),
+    PhiMinus     = numeric(0),
+    alternatives = character(0),
+    criterias    = character(0),
+    data         = matrix(0)),
+  validity=function(object)
+  {
+    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
+      return("The flow vectors must have the same length.")
+    }
+    return(TRUE)
+  }
+)
+
 #' @title RPrometheeI
 #'
 #' @description
@@ -209,7 +232,7 @@ RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, 
 #'
 #' @return
 #'  \itemize{
-#'   \item {PhiPlus} {The resulting PhiPlus from the alternatives for all
+#'   \item{PhiPlus} {The resulting PhiPlus from the alternatives for all
 #'   criterias.}
 #'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
 #'   criterias}
@@ -233,7 +256,7 @@ RPrometheeConstructor <- function(datMat, vecWeights, vecMaximiz, prefFunction, 
 #'   that can be acquired by comparing the leaving and entering flow (Brans and
 #'   Mareschal 2005).
 #'
-#' @keywords decision-method
+#' @keywords decision-method mcda decision-analysis promethee
 #'
 #' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
 #' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
@@ -302,32 +325,34 @@ setMethod(
   }
 )
 
-#Promethee I - Results
-setClass(
-  Class = "RPrometheeI",
-  slots = c(PhiPlus        = "numeric",
-            PhiMinus       = "numeric",
-            alternatives   = "character",
-            criterias      = "character",
-            data           = "matrix"),
-  prototype = list(
-    PhiPlus      = numeric(0),
-    PhiMinus     = numeric(0),
-    alternatives = character(0),
-    criterias    = character(0),
-    data         = matrix(0)),
-  validity=function(object)
-  {
-    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
-      return("The flow vectors must have the same length.")
-    }
-    return(TRUE)
-  }
-)
 
 # ################################################################################
 # ###########################       RPromethee 2     #############################
 # ################################################################################
+
+
+#Promethee II - Class
+setClass(
+  # Set the name for the class
+  Class = "RPrometheeII",
+
+  # Define the slots - in this case it is numeric
+  slots = c(Phi            = "numeric",
+            vecWeights     = "numeric",
+            alternatives   = "character",
+            criterias      = "character",
+            data           = "matrix"),
+
+  # Set the default values for the slots. (optional)
+  prototype=list(
+    Phi            = numeric(0),
+    vecWeights     = numeric(0),
+    alternatives   = character(0),
+    criterias      = character(0),
+    data           = matrix(0))
+)
+
+
 
 #' @title RPrometheeII
 #'
@@ -348,11 +373,11 @@ setClass(
 #'
 #' @return
 #'  \itemize{
-#'   \item {PhiPlus} {The resulting PhiPlus from the alternatives for all
+#'   \item{Phi} {The resulting net Phi from the alternatives for all
 #'   criterias.}
-#'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
-#'   criterias}
 #'   \item{alternatives} {The alternatives names.}
+#'   \item{criterias} {The criterias names.}
+#'   \item{data} {The data used corresponding to criterias and alternatives.}
 #'  }
 #'
 #' @details
@@ -372,7 +397,7 @@ setClass(
 #'   that can be acquired by comparing the leaving and entering flow (Brans and
 #'   Mareschal 2005).
 #'
-#' @keywords decision-method
+#' @keywords decision-method mcda decision-analysis promethee
 #'
 #' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
 #' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
@@ -403,27 +428,6 @@ setClass(
 #'
 #' @export
 
-
-#Promethee II - Results
-setClass(
-  # Set the name for the class
-  Class = "RPrometheeII",
-
-  # Define the slots - in this case it is numeric
-  slots = c(Phi            = "numeric",
-            vecWeights     = "numeric",
-            alternatives   = "character",
-            criterias      = "character",
-            data           = "matrix"),
-
-  # Set the default values for the slots. (optional)
-  prototype=list(
-    Phi            = numeric(0),
-    vecWeights     = numeric(0),
-    alternatives   = character(0),
-    criterias      = character(0),
-    data           = matrix(0))
-)
 
 #Define the Method
 setGeneric(
@@ -463,13 +467,101 @@ setMethod(
   }
 )
 
-
-
 #
 # ################################################################################
 # ###########################       RPromethee 3     #############################
 # ################################################################################
 #
+
+#Promethee III - Class
+setClass(
+  Class = "RPrometheeIII",
+  slots = c(limInf         = "numeric" ,
+            limSup         = "numeric",
+            Phi            = "numeric",
+            alternatives   = "character",
+            criterias      = "character",
+            data           = "matrix"),
+  prototype = list(
+    limInf       = numeric(0),
+    limSup       = numeric(0),
+    Phi          = numeric(0),
+    alternatives = character(0),
+    criterias    = character(0),
+    data         = matrix(0)),
+  validity=function(object)
+  {
+    if(length(object@limSup)!=length(object@limInf)) {
+      return("The limit vectors must have the same length.")
+    }
+    return(TRUE)
+  }
+)
+
+
+#' @title RPrometheeIII
+#'
+#' @description
+#'   PROMETHEE III method includes a tolerance region in the preordering of
+#'   alternatives. That is, an  indifference region is created, different from
+#'   PROMETHEE I and II, where indifference only occurs when the performance of
+#'   two alternatives is exactly the same.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeII PrometheeII
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. See
+#' \code{\link{RPrometheeConstructor}} for more information.
+#'
+#' @return
+#'  \itemize{
+#'   \item{limInf} {The inferior limit for the interval defined for each flow.}
+#'   \item{limSup} {The superior limit for the interval defined for each flow.}
+#'   \item{Phi} {The resulting net Phi from the alternatives for all
+#'   criterias.}
+#'   \item{alternatives} {The alternatives names.}
+#'   \item{criterias} {The criterias names.}
+#'   \item{data} {The data used corresponding to criterias and alternatives.}
+#'  }
+#'
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and applications}\cr
+#'       European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
 
 #Define the Method
 setGeneric(
@@ -510,37 +602,14 @@ setMethod(
   }
 )
 
-#Promethee III - Results
-setClass(
-  Class = "RPrometheeIII",
-  slots = c(limInf         = "numeric" ,
-            limSup         = "numeric",
-            Phi            = "numeric",
-            alternatives   = "character",
-            criterias      = "character",
-            data           = "matrix"),
-  prototype = list(
-    limInf       = numeric(0),
-    limSup       = numeric(0),
-    Phi          = numeric(0),
-    alternatives = character(0),
-    criterias    = character(0),
-    data         = matrix(0)),
-  validity=function(object)
-  {
-    if(length(object@limSup)!=length(object@limInf)) {
-      return("The limit vectors must have the same length.")
-    }
-    return(TRUE)
-  }
-)
+
 
 #
 # ################################################################################
 # ###########################       RPromethee 4    ##############################
 # ################################################################################
 
-#Promethee IV - Results
+#Promethee IV - Class
 setClass(
   # Set the name for the class
   Class = "RPrometheeIV",
@@ -562,6 +631,77 @@ setClass(
                  criterias      = character(0),
                  data           = matrix(0))
 )
+
+
+#' @title RPrometheeIV
+#'
+#' @description
+#'   Proposed by Brans and Vincke (1985), PROMETHEE II method aims to solve
+#'   sorting problems. The PROMETHEE II method performs a total ordering of the
+#'   alternatives set by calculating the net outranking flow (HENDRIKS et al.,
+#'   1992), with the objective of solving the problem that no unambiguous
+#'   solution can be given due to incomparability.
+#'
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeII PrometheeII
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. It's
+#' important that \code{parms} argument isn't compound of NA values. See
+#' \code{\link{RPrometheeConstructor}} for more information.
+#'
+#' @return
+#'  \itemize{
+#'   \item{PhiPlus} {The resulting PhiPlus from the alternatives for all
+#'   criterias.}
+#'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
+#'   criterias}
+#'   \item{Index} {The index resulting from the lp solution.}
+#'   \item{alternatives} {The alternatives names.}
+#'   \item{criterias} {The criterias names.}
+#'   \item{data} {The data used corresponding to criterias and alternatives.}
+#'  }
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and
+#'        applications}\cr
+#'        European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
+
+
+
 #Define the Method
 setGeneric(
   "RPrometheeIV",
@@ -605,6 +745,102 @@ setMethod(
 # ################################################################################
 #
 
+#Promethee IV K - Class
+setClass(
+  Class = "RPrometheeIVKernel",
+  slots = c(PhiPlus        = "numeric",
+            PhiMinus       = "numeric",
+            Index          = "numeric",
+            alternatives   = "character",
+            criterias      = "character",
+            data           = "matrix"),
+  prototype = list(
+    PhiPlus        = numeric(0),
+    PhiMinus       = numeric(0),
+    Index          = numeric(0),
+    alternatives   = character(0),
+    criterias      = character(0),
+    data           = matrix(0)),
+  validity=function(object)
+  {
+    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
+      return("The Phi vectors must have the same length.")
+    }
+    return(TRUE)
+  }
+)
+
+
+
+#' @title RPrometheeIVKernel
+#'
+#' @description
+#'   The PROMETHEE IV KERNEL method was developed by Albuquerque and Montenegro
+#'   (2015),  as an alternative method to estimate PROMETHEE IV. It considers
+#'   the empirical distribution of the criteria through kernel density
+#'   estimation to evaluate alternatives.
+#'
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeII PrometheeII
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. For
+#' PROMETHEE IV KERNEL, the object must be supplied with a \code{band} argument,
+#' for Kernel Density Estimation. See \code{\link{RPrometheeConstructor}} for
+#' more information.
+#'
+#' @return
+#'  \itemize{
+#'   \item{PhiPlus} {The resulting PhiPlus from the alternatives for all
+#'   criterias.}
+#'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
+#'   criterias}
+#'   \item{Index} {The index resulting from the lp solution.}
+#'   \item{alternatives} {The alternatives names.}
+#'   \item{criterias} {The criterias names.}
+#'   \item{data} {The data used corresponding to criterias and alternatives.}
+#'  }
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       P. H. M., Albuquerque, M. R. Montenegro. \cr
+#'       \emph{PROMETHEE IV through kernel density estimation}\cr
+#'       Communications in Statistics - Theory and Methods v. 45, p.5355-5362,
+#'       2016.\cr
+#'       \url{https://www.tandfonline.com/doi/full/10.1080/03610926.2014.942432}
+#'
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and
+#'        applications}\cr
+#'        European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
+
+
 #Define the Method
 setGeneric(
   "RPrometheeIVKernel",
@@ -642,32 +878,6 @@ setMethod(
     return(resultsClass)
   }
 )
-
-#Promethee IV K - Results
-setClass(
-  Class = "RPrometheeIVKernel",
-  slots = c(PhiPlus        = "numeric",
-            PhiMinus       = "numeric",
-            Index          = "numeric",
-            alternatives   = "character",
-            criterias      = "character",
-            data           = "matrix"),
-  prototype = list(
-    PhiPlus        = numeric(0),
-    PhiMinus       = numeric(0),
-    Index          = numeric(0),
-    alternatives   = character(0),
-    criterias      = character(0),
-    data           = matrix(0)),
-  validity=function(object)
-  {
-    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
-      return("The Phi vectors must have the same length.")
-    }
-    return(TRUE)
-  }
-)
-
 
 # ################################################################################
 # ###########################       RPromethee 5     #############################
