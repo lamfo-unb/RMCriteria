@@ -69,10 +69,21 @@ The method created by Brans et al. (1985) is based on a set of alternatives
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{RPrometheeConstructor}},
+Other RPromethee methods: \code{\link{NetworkPlot}},
+  \code{\link{PrometheeIIIPlot}},
+  \code{\link{PrometheeIIPlot}},
+  \code{\link{PrometheeIPlot}},
+  \code{\link{PrometheeIVPlot}},
+  \code{\link{RPrometheeConstructor}},
   \code{\link{RPrometheeIII}},
   \code{\link{RPrometheeIVKernel}},
-  \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}}
+  \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}},
+  \code{\link{RPrometheeV}},
+  \code{\link{SensitivityAnalysis}},
+  \code{\link{WalkingWeightsPlot}},
+  \code{\link{plot,RPrometheeI-method}},
+  \code{\link{plot,RPrometheeII-method}},
+  \code{\link{plot,RPrometheeIII-method}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}

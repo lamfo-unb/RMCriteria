@@ -2,8 +2,7 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{RPrometheeIV}
 \alias{RPrometheeIV}
-\alias{RPrometheeII}
-\alias{PrometheeII}
+\alias{PrometheeIV}
 \title{RPrometheeIV}
 \usage{
 RPrometheeIV(RPrometheeArguments)
@@ -63,10 +62,20 @@ Proposed by Brans and Vincke (1985), PROMETHEE II method aims to solve
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{RPrometheeConstructor}},
+Other RPromethee methods: \code{\link{NetworkPlot}},
+  \code{\link{PrometheeIIIPlot}},
+  \code{\link{PrometheeIIPlot}},
+  \code{\link{PrometheeIPlot}},
+  \code{\link{PrometheeIVPlot}},
+  \code{\link{RPrometheeConstructor}},
   \code{\link{RPrometheeIII}}, \code{\link{RPrometheeII}},
   \code{\link{RPrometheeIVKernel}},
-  \code{\link{RPrometheeI}}
+  \code{\link{RPrometheeI}}, \code{\link{RPrometheeV}},
+  \code{\link{SensitivityAnalysis}},
+  \code{\link{WalkingWeightsPlot}},
+  \code{\link{plot,RPrometheeI-method}},
+  \code{\link{plot,RPrometheeII-method}},
+  \code{\link{plot,RPrometheeIII-method}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}

@@ -78,10 +78,20 @@ This function is used to create a \code{RPrometheeArguments} object. This
  \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIV}},
  \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}
 
-Other RPromethee methods: \code{\link{RPrometheeIII}},
-  \code{\link{RPrometheeII}},
+Other RPromethee methods: \code{\link{NetworkPlot}},
+  \code{\link{PrometheeIIIPlot}},
+  \code{\link{PrometheeIIPlot}},
+  \code{\link{PrometheeIPlot}},
+  \code{\link{PrometheeIVPlot}},
+  \code{\link{RPrometheeIII}}, \code{\link{RPrometheeII}},
   \code{\link{RPrometheeIVKernel}},
-  \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}}
+  \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}},
+  \code{\link{RPrometheeV}},
+  \code{\link{SensitivityAnalysis}},
+  \code{\link{WalkingWeightsPlot}},
+  \code{\link{plot,RPrometheeI-method}},
+  \code{\link{plot,RPrometheeII-method}},
+  \code{\link{plot,RPrometheeIII-method}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}

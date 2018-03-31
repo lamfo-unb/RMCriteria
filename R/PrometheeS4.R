@@ -509,10 +509,12 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeII PrometheeII
+#' @aliases RPrometheeIII PrometheeIII
 #'
-#' @param RPrometheeArguments An object with all RPromethee arguments. See
-#' \code{\link{RPrometheeConstructor}} for more information.
+#' @param RPrometheeArguments an object with all RPromethee arguments. In this
+#' method, the object must have the argument \code{alphaVector} to indicate the
+#' size of the interval for each alternative. See \code{\link{RPrometheeConstructor}}
+#' for more information.
 #'
 #' @return
 #'  \itemize{
@@ -645,7 +647,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeII PrometheeII
+#' @aliases RPrometheeIV PrometheeIV
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. It's
 #' important that \code{parms} argument isn't compound of NA values. See
@@ -783,7 +785,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeII PrometheeII
+#' @aliases RPrometheeIVKernel PrometheeIVKernel
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. For
 #' PROMETHEE IV KERNEL, the object must be supplied with a \code{band} argument,
@@ -883,6 +885,81 @@ setMethod(
 # ###########################       RPromethee 5     #############################
 # ################################################################################
 
+#' @title RPrometheeV
+#'
+#' @description
+#'   PROMETHEE V deals with a subset of alternatives considerating a set of
+#'   restrictions. First, the PROMETHEE II is calculated to get a complete
+#'   pre-order. Then, binary linear programming is used to select a subset that
+#'   maximizes the net outranking flow, according to restrictions. The first
+#'   step can be calculated using PROMETHEE II or PROMETHEE IV, this is defined
+#'   by the user through the argument \code{method}. The second step is done
+#'   using the package \code{\link{lp}}.
+#'
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeV PrometheeV
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. In
+#'  PROMETHEE V, the object must have the arguments \code{constraintDir} and
+#'  \code{bounds}, in order to create the subset of alternatives. See
+#'  \code{\link{RPrometheeConstructor}} for more information.
+#'
+#' @param method a character object used to choose how the RPrometheeV is going
+#' to be calculated. The method can be \code{"PrometheeII"} or
+#' \code{"PrometheeIV"}. The standard is \code{"RPrometheeII"}.
+#'
+#' @return
+#'  \itemize{
+#'   \item{Phi} {The resulting net Phi from the alternatives for all
+#'   criterias.}
+#'   \item{Solution} {The solution resulting from linear programming problem.}
+#'   \item{alternatives} {The alternatives names.}
+#'   \item{criterias} {The criterias names.}
+#'   \item{data} {The data used corresponding to criterias and alternatives.}
+#'  }
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and
+#'        applications}\cr
+#'        European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{Promethee V: MCDM Problems With Segmentation Constraints}\cr
+#'       INFOR: Information Systems and Operational Research, v. 30, p. 85-96,
+#'       1992.\cr
+#'       \url{https://www.tandfonline.com/doi/abs/10.1080/03155986.1992.11732186}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
+
+
 #Define the Method
 setGeneric(
   "RPrometheeV",
@@ -960,6 +1037,74 @@ setClass(
 # ################################################################################
 # ##########################   Sensitivity Analysis   ############################
 # ################################################################################
+
+#' @title SensitivityAnalysis
+#'
+#' @description
+#'   Sensitivity Analysis is a method developed by Wolters & Mareschal (1995) to
+#'   evaluate how \code{\link{RPrometheeII}} and \code{\link{RPrometheeIV}}
+#'   results are sensitive to changes in weights of criterias. That is, how the
+#'   solution to the decision problem can be affected by the distribution of
+#'   criterias weights.
+#'
+#'
+#' @family RPromethee methods
+#'
+#' @aliases SensitivityAnalysis
+#'
+#' @param RPrometheeArguments An object with all RPromethee arguments. For
+#' PROMETHEE IV, it's important that \code{parms} argument isn't compound of NA
+#' values. See \code{\link{RPrometheeConstructor}} for more information.
+#'
+#' @param method A character object used to choose how the SensitivityAnalysis is going to be calculated. The method can be \code{"RPrometheeII"} or \code{"RPrometheeIV"}. The standard is \code{"RPrometheeII"}
+#'
+#' @return
+#'  \itemize{
+#'   \item{Solution} {The solution resulting from linear programming problem.}
+#'   \item{alternatives} {The alternatives names.}
+#'   \item{criterias} {The criterias names.}
+#'   \item{data} {The data used corresponding to criterias and alternatives.}
+#'  }
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and
+#'        applications}\cr
+#'        European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       W.T.M. Wolters, B. Mareschal\cr
+#'       \emph{Novel types of sensitivity analysis for additive MCDM
+#'       ethods}.\cr
+#'       European Journal of Operational Research, v. 81, p. 281-290, 1995.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/0377221793E0343V}
+#'    }
+#'
+#' @export
+
+
 
 #Define the Method
 setGeneric(
@@ -1044,6 +1189,43 @@ setClass(
 #################################################
 ######  Promethee I Partial Ranking  ############
 #################################################
+#' @title RPrometheeIPlot
+#'
+#' @description
+#'   Plots PhiPlus and PhiMinus resulting from RPrometheeI results.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeIPlot PrometheeIPlot
+#'
+#' @param RPrometheeI An object resulting from RPrometheeI method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
+
 
 #Define the Method
 setGeneric(
@@ -1114,6 +1296,44 @@ setMethod(
 ######  Promethee II Complete Ranking  ##########
 #################################################
 
+#' @title RPrometheeIIPlot
+#'
+#' @description
+#'   Plots the net Phi, resulting from RPrometheeII method.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeIIPlot PrometheeIIPlot
+#'
+#' @param RPrometheeII An object resulting from RPrometheeII method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
+
+
 #Define the Method
 setGeneric(
   "PrometheeIIPlot",
@@ -1181,6 +1401,54 @@ setMethod(
 #################################################
 ######  Promethee III Complete Ranking  #########
 #################################################
+
+#' @title RPrometheeIIIPlot
+#'
+#' @description
+#'   Plots the Phi interval for each alternative and also its Phi dot.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeIIIPlot PrometheeIIIPlot
+#'
+#' @param RPrometheeIII An object resulting from RPrometheeIII method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and applications}\cr
+#'       European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
 
 #Define the Method
 setGeneric(
@@ -1253,6 +1521,56 @@ setMethod(
 ######  Promethee IV Complete Ranking  ##########
 #################################################
 
+#' @title RPrometheeIVPlot
+#'
+#' @description
+#'   Plots PhiPlus and PhiMinus resulting from RPrometheeIV results.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeIVPlot PrometheeIVPlot
+#'
+#' @param RPrometheeIV An object resulting from RPrometheeIV method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and
+#'        applications}\cr
+#'        European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
+
+
+
 #Define the Method
 setGeneric(
   "PrometheeIVPlot",
@@ -1261,7 +1579,7 @@ setGeneric(
   }
 )
 
-# Complete Ranking Promethee II - Method
+# Complete Ranking Promethee IV - Method
 setMethod(
   "PrometheeIVPlot",
   signature("RPrometheeIV"),
@@ -1320,6 +1638,45 @@ setMethod(
 )
 
 ##### Walking Weights Plot
+
+#' @title WalkingWeightsPlot
+#'
+#' @description
+#'   Plots the net Phi for each alternative and how the criterias are weighted.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases WalkingWeightsPlot
+#'
+#' @param RPrometheeII An object resulting from RPrometheeII method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
+
+
 
 #Define the Method
 setGeneric(
@@ -1381,6 +1738,44 @@ setMethod(
 
 
 ##### Network Plot
+
+#' @title NetworkPlot
+#'
+#' @description
+#'   Shows the relationship among alternatives using a net graph, where the
+#'   arrows come from the alternative with biggest PhiPlus and smallest PhiMinus.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases NetworkPlot
+#'
+#' @param RPrometheeI An object resulting from RPrometheeI method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
 
 #Define the Method
 setGeneric(
@@ -1451,6 +1846,41 @@ if(!isGeneric("plot")){
 
 #Define the Method
 
+#' @title plot,RPrometheeI
+#'
+#' @description
+#'   Plots the PhiPlus and PhiMinus, resulting from RPrometheeI method and how
+#'   they relate through NetworkPlot.
+#'
+#' @family RPromethee methods
+#'
+#' @param RPrometheeI An object resulting from RPrometheeI method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+
 
 setMethod(f="plot",
   signature("RPrometheeI"),
@@ -1462,6 +1892,44 @@ setMethod(f="plot",
   }
 )
 
+
+#' @title RPrometheeIIPlot
+#'
+#' @description
+#'   Plots the net Phi, resulting from RPrometheeII method.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeIIPlot PrometheeIIPlot
+#'
+#' @param RPrometheeII An object resulting from RPrometheeII method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'    }
+#'
+#' @export
+#' @rdname plot-RPrometheeIIPlot
+
 setMethod(f="plot",
   signature("RPrometheeII"),
   definition = function(x,y,...) {
@@ -1471,6 +1939,55 @@ setMethod(f="plot",
     par(ask = FALSE)
   }
 )
+
+
+#' @title plot-PrometheeIII
+#'
+#' @description
+#'   Plots the Phi interval for each alternative and also its Phi dot.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases RPrometheeIIIPlot PrometheeIIIPlot
+#'
+#' @param RPrometheeIII An object resulting from RPrometheeIII method.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#'
+#' @references
+#'     \itemize{
+#'       \item
+#'       J. P. Brans, Ph. Vincke\cr
+#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
+#'       for Multiple Criteria Decision-Making)}\cr
+#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
+#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
+#'
+#'       \item
+#'       J. P. Brans, B. Mareschal \cr
+#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
+#'       Multiple criteria decision analysis: state of the art surveys.}\cr
+#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
+#'       \url{http://www.springer.com/la/book/9780387230818}
+#'
+#'       \item
+#'       M. Behzadian et al. \cr
+#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and applications}\cr
+#'       European Journal of Operational Research v. 200, p.198-215, 2010.\cr
+#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
+#'
+#'       \item
+#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
+#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
+#'       Risk Perception}.\cr
+#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
+#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
+#'    }
+#'
+#' @export
 
 setMethod(f="plot",
           signature("RPrometheeIII"),
