@@ -286,14 +286,49 @@ setClass(
 #'    }
 #'
 #' @export
+#' @examples
+#' ## Create objects for each argument
+#' data <-matrix(c(5.2,-3.5,
+#'                 4.3,-1.2,
+#'                 6.7,-2.0), byrow = T, ncol=2, nrow=3)
+#'
+#' parms <- matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives)
+#'
+#' ## Run RPrometheeI
+#' (result <- RPrometheeI(PromObj))
+#'
+#' ## There are two alternatives two plot a RPrometheeI object:
+#' plot(result)
+#' PrometheeIPlot(result)
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newWeights <- c(0.5, 0.5)
+#' result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
+#'
 
-#Define the Method
-setGeneric(
-  "RPrometheeI",
-  function(RPrometheeArguments) {
-    standardGeneric("RPrometheeI")
-  }
-)
+
+# Define the Method
+ setGeneric(
+   "RPrometheeI",
+   function(RPrometheeArguments) {
+     standardGeneric("RPrometheeI")
+     }
+   )
+
 
 #Promethee I - Method
 setMethod(
@@ -427,6 +462,39 @@ setClass(
 #'    }
 #'
 #' @export
+#' @examples
+#' ## Create objects for each argument
+#' data <-matrix(c(5.2,-3.5,
+#'                 4.3,-1.2,
+#'                 6.7,-2.0), byrow = T, ncol=2, nrow=3)
+#'
+#' parms <- matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives)
+#'
+#' ## Run RPrometheeII
+#' (result <- RPrometheeII(PromObj))
+#'
+#' ## There are two alternatives two plot a RPrometheeII object:
+#' plot(result)
+#' PrometheeIIPlot(result)
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newWeights <- c(0.5, 0.5)
+#' result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
+
 
 
 #Define the Method
@@ -564,6 +632,39 @@ setClass(
 #'    }
 #'
 #' @export
+#' @examples
+#' ## Create objects for each argument
+#' data <-matrix(c(5.2,-3.5,
+#'                 4.3,-1.2,
+#'                 6.7,-2.0), byrow = T, ncol=2, nrow=3)
+#'
+#' parms <- matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' alphaVector <- c(1,2,1)
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives, alphaVector = alphaVector)
+#'
+#' ## Run RPrometheeIII
+#' (result <- RPrometheeIII(PromObj))
+#'
+#' ## There are two alternatives two plot a RPrometheeIII object:
+#' plot(result)
+#' PrometheeIIIPlot(result)
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newAlphaVector <- c(1, 1, 1)
+#' result <- UpdateRPrometheeArguments(result, "alphaVector", newAlphaVector)
 
 #Define the Method
 setGeneric(
@@ -701,6 +802,38 @@ setClass(
 #'    }
 #'
 #' @export
+#' @examples
+#' ## Create objects for each argument
+#' data <-matrix(c(5.2,-3.5,
+#'                 4.3,-1.2,
+#'                 6.7,-2.0), byrow = T, ncol=2, nrow=3)
+#'
+#' parms <- matrix(c(1.0, 1.3), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives)
+#'
+#' ## Run RPrometheeIV
+#' (result <- RPrometheeIV(PromObj))
+#'
+#' ## There are two alternatives two plot a RPrometheeIV object:
+#' plot(result)
+#' PrometheeIVPlot(result)
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newPrefFunction <- c(1, 1)
+#' result <- UpdateRPrometheeArguments(result, "prefFunction", newPrefFunction)
 
 
 
@@ -839,8 +972,40 @@ setClass(
 #'       \url{http://www.springer.com/la/book/9780387230818}
 #'    }
 #'
+#' @importFrom stats bw.nrd0
 #' @export
-
+#' @examples
+#' ## Create objects for each argument
+#' data <- matrix(c(5.2,-3.5,
+#'                  4.3,-1.2,
+#'                  6.7,-2.0,
+#'                  5.4,-5.0,
+#'                  4.8, 0.0,
+#'                  2.8,-3.4), byrow = T, ncol=2)
+#'
+#' parms <- matrix(c(1.0, 5.0), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' band <- as.matrix(apply(data, 2, bw.nrd0))
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives, band = band)
+#'
+#' ## Run RPrometheeIVKernel
+#' (result <- RPrometheeIVKernel(PromObj))
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C", "D", "E", "F")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+#' result <- UpdateRPrometheeArguments(result, "parms", newParms)
 
 
 #Define the Method
@@ -956,7 +1121,45 @@ setMethod(
 #'       \url{http://www.springer.com/la/book/9780387230818}
 #'    }
 #'
+#' @importFrom lpSolve lp
 #' @export
+#' @examples
+#' ## Create objects for each argument
+#' data <- matrix(c(5.2,-3.5,
+#'                  4.3,-1.2,
+#'                  6.7,-2.0,
+#'                  5.4,-5.0,
+#'                  4.8, 0.0,
+#'                  2.8,-3.4), byrow = T, ncol=2)
+#'
+#' parms <- matrix(c(1.0, 5.0), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' constraintDir <- rep("<=", ncol(dados))
+#' bounds <- c(7,-1)
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives, bounds = bounds,
+#' constraintDir = constraintDir)
+#'
+#' ## Run RPrometheeV using standard method ("RPrometheeII")
+#' result <- RPrometheeV(PromObj)
+#'
+#' ## Run RPrometheeV using "RPrometheeIV
+#' result <- RPrometheeV(PromObj, method = "RPrometheeIV")
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C", "D", "E", "F")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newBounds <- c(5, -2)
+#' result <- UpdateRPrometheeArguments(result, "bounds", newBounds)
 
 
 
@@ -1102,8 +1305,45 @@ setClass(
 #'       \url{https://www.sciencedirect.com/science/article/abs/pii/0377221793E0343V}
 #'    }
 #'
+#' @importFrom lpSolve lp
 #' @export
-
+#' @examples
+#' ## Create objects for each argument
+#' data <- matrix(c(5.2,-3.5,
+#'                  4.3,-1.2,
+#'                  6.7,-2.0,
+#'                  5.4,-5.0,
+#'                  4.8, 0.0,
+#'                  2.8,-3.4), byrow = T, ncol=2)
+#'
+#' parms<-matrix(c(1.0, -2.3), byrow = TRUE, ncol = 1, nrow = 2)
+#' vecWeights <- c(0.3,0.7)
+#' vecMaximiz <- c(F,T)
+#' prefFunction <- c(0,0)
+#' constraintDir <- rep("<=", ncol(dados))
+#' bounds <- c(7,-1)
+#' normalize <- FALSE
+#' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+#'
+#' ## Create RPrometheeArguments object
+#' PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+#' vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+#' normalize = normalize, alternatives = alternatives, bounds = bounds,
+#' constraintDir = constraintDir)
+#'
+#' ## Run RPrometheeV using standard method ("RPrometheeII")
+#' (result <- SensitivityAnalysis(PromObj))
+#'
+#' ## Run RPrometheeV using RPrometheeIV
+#' (result <- SensitivityAnalysis(PromObj, "PrometheeIV"))
+#'
+#' ## Updating alternatives name using UpdateRPrometheeAlternatives
+#' newAlternatives <- c("A", "B", "C", "D", "E", "F")
+#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#'
+#' ## Updating any argument using UpdateRPrometheeArguments
+#' newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+#' result <- UpdateRPrometheeArguments(result, "parms", newParms)
 
 
 #Define the Method
@@ -1846,41 +2086,8 @@ if(!isGeneric("plot")){
 
 #Define the Method
 
-#' @title plot,RPrometheeI
-#'
-#' @description
-#'   Plots the PhiPlus and PhiMinus, resulting from RPrometheeI method and how
-#'   they relate through NetworkPlot.
-#'
-#' @family RPromethee methods
-#'
-#' @param RPrometheeI An object resulting from RPrometheeI method.
-#'
-#' @keywords decision-method mcda decision-analysis promethee
-#'
-#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
-#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
-#'
-#' @references
-#'     \itemize{
-#'
-#'       \item
-#'       J. P. Brans, Ph. Vincke\cr
-#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
-#'       for Multiple Criteria Decision-Making)}\cr
-#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
-#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
-#'
-#'       \item
-#'       J. P. Brans, B. Mareschal \cr
-#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
-#'       Multiple criteria decision analysis: state of the art surveys.}\cr
-#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
-#'       \url{http://www.springer.com/la/book/9780387230818}
-#'    }
-#'
+#' @method plot RPrometheeI
 #' @export
-
 
 setMethod(f="plot",
   signature("RPrometheeI"),
@@ -1893,42 +2100,8 @@ setMethod(f="plot",
 )
 
 
-#' @title RPrometheeIIPlot
-#'
-#' @description
-#'   Plots the net Phi, resulting from RPrometheeII method.
-#'
-#' @family RPromethee methods
-#'
-#' @aliases RPrometheeIIPlot PrometheeIIPlot
-#'
-#' @param RPrometheeII An object resulting from RPrometheeII method.
-#'
-#' @keywords decision-method mcda decision-analysis promethee
-#'
-#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
-#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
-#'
-#' @references
-#'     \itemize{
-#'
-#'       \item
-#'       J. P. Brans, Ph. Vincke\cr
-#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
-#'       for Multiple Criteria Decision-Making)}\cr
-#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
-#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
-#'
-#'       \item
-#'       J. P. Brans, B. Mareschal \cr
-#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
-#'       Multiple criteria decision analysis: state of the art surveys.}\cr
-#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
-#'       \url{http://www.springer.com/la/book/9780387230818}
-#'    }
-#'
+#' @method plot RPrometheeII
 #' @export
-#' @rdname plot-RPrometheeIIPlot
 
 setMethod(f="plot",
   signature("RPrometheeII"),
@@ -1941,52 +2114,7 @@ setMethod(f="plot",
 )
 
 
-#' @title plot-PrometheeIII
-#'
-#' @description
-#'   Plots the Phi interval for each alternative and also its Phi dot.
-#'
-#' @family RPromethee methods
-#'
-#' @aliases RPrometheeIIIPlot PrometheeIIIPlot
-#'
-#' @param RPrometheeIII An object resulting from RPrometheeIII method.
-#'
-#' @keywords decision-method mcda decision-analysis promethee
-#'
-#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
-#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
-#'
-#' @references
-#'     \itemize{
-#'       \item
-#'       J. P. Brans, Ph. Vincke\cr
-#'       \emph{A Preference Ranking Organisation Method: (The PROMETHEE Method
-#'       for Multiple Criteria Decision-Making)}\cr
-#'       Management science, v. 31, n. 6, p. 647-656, 1985.\cr
-#'       \url{https://pdfs.semanticscholar.org/edd6/f5ae9c1bfb2fdd5c9a5d66e56bdb22770460.pdf}
-#'
-#'       \item
-#'       J. P. Brans, B. Mareschal \cr
-#'       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
-#'       Multiple criteria decision analysis: state of the art surveys.}\cr
-#'       Springer Science, Business Media Inc., Boston pp 163–195.\cr
-#'       \url{http://www.springer.com/la/book/9780387230818}
-#'
-#'       \item
-#'       M. Behzadian et al. \cr
-#'       \emph{PROMETHEE: A comprehensive literature review on methodologies and applications}\cr
-#'       European Journal of Operational Research v. 200, p.198-215, 2010.\cr
-#'       \url{https://www.sciencedirect.com/science/article/abs/pii/S0377221709000071}
-#'
-#'       \item
-#'       Tsuen-Ho Hsu, Ling-Zhong Lin\cr
-#'       \emph{Using Fuzzy Preference Method for Group Package Tour Based on the
-#'       Risk Perception}.\cr
-#'       Group Decision and Negotiation, v. 23, n. 2, p. 299-323, 2014.\cr
-#'       \url{http://link.springer.com/article/10.1007/s10726-012-9313-7}
-#'    }
-#'
+#' @method plot RPrometheeIII
 #' @export
 
 setMethod(f="plot",
@@ -1996,12 +2124,26 @@ setMethod(f="plot",
           }
 )
 
+#' @method plot RPrometheeIV
+#' @export
+
+setMethod(f="plot",
+          signature("RPrometheeIV"),
+          definition = function(x,y,...) {
+            PrometheeIVPlot(x)
+          }
+)
+
+
 ########################################################################
 ##################### Standard Methods #################################
 ########################################################################
 
 ##############################################
 ## show() method for PrometheeClass
+
+#' @method show RPrometheeArguments
+#' @export
 
 setMethod(f = "show", signature = "RPrometheeArguments",
           definition <-  function(object) {
@@ -2019,6 +2161,9 @@ setMethod(f = "show", signature = "RPrometheeArguments",
             invisible(NULL)
           })
 
+#' @method show RPrometheeI
+#' @export
+
 setMethod(f = "show", signature = "RPrometheeI",
           definition <-  function(object) {
             Plus           <- object@PhiPlus
@@ -2029,6 +2174,9 @@ setMethod(f = "show", signature = "RPrometheeI",
             invisible(NULL)
           })
 
+#' @method show RPrometheeII
+#' @export
+
 setMethod(f = "show", signature = "RPrometheeII",
           definition <-  function(object) {
             Phi            <- object@Phi
@@ -2037,6 +2185,9 @@ setMethod(f = "show", signature = "RPrometheeII",
             cat("Promethee II object with", length(Phi), "alternatives. \nPhi:", sprintf("%0.3f", round(Phi, digits = 3)), "\nThe alternatives are:", alternatives)
             invisible(NULL)
           })
+
+#' @method show RPrometheeIII
+#' @export
 
 setMethod(f = "show", signature = "RPrometheeIII",
           definition <-  function(object) {
@@ -2049,6 +2200,9 @@ setMethod(f = "show", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
+#' @method show RPrometheeIV
+#' @export
+
 setMethod(f = "show", signature = "RPrometheeIV",
           definition <-  function(object) {
             Plus           <- object@PhiPlus
@@ -2059,6 +2213,9 @@ setMethod(f = "show", signature = "RPrometheeIV",
             invisible(NULL)
           })
 
+#' @method show RPrometheeIVKernel
+#' @export
+
 setMethod(f = "show", signature = "RPrometheeIVKernel",
           definition <-  function(object) {
             Plus           <- object@PhiPlus
@@ -2068,6 +2225,9 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
             cat("Promethee IV object with", length(Plus), "alternatives.", "\nPhi Plus: ", sprintf("%0.3f", round(Plus, digits = 3)), "\nPhi Minus: ", sprintf("%0.3f", round(Minus, digits = 3)), "\nThe alternatives are:", alternatives)
             invisible(NULL)
           })
+
+#' @method show RPrometheeV
+#' @export
 
  setMethod(f = "show", signature = "RPrometheeV",
            definition <-  function(object) {
@@ -2080,6 +2240,9 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
            })
 
 
+#' @method show SensitivityAnalysis
+#' @export
+
 setMethod(f = "show", signature = "SensitivityAnalysis",
           definition <-  function(object) {
             alternatives   <- object@alternatives
@@ -2091,6 +2254,9 @@ setMethod(f = "show", signature = "SensitivityAnalysis",
 
 ##############################################
 ## print() method for PrometheeClass
+
+#' @method print RPrometheeArguments
+#' @export
 
 setMethod(f = "print", signature = "RPrometheeArguments",
           definition <-  function(x) {
@@ -2111,7 +2277,8 @@ setMethod(f = "print", signature = "RPrometheeArguments",
             invisible(NULL)
           })
 
-
+#' @method print RPrometheeI
+#' @export
 
 setMethod(f = "print", signature = "RPrometheeI",
           definition <-  function(x) {
@@ -2128,6 +2295,8 @@ setMethod(f = "print", signature = "RPrometheeI",
             invisible(NULL)
           })
 
+#' @method print RPrometheeII
+#' @export
 
 setMethod(f = "print", signature = "RPrometheeII",
           definition <-  function(x) {
@@ -2142,6 +2311,8 @@ setMethod(f = "print", signature = "RPrometheeII",
             invisible(NULL)
           })
 
+#' @method print RPrometheeIII
+#' @export
 
 setMethod(f = "print", signature = "RPrometheeIII",
           definition <-  function(x) {
@@ -2160,6 +2331,9 @@ setMethod(f = "print", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
+#' @method print RPrometheeIV
+#' @export
+
 setMethod(f = "print", signature = "RPrometheeIV",
           definition <-  function(x) {
             Plus           <- x@PhiPlus
@@ -2176,6 +2350,9 @@ setMethod(f = "print", signature = "RPrometheeIV",
           })
 
 
+#' @method print RPrometheeIVKernel
+#' @export
+
 setMethod(f = "print", signature = "RPrometheeIVKernel",
           definition <-  function(x) {
             Plus           <- x@PhiPlus
@@ -2191,6 +2368,9 @@ setMethod(f = "print", signature = "RPrometheeIVKernel",
             invisible(NULL)
           })
 
+#' @method print RPrometheeV
+#' @export
+
 setMethod(f = "print", signature = "RPrometheeV",
           definition <-  function(x) {
             Phi            <- x@Phi
@@ -2205,6 +2385,9 @@ setMethod(f = "print", signature = "RPrometheeV",
                 "\n# Solution:", solution)
             invisible(NULL)
           })
+
+#' @method print SensitivityAnalysis
+#' @export
 
 setMethod(f = "print", signature = "SensitivityAnalysis",
           definition <-  function(x) {
@@ -2223,6 +2406,10 @@ setMethod(f = "print", signature = "SensitivityAnalysis",
 
 ##############################################
 ## summary() method for PrometheeClass
+
+#' @method summary RPrometheeArguments
+#' @importFrom pastecs stat.desc
+#' @export
 
 setMethod(f = "summary", signature = "RPrometheeArguments",
           definition <-  function(object) {
@@ -2243,6 +2430,10 @@ setMethod(f = "summary", signature = "RPrometheeArguments",
             res
           })
 
+#' @method summary RPrometheeI
+#' @importFrom pastecs stat.desc
+#' @export
+
 setMethod(f = "summary", signature = "RPrometheeI",
           definition <-  function(object) {
             datMat         <- object@data;
@@ -2257,6 +2448,10 @@ setMethod(f = "summary", signature = "RPrometheeI",
                              "Standard Deviation","Coefficient of variation")
             res
           })
+
+#' @method summary RPrometheeII
+#' @importFrom pastecs stat.desc
+#' @export
 
 setMethod(f = "summary", signature = "RPrometheeII",
           definition <-  function(object) {
@@ -2274,6 +2469,10 @@ setMethod(f = "summary", signature = "RPrometheeII",
           })
 
 
+#' @method summary RPrometheeIII
+#' @importFrom pastecs stat.desc
+#' @export
+
 setMethod(f = "summary", signature = "RPrometheeIII",
           definition <-  function(object) {
             datMat         <- object@data;
@@ -2290,6 +2489,10 @@ setMethod(f = "summary", signature = "RPrometheeIII",
           })
 
 
+#' @method summary RPrometheeIV
+#' @importFrom pastecs stat.desc
+#' @export
+
 setMethod(f = "summary", signature = "RPrometheeIV",
           definition <-  function(object) {
             datMat         <- object@data;
@@ -2304,6 +2507,10 @@ setMethod(f = "summary", signature = "RPrometheeIV",
                              "Standard Deviation","Coefficient of variation")
             res
           })
+
+#' @method summary RPrometheeIVKernel
+#' @importFrom pastecs stat.desc
+#' @export
 
 setMethod(f = "summary", signature = "RPrometheeIVKernel",
           definition <-  function(object) {
@@ -2321,6 +2528,9 @@ setMethod(f = "summary", signature = "RPrometheeIVKernel",
           })
 
 
+#' @method summary RPrometheeV
+#' @importFrom pastecs stat.desc
+#' @export
 
 setMethod(f = "summary", signature = "RPrometheeV",
           definition <-  function(object) {
@@ -2337,6 +2547,9 @@ setMethod(f = "summary", signature = "RPrometheeV",
             res
           })
 
+#' @method summary SensitivityAnalysis
+#' @importFrom pastecs stat.desc
+#' @export
 
 setMethod(f = "summary", signature = "SensitivityAnalysis",
           definition <-  function(object) {
@@ -2358,6 +2571,30 @@ setMethod(f = "summary", signature = "SensitivityAnalysis",
 ########################################################################
 #####################  Update Methods  #################################
 ########################################################################
+#' @title UpdateRPrometheeArguments
+#'
+#' @description
+#'   Updates slots from \code{RPrometheeArguments} objects.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases UpdateRPrometheeArguments
+#'
+#' @param object A \code{RPrometheeArguments} object
+#' @param element A character value to indicate which slot is going to be
+#' updated. The name must be exactly the same as the name of the argument.
+#' @param newValue An object of the class of the element that is being updated.
+#' For example, if it is \code{parms}, \code{newValue} must be a numeric vector.
+#'
+#' @details The updated arguments can be \code{datMat}, \code{vecWeights},
+#' \code{vecMaximiz}, \code{prefFunction}, \code{parms}, \code{normalize},
+#' \code{alphaVector}, \code{band}, \code{constraintDir} or \code{bounds}.
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+
 
 ## RPrometheeArguments update functions
 setGeneric(
@@ -2426,6 +2663,28 @@ setMethod(
 
 #setClassUnion("RPromethee", c("RPrometheeI", "RPrometheeII", "RPrometheeIII",
 #                              "RPrometheeIV", "RPrometheeIVKernel", "RPrometheeV"))
+
+#' @title UpdateRPrometheeAlternatives
+#'
+#' @description
+#'   Updates alternatives names from RPromethee objects.
+#'
+#' @family RPromethee methods
+#'
+#' @aliases UpdateRPrometheeArguments
+#'
+#' @param object An object from a RPromethee class. It can be any of the 6
+#' methods.
+#' @param alternatives A character vector with the alternatives new names.
+#'
+#' @details It's possible to update alternatives names for: \code{RPrometheeI},
+#'  \code{RPrometheeII}, \code{RPrometheeIII}, \code{RPrometheeIV},
+#'  \code{RPrometheeIVKernel} and \code{RPrometheeV}
+#'
+#' @keywords decision-method mcda decision-analysis promethee
+#'
+#' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
+#' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
 
 ## RPrometheeArguments update functions
 setGeneric(

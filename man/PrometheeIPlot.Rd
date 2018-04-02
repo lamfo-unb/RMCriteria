@@ -42,10 +42,9 @@ Other RPromethee methods: \code{\link{NetworkPlot}},
   \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}},
   \code{\link{RPrometheeV}},
   \code{\link{SensitivityAnalysis}},
-  \code{\link{WalkingWeightsPlot}},
-  \code{\link{plot,RPrometheeI-method}},
-  \code{\link{plot,RPrometheeII-method}},
-  \code{\link{plot,RPrometheeIII-method}}
+  \code{\link{UpdateRPrometheeAlternatives}},
+  \code{\link{UpdateRPrometheeArguments}},
+  \code{\link{WalkingWeightsPlot}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}

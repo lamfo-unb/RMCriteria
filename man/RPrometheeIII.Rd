@@ -30,6 +30,40 @@ PROMETHEE III method includes a tolerance region in the preordering of
   PROMETHEE I and II, where indifference only occurs when the performance of
   two alternatives is exactly the same.
 }
+\examples{
+## Create objects for each argument
+data <-matrix(c(5.2,-3.5,
+                4.3,-1.2,
+                6.7,-2.0), byrow = T, ncol=2, nrow=3)
+
+parms <- matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
+vecWeights <- c(0.3,0.7)
+vecMaximiz <- c(F,T)
+prefFunction <- c(0,0)
+alphaVector <- c(1,2,1)
+normalize <- FALSE
+alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+
+## Create RPrometheeArguments object
+PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+normalize = normalize, alternatives = alternatives, alphaVector = alphaVector)
+
+## Run RPrometheeIII
+(result <- RPrometheeIII(PromObj))
+
+## There are two alternatives two plot a RPrometheeIII object:
+plot(result)
+PrometheeIIIPlot(result)
+
+## Updating alternatives name using UpdateRPrometheeAlternatives
+newAlternatives <- c("A", "B", "C")
+result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+
+## Updating any argument using UpdateRPrometheeArguments
+newAlphaVector <- c(1, 1, 1)
+result <- UpdateRPrometheeArguments(result, "alphaVector", newAlphaVector)
+}
 \references{
 \itemize{
       \item
@@ -72,10 +106,9 @@ Other RPromethee methods: \code{\link{NetworkPlot}},
   \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}},
   \code{\link{RPrometheeV}},
   \code{\link{SensitivityAnalysis}},
-  \code{\link{WalkingWeightsPlot}},
-  \code{\link{plot,RPrometheeI-method}},
-  \code{\link{plot,RPrometheeII-method}},
-  \code{\link{plot,RPrometheeIII-method}}
+  \code{\link{UpdateRPrometheeAlternatives}},
+  \code{\link{UpdateRPrometheeArguments}},
+  \code{\link{WalkingWeightsPlot}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}

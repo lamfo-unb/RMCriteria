@@ -28,6 +28,44 @@ Sensitivity Analysis is a method developed by Wolters & Mareschal (1995) to
   solution to the decision problem can be affected by the distribution of
   criterias weights.
 }
+\examples{
+## Create objects for each argument
+data <- matrix(c(5.2,-3.5,
+                 4.3,-1.2,
+                 6.7,-2.0,
+                 5.4,-5.0,
+                 4.8, 0.0,
+                 2.8,-3.4), byrow = T, ncol=2)
+
+parms<-matrix(c(1.0, -2.3), byrow = TRUE, ncol = 1, nrow = 2)
+vecWeights <- c(0.3,0.7)
+vecMaximiz <- c(F,T)
+prefFunction <- c(0,0)
+constraintDir <- rep("<=", ncol(dados))
+bounds <- c(7,-1)
+normalize <- FALSE
+alternatives <- c("Alt 1", "Alt 2", "Alt 3")
+
+## Create RPrometheeArguments object
+PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights,
+vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
+normalize = normalize, alternatives = alternatives, bounds = bounds,
+constraintDir = constraintDir)
+
+## Run RPrometheeV using standard method ("RPrometheeII")
+(result <- SensitivityAnalysis(PromObj))
+
+## Run RPrometheeV using RPrometheeIV
+(result <- SensitivityAnalysis(PromObj, "PrometheeIV"))
+
+## Updating alternatives name using UpdateRPrometheeAlternatives
+newAlternatives <- c("A", "B", "C", "D", "E", "F")
+result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+
+## Updating any argument using UpdateRPrometheeArguments
+newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+result <- UpdateRPrometheeArguments(result, "parms", newParms)
+}
 \references{
 \itemize{
 
@@ -70,10 +108,9 @@ Other RPromethee methods: \code{\link{NetworkPlot}},
   \code{\link{RPrometheeIVKernel}},
   \code{\link{RPrometheeIV}}, \code{\link{RPrometheeI}},
   \code{\link{RPrometheeV}},
-  \code{\link{WalkingWeightsPlot}},
-  \code{\link{plot,RPrometheeI-method}},
-  \code{\link{plot,RPrometheeII-method}},
-  \code{\link{plot,RPrometheeIII-method}}
+  \code{\link{UpdateRPrometheeAlternatives}},
+  \code{\link{UpdateRPrometheeArguments}},
+  \code{\link{WalkingWeightsPlot}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}
