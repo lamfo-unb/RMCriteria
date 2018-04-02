@@ -1306,6 +1306,7 @@ setClass(
 #'    }
 #'
 #' @importFrom lpSolve lp
+#' @importFrom linprog solveLP
 #' @export
 #' @examples
 #' ## Create objects for each argument
