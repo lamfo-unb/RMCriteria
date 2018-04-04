@@ -2191,19 +2191,23 @@ setMethod(
 
 ##### General Plot Function
 if(!isGeneric("plot")){
-  setGeneric("plot", function(x, y, ...) standardGeneric("plot"))}
+  setGeneric("plot", function(x, ...) standardGeneric("plot"))}
 
 
 #Define the Method
 
+#' @title plot
 #' @docType methods
 #' @aliases plot,RPrometheeI-method
-#' @export
 #' @importFrom graphics par
+#' @param x the RPromethee object to be ploted.
+#' @param y unused
+#' @param ... other graphics parameters from plot routine.
+#' @export
 
 setMethod(f="plot",
   signature("RPrometheeI"),
-  definition = function(x,y,...) {
+  definition = function(x, y, ...) {
     print(PrometheeIPlot(x))
     par(ask = TRUE)
     print(NetworkPlot(x))
@@ -2211,7 +2215,7 @@ setMethod(f="plot",
   }
 )
 
-
+#' @title plot
 #' @docType methods
 #' @aliases plot,RPrometheeII-method
 #' @export
@@ -2228,9 +2232,11 @@ setMethod(f="plot",
 )
 
 
-#' @method plot RPrometheeIII
+#' @title plot
+#' @docType methods
 #' @aliases plot,RPrometheeIII-method
 #' @export
+#' @importFrom graphics par
 
 setMethod(f="plot",
           signature("RPrometheeIII"),
@@ -2239,9 +2245,11 @@ setMethod(f="plot",
           }
 )
 
-#' @method plot RPrometheeIV
+#' @title plot
+#' @docType methods
 #' @aliases plot,RPrometheeIV-method
 #' @export
+#' @importFrom graphics par
 
 setMethod(f="plot",
           signature("RPrometheeIV"),
@@ -2258,8 +2266,9 @@ setMethod(f="plot",
 ##############################################
 ## show() method for PrometheeClass
 
-#' @method show RPrometheeArguments
+#' @title show
 #' @docType methods
+#' @aliases show,RPrometheeArguments-method
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeArguments",
@@ -2278,7 +2287,9 @@ setMethod(f = "show", signature = "RPrometheeArguments",
             invisible(NULL)
           })
 
-#' @method show RPrometheeI
+#' @title show
+#' @docType methods
+#' @aliases show,RPrometheeI-method
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeI",
@@ -2291,7 +2302,9 @@ setMethod(f = "show", signature = "RPrometheeI",
             invisible(NULL)
           })
 
-#' @method show RPrometheeII
+#' @title show
+#' @docType methods
+#' @aliases show,RPrometheeII-method
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeII",
@@ -2303,7 +2316,9 @@ setMethod(f = "show", signature = "RPrometheeII",
             invisible(NULL)
           })
 
-#' @method show RPrometheeIII
+#' @title show
+#' @docType methods
+#' @aliases show,RPrometheeIII-method
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeIII",
@@ -2317,7 +2332,9 @@ setMethod(f = "show", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
-#' @method show RPrometheeIV
+#' @title show
+#' @docType methods
+#' @aliases show,RPrometheeIV-method
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeIV",
@@ -2330,7 +2347,9 @@ setMethod(f = "show", signature = "RPrometheeIV",
             invisible(NULL)
           })
 
-#' @method show RPrometheeIVKernel
+#' @title show
+#' @docType methods
+#' @aliases show,RPrometheeIVKernel-method
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeIVKernel",
@@ -2343,7 +2362,9 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
             invisible(NULL)
           })
 
-#' @method show RPrometheeV
+#' @title show
+#' @docType methods
+#' @aliases show,RPrometheeV-method
 #' @export
 
  setMethod(f = "show", signature = "RPrometheeV",
@@ -2357,7 +2378,9 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
            })
 
 
-#' @method show SensitivityAnalysis
+#' @title show
+#' @docType methods
+#' @aliases show,SensitivityAnalysis-method
 #' @export
 
 setMethod(f = "show", signature = "SensitivityAnalysis",
@@ -2372,7 +2395,9 @@ setMethod(f = "show", signature = "SensitivityAnalysis",
 ##############################################
 ## print() method for PrometheeClass
 
-#' @method print RPrometheeArguments
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeArguments-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2395,7 +2420,9 @@ setMethod(f = "print", signature = "RPrometheeArguments",
             invisible(NULL)
           })
 
-#' @method print RPrometheeI
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeI-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2414,7 +2441,9 @@ setMethod(f = "print", signature = "RPrometheeI",
             invisible(NULL)
           })
 
-#' @method print RPrometheeII
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeII-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2431,7 +2460,9 @@ setMethod(f = "print", signature = "RPrometheeII",
             invisible(NULL)
           })
 
-#' @method print RPrometheeIII
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeIII-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2452,7 +2483,9 @@ setMethod(f = "print", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
-#' @method print RPrometheeIV
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeIV-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2472,7 +2505,9 @@ setMethod(f = "print", signature = "RPrometheeIV",
           })
 
 
-#' @method print RPrometheeIVKernel
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeIVKernel-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2491,7 +2526,9 @@ setMethod(f = "print", signature = "RPrometheeIVKernel",
             invisible(NULL)
           })
 
-#' @method print RPrometheeV
+#' @title print
+#' @docType methods
+#' @aliases print,RPrometheeV-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2510,7 +2547,9 @@ setMethod(f = "print", signature = "RPrometheeV",
             invisible(NULL)
           })
 
-#' @method print SensitivityAnalysis
+#' @title print
+#' @docType methods
+#' @aliases print,SensitivityAnalysis-method
 #' @export
 #' @importFrom utils capture.output head
 
@@ -2532,9 +2571,11 @@ setMethod(f = "print", signature = "SensitivityAnalysis",
 ##############################################
 ## summary() method for PrometheeClass
 
-#' @method summary RPrometheeArguments
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeArguments-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeArguments",
           definition <-  function(object) {
@@ -2555,9 +2596,11 @@ setMethod(f = "summary", signature = "RPrometheeArguments",
             res
           })
 
-#' @method summary RPrometheeI
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeI-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeI",
           definition <-  function(object) {
@@ -2574,9 +2617,11 @@ setMethod(f = "summary", signature = "RPrometheeI",
             res
           })
 
-#' @method summary RPrometheeII
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeII-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeII",
           definition <-  function(object) {
@@ -2594,10 +2639,11 @@ setMethod(f = "summary", signature = "RPrometheeII",
           })
 
 
-#' @method summary RPrometheeIII
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeIII-method
 #' @export
-
+#' @importFrom pastecs stat.desc
 setMethod(f = "summary", signature = "RPrometheeIII",
           definition <-  function(object) {
             datMat         <- object@data;
@@ -2614,9 +2660,11 @@ setMethod(f = "summary", signature = "RPrometheeIII",
           })
 
 
-#' @method summary RPrometheeIV
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeIV-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeIV",
           definition <-  function(object) {
@@ -2633,9 +2681,11 @@ setMethod(f = "summary", signature = "RPrometheeIV",
             res
           })
 
-#' @method summary RPrometheeIVKernel
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeIVKernel-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeIVKernel",
           definition <-  function(object) {
@@ -2653,9 +2703,11 @@ setMethod(f = "summary", signature = "RPrometheeIVKernel",
           })
 
 
-#' @method summary RPrometheeV
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,RPrometheeV-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeV",
           definition <-  function(object) {
@@ -2672,9 +2724,11 @@ setMethod(f = "summary", signature = "RPrometheeV",
             res
           })
 
-#' @method summary SensitivityAnalysis
-#' @importFrom pastecs stat.desc
+#' @title summary
+#' @docType methods
+#' @aliases summary,SensitivityAnalysis-method
 #' @export
+#' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "SensitivityAnalysis",
           definition <-  function(object) {
