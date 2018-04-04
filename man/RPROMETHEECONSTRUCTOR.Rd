@@ -7,7 +7,7 @@
 \usage{
 RPrometheeConstructor(datMat, vecWeights, vecMaximiz, prefFunction, parms,
   normalize, alphaVector = NULL, band = NULL, constraintDir = NULL,
-  bounds = NULL)
+  bounds = NULL, alternatives = NULL, criterias = NULL)
 }
 \arguments{
 \item{datMat}{A matrix containing the data from criterias and alternatives.}
@@ -55,6 +55,10 @@ be optimized in Promethee V. The values must be combinations of \code{>},
 
 \item{bounds}{A numeric vector used in Promethee V for the right-hand sides
 of the constraints.}
+
+\item{alternatives}{A character vector with alternatives names.}
+
+\item{criterias}{A character vector with criterias names.}
 }
 \description{
 Create a \code{RPrometheeArguments} object to be used by \code{RPromethee}

@@ -3,6 +3,7 @@
 \name{RPrometheeIVKernel}
 \alias{RPrometheeIVKernel}
 \alias{PrometheeIVKernel}
+\alias{RPrometheeIVKernel,RPrometheeArguments-method}
 \title{RPrometheeIVKernel}
 \usage{
 RPrometheeIVKernel(RPrometheeArguments)
@@ -22,7 +23,7 @@ more information.}
   \item{Index} {The index resulting from the lp solution.}
   \item{alternatives} {The alternatives names.}
   \item{criterias} {The criterias names.}
-  \item{data} {The data used corresponding to criterias and alternatives.}
+  \item{datMat} {The data used corresponding to criterias and alternatives.}
  }
 }
 \description{
@@ -33,17 +34,17 @@ The PROMETHEE IV KERNEL method was developed by Albuquerque and Montenegro
 }
 \examples{
 ## Create objects for each argument
-data <- matrix(c(5.2,-3.5,
-                 4.3,-1.2,
-                 6.7,-2.0,
-                 5.4,-5.0,
-                 4.8, 0.0,
-                 2.8,-3.4), byrow = T, ncol=2)
+data <- matrix(c(5.2, -3.5,
+                 4.3, -1.2,
+                 6.7, -2.0,
+                 5.4, -5.0,
+                 4.8,  0.0,
+                 2.8, -3.4), byrow = TRUE, ncol=2)
 
 parms <- matrix(c(1.0, 5.0), byrow = TRUE, ncol = 1, nrow = 2)
-vecWeights <- c(0.3,0.7)
-vecMaximiz <- c(F,T)
-prefFunction <- c(0,0)
+vecWeights <- c(0.3, 0.7)
+vecMaximiz <- c(FALSE, TRUE)
+prefFunction <- c(0, 0)
 band <- as.matrix(apply(data, 2, bw.nrd0))
 normalize <- FALSE
 alternatives <- c("Alt 1", "Alt 2", "Alt 3")
@@ -90,7 +91,7 @@ result <- UpdateRPrometheeArguments(result, "parms", newParms)
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
    }
 }

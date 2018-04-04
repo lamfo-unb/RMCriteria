@@ -1,3 +1,4 @@
+library(RMCriteria)
 dados<-matrix(c(5.8,-3.5,
                 4.3,-1.2,
                 6.7,-2.0),byrow = T, ncol=2,nrow=3)

@@ -2,7 +2,6 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{UpdateRPrometheeAlternatives}
 \alias{UpdateRPrometheeAlternatives}
-\alias{UpdateRPrometheeArguments}
 \title{UpdateRPrometheeAlternatives}
 \usage{
 UpdateRPrometheeAlternatives(object, alternatives)

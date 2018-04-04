@@ -3,7 +3,8 @@
 \name{PrometheeIIIPlot}
 \alias{PrometheeIIIPlot}
 \alias{RPrometheeIIIPlot}
-\title{RPrometheeIIIPlot}
+\alias{PrometheeIIIPlot,RPrometheeIII-method}
+\title{PrometheeIIIPlot}
 \usage{
 PrometheeIIIPlot(RPrometheeIII)
 }
@@ -26,7 +27,7 @@ Plots the Phi interval for each alternative and also its Phi dot.
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
 
       \item

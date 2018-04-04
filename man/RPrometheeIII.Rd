@@ -3,6 +3,7 @@
 \name{RPrometheeIII}
 \alias{RPrometheeIII}
 \alias{PrometheeIII}
+\alias{RPrometheeIII,RPrometheeArguments-method}
 \title{RPrometheeIII}
 \usage{
 RPrometheeIII(RPrometheeArguments)
@@ -21,7 +22,7 @@ for more information.}
   criterias.}
   \item{alternatives} {The alternatives names.}
   \item{criterias} {The criterias names.}
-  \item{data} {The data used corresponding to criterias and alternatives.}
+  \item{datMat} {The data used corresponding to criterias and alternatives.}
  }
 }
 \description{
@@ -32,15 +33,15 @@ PROMETHEE III method includes a tolerance region in the preordering of
 }
 \examples{
 ## Create objects for each argument
-data <-matrix(c(5.2,-3.5,
-                4.3,-1.2,
-                6.7,-2.0), byrow = T, ncol=2, nrow=3)
+data <-matrix(c(5.2, -3.5,
+                4.3, -1.2,
+                6.7, -2.0), byrow = TRUE, ncol = 2, nrow = 3)
 
 parms <- matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
-vecWeights <- c(0.3,0.7)
-vecMaximiz <- c(F,T)
+vecWeights <- c(0.3, 0.7)
+vecMaximiz <- c(FALSE, TRUE)
 prefFunction <- c(0,0)
-alphaVector <- c(1,2,1)
+alphaVector <- c(1, 2, 1)
 normalize <- FALSE
 alternatives <- c("Alt 1", "Alt 2", "Alt 3")
 
@@ -77,7 +78,7 @@ result <- UpdateRPrometheeArguments(result, "alphaVector", newAlphaVector)
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
 
       \item

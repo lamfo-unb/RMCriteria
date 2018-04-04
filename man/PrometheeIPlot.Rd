@@ -3,7 +3,8 @@
 \name{PrometheeIPlot}
 \alias{PrometheeIPlot}
 \alias{RPrometheeIPlot}
-\title{RPrometheeIPlot}
+\alias{PrometheeIPlot,RPrometheeI-method}
+\title{PrometheeIPlot}
 \usage{
 PrometheeIPlot(RPrometheeI)
 }
@@ -27,7 +28,7 @@ Plots PhiPlus and PhiMinus resulting from RPrometheeI results.
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
    }
 }

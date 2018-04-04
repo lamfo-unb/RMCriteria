@@ -24,6 +24,7 @@ Imports:
     methods,
     graphics,
     stats,
-    utils
+    utils,
+    dplyr
 SystemRequirements: GNU make
 RoxygenNote: 6.0.1

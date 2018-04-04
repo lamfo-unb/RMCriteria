@@ -2,6 +2,7 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{WalkingWeightsPlot}
 \alias{WalkingWeightsPlot}
+\alias{WalkingWeightsPlot,RPrometheeII-method}
 \title{WalkingWeightsPlot}
 \usage{
 WalkingWeightsPlot(RPrometheeII)
@@ -26,7 +27,7 @@ Plots the net Phi for each alternative and how the criterias are weighted.
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
    }
 }

@@ -248,10 +248,10 @@ public:
 
 
 
-// Create the Kernel matrix
-// @param datVec  Column of the dataset
-// @param int Type od preference function
-// @return Preference Matrix
+//' Create the Kernel matrix
+//' @param datVec  Column of the dataset
+//' @param int Type od preference function
+//' @return Preference Matrix
 // [[Rcpp::export]]
 Rcpp::List PrometheeIVKernel(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, Eigen::MatrixXd band, bool normalize){
   //Get the number of rows

@@ -3,6 +3,7 @@
 \name{RPrometheeII}
 \alias{RPrometheeII}
 \alias{PrometheeII}
+\alias{RPrometheeII,RPrometheeArguments-method}
 \title{RPrometheeII}
 \usage{
 RPrometheeII(RPrometheeArguments)
@@ -17,7 +18,7 @@ RPrometheeII(RPrometheeArguments)
   criterias.}
   \item{alternatives} {The alternatives names.}
   \item{criterias} {The criterias names.}
-  \item{data} {The data used corresponding to criterias and alternatives.}
+  \item{datMat} {The data used corresponding to criterias and alternatives.}
  }
 }
 \description{
@@ -32,7 +33,7 @@ The method created by Brans et al. (1985) is based on a set of alternatives
   \eqn{A = {a1,a2,...,an}} that will be ordered and a set of criteria
   \eqn{F = { f1, f2, . . ., fm }}. Two alternatives, \eqn{ai} and \eqn{a_j},
   will be pairwise compared. The intensity of the preference between \eqn{ai}
-  over \eqn{aj} \eqn{(Pk(dk)}, \eqn{dk = fk (ai) − fk (aj))} is determined.
+  over \eqn{aj} \eqn{(Pk(dk)}, \eqn{dk = fk (ai) ??? fk (aj))} is determined.
   \eqn{Pk} is considered the preference function for the \eqn{kth} criterion. The evaluation of the alternative \eqn{ai}, which corresponds to criterion
   \eqn{fk}, is \eqn{fk(ai)} (Hsu, Lin, 2014).\cr
   Six types of preference functions were proposed by Brans et al. (1985). The
@@ -46,14 +47,14 @@ The method created by Brans et al. (1985) is based on a set of alternatives
 }
 \examples{
 ## Create objects for each argument
-data <-matrix(c(5.2,-3.5,
-                4.3,-1.2,
-                6.7,-2.0), byrow = T, ncol=2, nrow=3)
+data <-matrix(c(5.2, -3.5,
+                4.3, -1.2,
+                6.7, -2.0), byrow = TRUE, ncol = 2, nrow = 3)
 
 parms <- matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
-vecWeights <- c(0.3,0.7)
-vecMaximiz <- c(F,T)
-prefFunction <- c(0,0)
+vecWeights <- c(0.3, 0.7)
+vecMaximiz <- c(FALSE, TRUE)
+prefFunction <- c(0, 0)
 normalize <- FALSE
 alternatives <- c("Alt 1", "Alt 2", "Alt 3")
 
@@ -90,7 +91,7 @@ result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
 
       \item

@@ -2,6 +2,7 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{SensitivityAnalysis}
 \alias{SensitivityAnalysis}
+\alias{SensitivityAnalysis,RPrometheeArguments-method}
 \title{SensitivityAnalysis}
 \usage{
 SensitivityAnalysis(RPrometheeArguments, method = "RPrometheeII")
@@ -18,7 +19,7 @@ values. See \code{\link{RPrometheeConstructor}} for more information.}
   \item{Solution} {The solution resulting from linear programming problem.}
   \item{alternatives} {The alternatives names.}
   \item{criterias} {The criterias names.}
-  \item{data} {The data used corresponding to criterias and alternatives.}
+  \item{datMat} {The data used corresponding to criterias and alternatives.}
  }
 }
 \description{
@@ -30,17 +31,17 @@ Sensitivity Analysis is a method developed by Wolters & Mareschal (1995) to
 }
 \examples{
 ## Create objects for each argument
-data <- matrix(c(5.2,-3.5,
-                 4.3,-1.2,
-                 6.7,-2.0,
-                 5.4,-5.0,
-                 4.8, 0.0,
-                 2.8,-3.4), byrow = T, ncol=2)
+data <- matrix(c(5.2, -3.5,
+                 4.3, -1.2,
+                 6.7, -2.0,
+                 5.4, -5.0,
+                 4.8,  0.0,
+                 2.8, -3.4), byrow = TRUE, ncol = 2)
 
 parms<-matrix(c(1.0, -2.3), byrow = TRUE, ncol = 1, nrow = 2)
-vecWeights <- c(0.3,0.7)
-vecMaximiz <- c(F,T)
-prefFunction <- c(0,0)
+vecWeights <- c(0.3, 0.7)
+vecMaximiz <- c(FALSE, TRUE)
+prefFunction <- c(0, 0)
 constraintDir <- rep("<=", ncol(dados))
 bounds <- c(7,-1)
 normalize <- FALSE
@@ -86,7 +87,7 @@ result <- UpdateRPrometheeArguments(result, "parms", newParms)
       J. P. Brans, B. Mareschal \cr
       \emph{PROMETHEE methods. In: Figueria J, Greco S, Ehrgott M (eds)
       Multiple criteria decision analysis: state of the art surveys.}\cr
-      Springer Science, Business Media Inc., Boston pp 163–195.\cr
+      Springer Science, Business Media Inc., Boston pp 163???195.\cr
       \url{http://www.springer.com/la/book/9780387230818}
 
       \item
