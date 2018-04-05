@@ -3,7 +3,17 @@
 \docType{methods}
 \name{plot,RPrometheeII-method}
 \alias{plot,RPrometheeII-method}
-\title{plot}
+\title{Plots RPrometheeII objects}
 \usage{
 \S4method{plot}{RPrometheeII}(x, y, ...)
+}
+\arguments{
+\item{x}{the RPromethee object to be ploted.}
+
+\item{y}{not used in this context.}
+
+\item{...}{not used in this context.}
+}
+\description{
+Plots the net Phi, resulting from RPrometheeII method.
 }

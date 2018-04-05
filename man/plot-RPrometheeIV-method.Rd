@@ -3,7 +3,17 @@
 \docType{methods}
 \name{plot,RPrometheeIV-method}
 \alias{plot,RPrometheeIV-method}
-\title{plot}
+\title{Plots RPrometheeIV objects}
 \usage{
 \S4method{plot}{RPrometheeIV}(x, y, ...)
+}
+\arguments{
+\item{x}{the RPromethee object to be ploted.}
+
+\item{y}{not used in this context.}
+
+\item{...}{not used in this context.}
+}
+\description{
+Plots PhiPlus and PhiMinus resulting from RPrometheeIV results
 }

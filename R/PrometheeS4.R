@@ -252,7 +252,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeI PrometheeI RPrometheeI,RPrometheeArguments-method
+#' @aliases RPrometheeI RPrometheeI,RPrometheeArguments-method
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. See
 #' \code{\link{RPrometheeConstructor}} for more information.
@@ -314,6 +314,7 @@ setClass(
 #'
 #' @export
 #' @examples
+#' library(RMCriteria)
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -437,7 +438,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeII PrometheeII RPrometheeII,RPrometheeArguments-method
+#' @aliases RPrometheeII RPrometheeII,RPrometheeArguments-method
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. See
 #' \code{\link{RPrometheeConstructor}} for more information.
@@ -626,7 +627,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeIII PrometheeIII RPrometheeIII,RPrometheeArguments-method
+#' @aliases RPrometheeIII RPrometheeIII,RPrometheeArguments-method
 #'
 #' @param RPrometheeArguments an object with all RPromethee arguments. In this
 #' method, the object must have the argument \code{alphaVector} to indicate the
@@ -809,7 +810,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeIV PrometheeIV RPrometheeIV,RPrometheeArguments-method
+#' @aliases RPrometheeIV RPrometheeIV,RPrometheeArguments-method
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. It's
 #' important that \code{parms} argument isn't compound of NA values. See
@@ -990,8 +991,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeIVKernel PrometheeIVKernel
-#' RPrometheeIVKernel,RPrometheeArguments-method
+#' @aliases RPrometheeIVKernel RPrometheeIVKernel,RPrometheeArguments-method
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. For
 #' PROMETHEE IV KERNEL, the object must be supplied with a \code{band} argument,
@@ -1166,7 +1166,7 @@ setClass(
 #'
 #' @family RPromethee methods
 #'
-#' @aliases RPrometheeV PrometheeV RPrometheeV,RPrometheeArguments-method
+#' @aliases RPrometheeV RPrometheeV,RPrometheeArguments-method
 #'
 #' @param RPrometheeArguments An object with all RPromethee arguments. In
 #'  PROMETHEE V, the object must have the arguments \code{constraintDir} and
@@ -2196,18 +2196,19 @@ if(!isGeneric("plot")){
 
 #Define the Method
 
-#' @title plot
-#' @docType methods
+#' @title Plots RPrometheeI objects
+#'
+#' @description Plots PhiPlus and PhiMinus resulting from RPrometheeI results.
 #' @aliases plot,RPrometheeI-method
 #' @importFrom graphics par
 #' @param x the RPromethee object to be ploted.
-#' @param y unused
-#' @param ... other graphics parameters from plot routine.
-#' @export
+#' @param y not used in this context.
+#' @param ... not used in this context.
+#' @exportMethod plot
 
 setMethod(f="plot",
   signature("RPrometheeI"),
-  definition = function(x, y, ...) {
+  definition = function(x, ...) {
     print(PrometheeIPlot(x))
     par(ask = TRUE)
     print(NetworkPlot(x))
@@ -2215,11 +2216,16 @@ setMethod(f="plot",
   }
 )
 
-#' @title plot
-#' @docType methods
+#' @title Plots RPrometheeII objects
+#'
+#' @description Plots the net Phi, resulting from RPrometheeII method.
 #' @aliases plot,RPrometheeII-method
-#' @export
 #' @importFrom graphics par
+#' @param x the RPromethee object to be ploted.
+#' @param y not used in this context.
+#' @param ... not used in this context.
+#' @exportMethod plot
+
 
 setMethod(f="plot",
   signature("RPrometheeII"),
@@ -2232,11 +2238,16 @@ setMethod(f="plot",
 )
 
 
-#' @title plot
-#' @docType methods
+
+#' @title Plots RPrometheeIII objects
+#'
+#' @description Plots the Phi interval for each alternative and also its Phi dot.
 #' @aliases plot,RPrometheeIII-method
-#' @export
 #' @importFrom graphics par
+#' @param x the RPromethee object to be ploted.
+#' @param y not used in this context.
+#' @param ... not used in this context.
+#' @exportMethod plot
 
 setMethod(f="plot",
           signature("RPrometheeIII"),
@@ -2245,11 +2256,15 @@ setMethod(f="plot",
           }
 )
 
-#' @title plot
-#' @docType methods
+#' @title Plots RPrometheeIV objects
+#'
+#' @description Plots PhiPlus and PhiMinus resulting from RPrometheeIV results
 #' @aliases plot,RPrometheeIV-method
-#' @export
 #' @importFrom graphics par
+#' @param x the RPromethee object to be ploted.
+#' @param y not used in this context.
+#' @param ... not used in this context.
+#' @exportMethod plot
 
 setMethod(f="plot",
           signature("RPrometheeIV"),
@@ -2266,9 +2281,10 @@ setMethod(f="plot",
 ##############################################
 ## show() method for PrometheeClass
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeArguments-method
+#' @description Shows data and some results for \code{RPrometheeArguments}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeArguments",
@@ -2287,9 +2303,10 @@ setMethod(f = "show", signature = "RPrometheeArguments",
             invisible(NULL)
           })
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeI-method
+#' @description Shows data and some results for \code{RPrometheeI}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeI",
@@ -2302,9 +2319,10 @@ setMethod(f = "show", signature = "RPrometheeI",
             invisible(NULL)
           })
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeII-method
+#' @description Shows data and some results for \code{RPrometheeII}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeII",
@@ -2316,9 +2334,10 @@ setMethod(f = "show", signature = "RPrometheeII",
             invisible(NULL)
           })
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeIII-method
+#' @description Shows data and some results for \code{RPrometheeIII}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeIII",
@@ -2332,9 +2351,10 @@ setMethod(f = "show", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeIV-method
+#' @description Shows data and some results for \code{RPrometheeIV}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeIV",
@@ -2347,9 +2367,10 @@ setMethod(f = "show", signature = "RPrometheeIV",
             invisible(NULL)
           })
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeIVKernel-method
+#' @description Shows data and some results for \code{RPrometheeIVKernel}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "RPrometheeIVKernel",
@@ -2362,9 +2383,10 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
             invisible(NULL)
           })
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,RPrometheeV-method
+#' @description Shows data and some results for \code{RPrometheeV}.
+#' @param object A RPromethee object.
 #' @export
 
  setMethod(f = "show", signature = "RPrometheeV",
@@ -2378,9 +2400,10 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
            })
 
 
-#' @title show
-#' @docType methods
+#' @title Show a RPromethee object
 #' @aliases show,SensitivityAnalysis-method
+#' @description Shows data and some results for \code{SensitivityAnalysis}.
+#' @param object A RPromethee object.
 #' @export
 
 setMethod(f = "show", signature = "SensitivityAnalysis",
@@ -2395,10 +2418,13 @@ setMethod(f = "show", signature = "SensitivityAnalysis",
 ##############################################
 ## print() method for PrometheeClass
 
-#' @title print
-#' @docType methods
+
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeArguments-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeArguments} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeArguments",
@@ -2420,10 +2446,12 @@ setMethod(f = "print", signature = "RPrometheeArguments",
             invisible(NULL)
           })
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeI-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeI} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeI",
@@ -2441,10 +2469,12 @@ setMethod(f = "print", signature = "RPrometheeI",
             invisible(NULL)
           })
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeII-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeII} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeII",
@@ -2460,10 +2490,12 @@ setMethod(f = "print", signature = "RPrometheeII",
             invisible(NULL)
           })
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeIII-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeIII} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeIII",
@@ -2483,10 +2515,12 @@ setMethod(f = "print", signature = "RPrometheeIII",
             invisible(NULL)
           })
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeIV-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeIV} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeIV",
@@ -2505,10 +2539,12 @@ setMethod(f = "print", signature = "RPrometheeIV",
           })
 
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeIVKernel-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeIVKernel} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeIVKernel",
@@ -2526,10 +2562,12 @@ setMethod(f = "print", signature = "RPrometheeIVKernel",
             invisible(NULL)
           })
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,RPrometheeV-method
-#' @export
+#' @description Prints main information from a \code{RPrometheeV} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "RPrometheeV",
@@ -2547,10 +2585,12 @@ setMethod(f = "print", signature = "RPrometheeV",
             invisible(NULL)
           })
 
-#' @title print
-#' @docType methods
+#' @title Prints a RPromethee object.
 #' @aliases print,SensitivityAnalysis-method
-#' @export
+#' @description Prints main information from a \code{SensitivityAnalysis} object.
+#' @param x A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod print
 #' @importFrom utils capture.output head
 
 setMethod(f = "print", signature = "SensitivityAnalysis",
@@ -2571,10 +2611,12 @@ setMethod(f = "print", signature = "SensitivityAnalysis",
 ##############################################
 ## summary() method for PrometheeClass
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeArguments-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeArguments",
@@ -2596,10 +2638,12 @@ setMethod(f = "summary", signature = "RPrometheeArguments",
             res
           })
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeI-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeI",
@@ -2617,10 +2661,12 @@ setMethod(f = "summary", signature = "RPrometheeI",
             res
           })
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeII-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeII",
@@ -2639,11 +2685,15 @@ setMethod(f = "summary", signature = "RPrometheeII",
           })
 
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeIII-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
+
+
 setMethod(f = "summary", signature = "RPrometheeIII",
           definition <-  function(object) {
             datMat         <- object@data;
@@ -2660,10 +2710,12 @@ setMethod(f = "summary", signature = "RPrometheeIII",
           })
 
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeIV-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeIV",
@@ -2681,10 +2733,12 @@ setMethod(f = "summary", signature = "RPrometheeIV",
             res
           })
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeIVKernel-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeIVKernel",
@@ -2703,10 +2757,12 @@ setMethod(f = "summary", signature = "RPrometheeIVKernel",
           })
 
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,RPrometheeV-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "RPrometheeV",
@@ -2724,10 +2780,12 @@ setMethod(f = "summary", signature = "RPrometheeV",
             res
           })
 
-#' @title summary
-#' @docType methods
+#' @title Summarize a RPromethee object.
+#' @description Produce some useful statistics for a RPromethee object.
 #' @aliases summary,SensitivityAnalysis-method
-#' @export
+#' @param object A RPromethee object.
+#' @param ... Not used in this context.
+#' @exportMethod summary
 #' @importFrom pastecs stat.desc
 
 setMethod(f = "summary", signature = "SensitivityAnalysis",

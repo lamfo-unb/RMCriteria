@@ -2,7 +2,6 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{RPrometheeIV}
 \alias{RPrometheeIV}
-\alias{PrometheeIV}
 \alias{RPrometheeIV,RPrometheeArguments-method}
 \title{RPrometheeIV}
 \usage{

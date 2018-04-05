@@ -2,7 +2,6 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{RPrometheeI}
 \alias{RPrometheeI}
-\alias{PrometheeI}
 \alias{RPrometheeI,RPrometheeArguments-method}
 \title{RPrometheeI}
 \usage{
@@ -46,6 +45,7 @@ The method created by Brans et al. (1985) is based on a set of alternatives
   Mareschal 2005).
 }
 \examples{
+library(RMCriteria)
 ## Create objects for each argument
 data <-matrix(c(5.2, -3.5,
                 4.3, -1.2,

@@ -3,7 +3,15 @@
 \docType{methods}
 \name{print,SensitivityAnalysis-method}
 \alias{print,SensitivityAnalysis-method}
-\title{print}
+\title{Prints a RPromethee object.}
 \usage{
 \S4method{print}{SensitivityAnalysis}(x)
+}
+\arguments{
+\item{x}{A RPromethee object.}
+
+\item{...}{Not used in this context.}
+}
+\description{
+Prints main information from a \code{SensitivityAnalysis} object.
 }

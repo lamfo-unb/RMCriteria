@@ -2,18 +2,43 @@
 % Please edit documentation in R/RcppExports.R
 \name{PrometheeI}
 \alias{PrometheeI}
-\title{Create the Kernel matrix}
+\title{PrometheeI
+Calculates PROMETHEE I method.}
 \usage{
 PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
 }
 \arguments{
-\item{datVec}{Column of the dataset}
+\item{datMat}{A matrix containing the data from criterias and alternatives.}
 
-\item{int}{Type od preference function}
+\item{vecWeights}{A vector of weights for each criteria.}
+
+\item{prefFunction}{A numerical vector to indicate the type of the
+Preference Function:
+  \itemize{
+    \item \code{prefFunction = 0} Gaussian Preference Function
+    \item \code{prefFunction = 1} Usual Preference Function
+    \item \code{prefFunction = 2} U-Shape Preference Function
+    \item \code{prefFunction = 3} V-Shape Preference Function
+    \item \code{prefFunction = 4} Level Preference Function
+    \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+    }}
+
+\item{parms}{a numerical matrix with parameters associated to the Preference
+Function. They're defined as a matrix of n columns and m rows. The maximum
+number of parameters is 3 and m is the number of criterias. The parameters
+are:
+ \itemize{
+ \item{Indifference Threshold (\code{q})}
+ \item{Preference Threshold (\code{p})}
+ \item{Gaussian Threshold (\code{s})}
+ }}
+
+\item{normalize}{A boolean to normalize the index.}
 }
 \value{
 Preference Matrix
 }
 \description{
-Create the Kernel matrix
+PrometheeI
+Calculates PROMETHEE I method.
 }

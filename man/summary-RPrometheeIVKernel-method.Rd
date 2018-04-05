@@ -3,7 +3,15 @@
 \docType{methods}
 \name{summary,RPrometheeIVKernel-method}
 \alias{summary,RPrometheeIVKernel-method}
-\title{summary}
+\title{Summarize a RPromethee object.}
 \usage{
 \S4method{summary}{RPrometheeIVKernel}(object)
+}
+\arguments{
+\item{object}{A RPromethee object.}
+
+\item{...}{Not used in this context.}
+}
+\description{
+Produce some useful statistics for a RPromethee object.
 }

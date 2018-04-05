@@ -3,7 +3,13 @@
 \docType{methods}
 \name{show,RPrometheeIVKernel-method}
 \alias{show,RPrometheeIVKernel-method}
-\title{show}
+\title{Show a RPromethee object}
 \usage{
 \S4method{show}{RPrometheeIVKernel}(object)
+}
+\arguments{
+\item{object}{A RPromethee object.}
+}
+\description{
+Shows data and some results for \code{RPrometheeIVKernel}.
 }

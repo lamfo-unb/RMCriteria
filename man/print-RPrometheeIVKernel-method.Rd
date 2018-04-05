@@ -3,7 +3,15 @@
 \docType{methods}
 \name{print,RPrometheeIVKernel-method}
 \alias{print,RPrometheeIVKernel-method}
-\title{print}
+\title{Prints a RPromethee object.}
 \usage{
 \S4method{print}{RPrometheeIVKernel}(x)
+}
+\arguments{
+\item{x}{A RPromethee object.}
+
+\item{...}{Not used in this context.}
+}
+\description{
+Prints main information from a \code{RPrometheeIVKernel} object.
 }

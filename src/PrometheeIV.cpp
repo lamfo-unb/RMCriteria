@@ -201,14 +201,34 @@ public:
   }
 };
 
-
-
-
-//' Create the Kernel matrix
-//' @param datVec  Column of the dataset
-//' @param int Type od preference function
+//' Calculates PROMETHEE IV method.
+//' @param datMat A matrix containing the data from criterias and alternatives.
+//' @param vecWeights A vector of weights for each criteria.
+//' @param prefFunction A numerical vector to indicate the type of the
+//' Preference Function:
+//'   \itemize{
+//'     \item \code{prefFunction = 0} Gaussian Preference Function
+//'     \item \code{prefFunction = 1} Usual Preference Function
+//'     \item \code{prefFunction = 2} U-Shape Preference Function
+//'     \item \code{prefFunction = 3} V-Shape Preference Function
+//'     \item \code{prefFunction = 4} Level Preference Function
+//'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+//'     }
+//' @param parms A numerical matrix with parameters associated to the Preference
+//'  Function. They're defined as a matrix of n columns and m rows. The maximum
+//'  number of parameters is 3 and m is the number of criterias. The parameters
+//'  are:
+//'   \itemize{
+//'   \item{Indifference Threshold (\code{q})}
+//'   \item{Preference Threshold (\code{p})}
+//'   \item{Gaussian Threshold (\code{s})}
+//'   }
+//' @param normalize A boolean to normalize the index.
 //' @return Preference Matrix
+//' @export
 // [[Rcpp::export]]
+
+
 Rcpp::List PrometheeIV(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();

@@ -3,7 +3,17 @@
 \docType{methods}
 \name{plot,RPrometheeIII-method}
 \alias{plot,RPrometheeIII-method}
-\title{plot}
+\title{Plots RPrometheeIII objects}
 \usage{
 \S4method{plot}{RPrometheeIII}(x, y, ...)
+}
+\arguments{
+\item{x}{the RPromethee object to be ploted.}
+
+\item{y}{not used in this context.}
+
+\item{...}{not used in this context.}
+}
+\description{
+Plots the Phi interval for each alternative and also its Phi dot.
 }

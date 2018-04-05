@@ -2,7 +2,6 @@
 % Please edit documentation in R/PrometheeS4.R
 \name{RPrometheeIVKernel}
 \alias{RPrometheeIVKernel}
-\alias{PrometheeIVKernel}
 \alias{RPrometheeIVKernel,RPrometheeArguments-method}
 \title{RPrometheeIVKernel}
 \usage{

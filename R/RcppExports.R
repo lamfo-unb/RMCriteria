@@ -3,14 +3,37 @@
 
 #' Create the Kernel matrix
 #' @param datVec  Column of the dataset
-#' @param int Type od preference function
+#' @param int Type of preference function
 #' @return Preference Matrix
+#' @export
 NULL
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
+#' PrometheeI
+#' Calculates PROMETHEE I method.
+#' @param datMat A matrix containing the data from criterias and alternatives.
+#' @param vecWeights A vector of weights for each criteria.
+#' @param prefFunction A numerical vector to indicate the type of the
+#' Preference Function:
+#'   \itemize{
+#'     \item \code{prefFunction = 0} Gaussian Preference Function
+#'     \item \code{prefFunction = 1} Usual Preference Function
+#'     \item \code{prefFunction = 2} U-Shape Preference Function
+#'     \item \code{prefFunction = 3} V-Shape Preference Function
+#'     \item \code{prefFunction = 4} Level Preference Function
+#'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+#'     }
+#' @param parms a numerical matrix with parameters associated to the Preference
+#'  Function. They're defined as a matrix of n columns and m rows. The maximum
+#'  number of parameters is 3 and m is the number of criterias. The parameters
+#'  are:
+#'   \itemize{
+#'   \item{Indifference Threshold (\code{q})}
+#'   \item{Preference Threshold (\code{p})}
+#'   \item{Gaussian Threshold (\code{s})}
+#'   }
+#' @param normalize A boolean to normalize the index.
 #' @return Preference Matrix
+#' @export
 PrometheeI <- function(datMat, vecWeights, prefFunction, parms, normalize) {
     .Call('_RMCriteria_PrometheeI', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
 }
@@ -21,12 +44,34 @@ PrometheeI <- function(datMat, vecWeights, prefFunction, parms, normalize) {
 #' @return Preference Matrix
 NULL
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
+#' Calculates PROMETHEE II method.
+#' @param datMat A matrix containing the data from criterias and alternatives.
+#' @param vecWeights A vector of weights for each criteria.
+#' @param prefFunction A numerical vector to indicate the type of the
+#' Preference Function:
+#'   \itemize{
+#'     \item \code{prefFunction = 0} Gaussian Preference Function
+#'     \item \code{prefFunction = 1} Usual Preference Function
+#'     \item \code{prefFunction = 2} U-Shape Preference Function
+#'     \item \code{prefFunction = 3} V-Shape Preference Function
+#'     \item \code{prefFunction = 4} Level Preference Function
+#'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+#'     }
+#' @param parms a numerical matrix with parameters associated to the Preference
+#'  Function. They're defined as a matrix of n columns and m rows. The maximum
+#'  number of parameters is 3 and m is the number of criterias. The parameters
+#'  are:
+#'   \itemize{
+#'   \item{Indifference Threshold (\code{q})}
+#'   \item{Preference Threshold (\code{p})}
+#'   \item{Gaussian Threshold (\code{s})}
+#'   }
+#' @param normalize A boolean to normalize the index.
 #' @return Preference Matrix
-#'' [[Rcpp::export]]
-NULL
+#' @export
+PrometheeII <- function(datMat, vecWeights, prefFunction, parms, normalize) {
+    .Call('_RMCriteria_PrometheeII', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
+}
 
 #' Create the Kernel matrix
 #' @param datVec  Column of the dataset
@@ -34,26 +79,94 @@ NULL
 #' @return Preference Matrix
 NULL
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
+#' Calculates PROMETHEE III method.
+#' @param datMat A matrix containing the data from criterias and alternatives.
+#' @param vecWeights A vector of weights for each criteria.
+#' @param prefFunction A numerical vector to indicate the type of the
+#' Preference Function:
+#'   \itemize{
+#'     \item \code{prefFunction = 0} Gaussian Preference Function
+#'     \item \code{prefFunction = 1} Usual Preference Function
+#'     \item \code{prefFunction = 2} U-Shape Preference Function
+#'     \item \code{prefFunction = 3} V-Shape Preference Function
+#'     \item \code{prefFunction = 4} Level Preference Function
+#'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+#'     }
+#' @param alphaVector A numerical vector to indicate the size of the interval
+#' for each alternative in Promethee III ranking.
+#' @param parms a numerical matrix with parameters associated to the Preference
+#'  Function. They're defined as a matrix of n columns and m rows. The maximum
+#'  number of parameters is 3 and m is the number of criterias. The parameters
+#'  are:
+#'   \itemize{
+#'   \item{Indifference Threshold (\code{q})}
+#'   \item{Preference Threshold (\code{p})}
+#'   \item{Gaussian Threshold (\code{s})}
+#'   }
 #' @return Preference Matrix
+#' @export
 PrometheeIII <- function(datMat, vecWeights, prefFunction, alphaVector, parms) {
     .Call('_RMCriteria_PrometheeIII', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, alphaVector, parms)
 }
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
+#' Calculates PROMETHEE IV method.
+#' @param datMat A matrix containing the data from criterias and alternatives.
+#' @param vecWeights A vector of weights for each criteria.
+#' @param prefFunction A numerical vector to indicate the type of the
+#' Preference Function:
+#'   \itemize{
+#'     \item \code{prefFunction = 0} Gaussian Preference Function
+#'     \item \code{prefFunction = 1} Usual Preference Function
+#'     \item \code{prefFunction = 2} U-Shape Preference Function
+#'     \item \code{prefFunction = 3} V-Shape Preference Function
+#'     \item \code{prefFunction = 4} Level Preference Function
+#'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+#'     }
+#' @param parms A numerical matrix with parameters associated to the Preference
+#'  Function. They're defined as a matrix of n columns and m rows. The maximum
+#'  number of parameters is 3 and m is the number of criterias. The parameters
+#'  are:
+#'   \itemize{
+#'   \item{Indifference Threshold (\code{q})}
+#'   \item{Preference Threshold (\code{p})}
+#'   \item{Gaussian Threshold (\code{s})}
+#'   }
+#' @param normalize A boolean to normalize the index.
 #' @return Preference Matrix
+#' @export
 PrometheeIV <- function(datMat, vecWeights, prefFunction, parms, normalize) {
     .Call('_RMCriteria_PrometheeIV', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
 }
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
+#' Calculates PROMETHEE IV KERNEL method.
+#' @param datMat A matrix containing the data from criterias and alternatives.
+#' @param vecWeights A vector of weights for each criteria.
+#' @param prefFunction A numerical vector to indicate the type of the
+#' Preference Function:
+#'   \itemize{
+#'     \item \code{prefFunction = 0} Gaussian Preference Function
+#'     \item \code{prefFunction = 1} Usual Preference Function
+#'     \item \code{prefFunction = 2} U-Shape Preference Function
+#'     \item \code{prefFunction = 3} V-Shape Preference Function
+#'     \item \code{prefFunction = 4} Level Preference Function
+#'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
+#'     }
+#' @param parms a numerical matrix with parameters associated to the Preference
+#'  Function. They're defined as a matrix of n columns and m rows. The maximum
+#'  number of parameters is 3 and m is the number of criterias. The parameters
+#'  are:
+#'   \itemize{
+#'   \item{Indifference Threshold (\code{q})}
+#'   \item{Preference Threshold (\code{p})}
+#'   \item{Gaussian Threshold (\code{s})}
+#'   }
+#' @param band A numerical matrix with m rows corresponding to each criteria
+#' and one column corresponding to the bandwitch estimated for that criteria.
+#' This bandwitch is used for Kernel Density Estimation in Promethee IV Kernel.
+#'  By default, it is calculated using bw.nrd0.
+#' @param normalize A boolean to normalize the index.
 #' @return Preference Matrix
+#' @export
 PrometheeIVKernel <- function(datMat, vecWeights, prefFunction, parms, band, normalize) {
     .Call('_RMCriteria_PrometheeIVKernel', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, band, normalize)
 }

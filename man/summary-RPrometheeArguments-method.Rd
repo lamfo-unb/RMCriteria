@@ -3,7 +3,15 @@
 \docType{methods}
 \name{summary,RPrometheeArguments-method}
 \alias{summary,RPrometheeArguments-method}
-\title{summary}
+\title{Summarize a RPromethee object.}
 \usage{
 \S4method{summary}{RPrometheeArguments}(object)
+}
+\arguments{
+\item{object}{A RPromethee object.}
+
+\item{...}{Not used in this context.}
+}
+\description{
+Produce some useful statistics for a RPromethee object.
 }

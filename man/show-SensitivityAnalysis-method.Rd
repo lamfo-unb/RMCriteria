@@ -3,7 +3,13 @@
 \docType{methods}
 \name{show,SensitivityAnalysis-method}
 \alias{show,SensitivityAnalysis-method}
-\title{show}
+\title{Show a RPromethee object}
 \usage{
 \S4method{show}{SensitivityAnalysis}(object)
+}
+\arguments{
+\item{object}{A RPromethee object.}
+}
+\description{
+Shows data and some results for \code{SensitivityAnalysis}.
 }

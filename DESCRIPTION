@@ -12,7 +12,6 @@ LazyData: TRUE
 LinkingTo: Rcpp, RcppEigen, RcppNumerical
 Imports:
     Rcpp,
-    RcppEigen,
     RcppNumerical,
     linprog,
     lpSolve,

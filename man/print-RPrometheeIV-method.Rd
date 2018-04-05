@@ -3,7 +3,15 @@
 \docType{methods}
 \name{print,RPrometheeIV-method}
 \alias{print,RPrometheeIV-method}
-\title{print}
+\title{Prints a RPromethee object.}
 \usage{
 \S4method{print}{RPrometheeIV}(x)
+}
+\arguments{
+\item{x}{A RPromethee object.}
+
+\item{...}{Not used in this context.}
+}
+\description{
+Prints main information from a \code{RPrometheeIV} object.
 }

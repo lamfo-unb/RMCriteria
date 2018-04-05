@@ -3,7 +3,13 @@
 \docType{methods}
 \name{show,RPrometheeArguments-method}
 \alias{show,RPrometheeArguments-method}
-\title{show}
+\title{Show a RPromethee object}
 \usage{
 \S4method{show}{RPrometheeArguments}(object)
+}
+\arguments{
+\item{object}{A RPromethee object.}
+}
+\description{
+Shows data and some results for \code{RPrometheeArguments}.
 }
