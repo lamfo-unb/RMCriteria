@@ -18,8 +18,11 @@ void LevelPreference(Eigen::MatrixXd &matDelta,double q, double p);
 void VShapeIndPreference(Eigen::MatrixXd &matDelta, double q, double p);
 
 
-// [[Rcpp::export]]
-Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
+//' Create the Kernel matrix
+//' @param datVec  Column of the dataset
+//' @param int Type od preference function
+//' @return Preference Matrix
+Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
   //Get the number of rows
   int rows=datVec.size();
 
@@ -80,7 +83,8 @@ Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::
 }
 
 
-//' Calculates PROMETHEE III method.
+//' Calculates PROMETHEE II method.
+//'
 //' @param datMat A matrix containing the data from criterias and alternatives.
 //' @param vecWeights A vector of weights for each criteria.
 //' @param prefFunction A numerical vector to indicate the type of the
@@ -93,8 +97,6 @@ Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::
 //'     \item \code{prefFunction = 4} Level Preference Function
 //'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
 //'     }
-//' @param alphaVector A numerical vector to indicate the size of the interval
-//' for each alternative in Promethee III ranking.
 //' @param parms a numerical matrix with parameters associated to the Preference
 //'  Function. They're defined as a matrix of n columns and m rows. The maximum
 //'  number of parameters is 3 and m is the number of criterias. The parameters
@@ -104,12 +106,12 @@ Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::
 //'   \item{Preference Threshold (\code{p})}
 //'   \item{Gaussian Threshold (\code{s})}
 //'   }
+//' @param normalize A boolean to normalize the index.
 //' @return Preference Matrix
 //' @export
 // [[Rcpp::export]]
 
-
-List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction,Eigen::VectorXi alphaVector, Eigen::MatrixXd parms){
+Eigen::VectorXd PrometheeII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();
 
@@ -123,7 +125,7 @@ List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::Vec
   for(int col=0;col<cols;col++){
     if(vecWeights(col)>0){
       //Create the delta matrix
-      Eigen::MatrixXd matTemp  = matPrometheeIII(datMat.col(col), prefFunction(col), parms.row(col));
+      Eigen::MatrixXd matTemp  = matPrometheeII(datMat.col(col), prefFunction(col), parms.row(col));
       //Multiply the weight
       matTemp = matTemp*vecWeights(col);
       //Accumulate the matrix
@@ -135,27 +137,21 @@ List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::Vec
   matPromethee = matPromethee/vecWeights.sum();
 
   //Create the Flow vector
-  Eigen::VectorXd limInf  = Eigen::VectorXd::Zero(rows);
-  Eigen::VectorXd limSup = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiPlus  = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiMinus = Eigen::VectorXd::Zero(rows);
 
   for(int row=0;row<rows;row++){
-    Eigen::VectorXd rowMat =  matPromethee.row(row);
-    Eigen::VectorXd colMat = matPromethee.col(row);
-    Eigen::VectorXd diff = rowMat-colMat;
-    int nElements = matPromethee.cols();
-
-    //Compute mean and variance
-    double phiBar =diff.mean();
-    double phiVar = diff.squaredNorm()/nElements - (phiBar*phiBar);
-
-    limInf(row) = phiBar-alphaVector(row)*std::sqrt(phiVar);
-    limSup(row) = phiBar+alphaVector(row)*std::sqrt(phiVar);
+    phiPlus(row) = matPromethee.row(row).sum();
+    phiMinus(row) = matPromethee.col(row).sum();
   }
 
-  //'Store the results
-  List resTemp = Rcpp::List::create(Rcpp::Named("limInf") = limInf,
-                                    Rcpp::Named("limSup")  = limSup);
+    //Index
+  Eigen::VectorXd phi = phiPlus-phiMinus;
 
-  return (resTemp);
+  //Normalize
+  double min = phi.minCoeff();
+  double max = phi.maxCoeff();
+  if(normalize==true) phi = (phi.array() - min)/(max-min);
+  return (phi);
 }
 

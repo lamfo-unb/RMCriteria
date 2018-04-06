@@ -2196,10 +2196,6 @@ setMethod(
 
 
 ##### General Plot Function
-#' @title Generic X-Y Plotting
-#' @exportMethod plot
-if(!isGeneric("plot")){
-  setGeneric("plot", function(x, ...) standardGeneric("plot"))}
 
 
 #Define the Method
@@ -2289,21 +2285,14 @@ setMethod(f="plot",
 ##############################################
 ## show() method for PrometheeClass
 
-#' @title Show a RPromethee object
-#' @aliases show,RPrometheeArguments-method
-#' @description Shows data and some results for \code{RPrometheeArguments}.
-#' @param object A RPromethee object.
-#' @exportMethod show
-
 #' @title Shows a RPromethee object.
 #' @aliases show,RPrometheeArguments-method
 #' @description Shows data and some results for \code{RPrometheeArguments} object.
 #' @param object A RPromethee object.
 #' @exportMethod show
 
-
 setMethod(f = "show", signature = "RPrometheeArguments",
-          definition <-  function(object) {
+          definition = function(object) {
              data           <- object@datMat;
              weights        <- object@vecWeights;
              max            <- object@vecMaximiz;
@@ -2316,7 +2305,9 @@ setMethod(f = "show", signature = "RPrometheeArguments",
                 ifelse(normalize, "will be normalized.", "won't be normalized."),
                 "\nThe alternatives are:", alternatives)
             invisible(NULL)
-          })
+          }
+)
+
 
 #' @title Show a RPromethee object
 #' @aliases show,RPrometheeI-method
@@ -2325,7 +2316,7 @@ setMethod(f = "show", signature = "RPrometheeArguments",
 #' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeI",
-          definition <-  function(object) {
+          definition = function(object) {
             Plus           <- object@PhiPlus
             Minus          <- object@PhiMinus
             alternatives   <- object@alternatives
@@ -2341,7 +2332,7 @@ setMethod(f = "show", signature = "RPrometheeI",
 #' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeII",
-          definition <-  function(object) {
+          definition = function(object) {
             Phi            <- object@Phi
             alternatives   <- object@alternatives
 
@@ -2356,7 +2347,7 @@ setMethod(f = "show", signature = "RPrometheeII",
 #' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeIII",
-          definition <-  function(object) {
+          definition = function(object) {
             Phi            <- object@Phi
             limInf         <- object@limInf
             limSup         <- object@limSup
@@ -2373,7 +2364,7 @@ setMethod(f = "show", signature = "RPrometheeIII",
 #' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeIV",
-          definition <-  function(object) {
+          definition = function(object) {
             Plus           <- object@PhiPlus
             Minus          <- object@PhiMinus
             alternatives   <- object@alternatives
@@ -2389,7 +2380,7 @@ setMethod(f = "show", signature = "RPrometheeIV",
 #' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeIVKernel",
-          definition <-  function(object) {
+          definition = function(object) {
             Plus           <- object@PhiPlus
             Minus          <- object@PhiMinus
             alternatives   <- object@alternatives
@@ -2405,7 +2396,7 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
 #' @exportMethod show
 
  setMethod(f = "show", signature = "RPrometheeV",
-           definition <-  function(object) {
+           definition = function(object) {
              Phi            <- object@Phi
              alternatives   <- object@alternatives
              solution       <- object@Solution
@@ -2422,7 +2413,7 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
 #' @exportMethod show
 
 setMethod(f = "show", signature = "SensitivityAnalysis",
-          definition <-  function(object) {
+          definition = function(object) {
             alternatives   <- object@alternatives
             solution       <- object@Solution
 

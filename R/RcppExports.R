@@ -35,11 +35,9 @@ PrometheeI <- function(datMat, vecWeights, prefFunction, parms, normalize) {
     .Call('_RMCriteria_PrometheeI', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
 }
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
-#' @return Preference Matrix
-NULL
+matPrometheeII <- function(datVec, prefFunction, parms) {
+    .Call('_RMCriteria_matPrometheeII', PACKAGE = 'RMCriteria', datVec, prefFunction, parms)
+}
 
 #' Calculates PROMETHEE II method.
 #'
@@ -71,11 +69,9 @@ PrometheeII <- function(datMat, vecWeights, prefFunction, parms, normalize) {
     .Call('_RMCriteria_PrometheeII', PACKAGE = 'RMCriteria', datMat, vecWeights, prefFunction, parms, normalize)
 }
 
-#' Create the Kernel matrix
-#' @param datVec  Column of the dataset
-#' @param int Type od preference function
-#' @return Preference Matrix
-NULL
+matPrometheeIII <- function(datVec, prefFunction, parms) {
+    .Call('_RMCriteria_matPrometheeIII', PACKAGE = 'RMCriteria', datVec, prefFunction, parms)
+}
 
 #' Calculates PROMETHEE III method.
 #' @param datMat A matrix containing the data from criterias and alternatives.

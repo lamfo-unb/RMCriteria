@@ -18,10 +18,7 @@ void LevelPreference(Eigen::MatrixXd &matDelta,double q, double p);
 void VShapeIndPreference(Eigen::MatrixXd &matDelta, double q, double p);
 
 
-//' Create the Kernel matrix
-//' @param datVec  Column of the dataset
-//' @param int Type od preference function
-//' @return Preference Matrix
+// [[Rcpp::export]]
 Eigen::MatrixXd matPrometheeII(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
   //Get the number of rows
   int rows=datVec.size();

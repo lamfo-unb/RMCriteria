@@ -32,7 +32,8 @@ Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{RPrometheeV}},
   \code{\link{SensitivityAnalysis}},
   \code{\link{UpdateRPrometheeArguments}},
-  \code{\link{WalkingWeightsPlot}}
+  \code{\link{WalkingWeightsPlot}},
+  \code{\link{plot,RPrometheeI-method}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}

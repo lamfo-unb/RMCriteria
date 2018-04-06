@@ -13,13 +13,13 @@ void UShapePreference(Eigen::MatrixXd &matDelta, double q);
 //VShape Preference Function
 void VShapePreference(Eigen::MatrixXd &matDelta, double p);
 //Level Preference Function
-void LevelPreference(Eigen::MatrixXd &matDelta,double q, double p);
+void LevelPreference(Eigen::MatrixXd &matDelta, double q, double p);
 //Level Preference Function
 void VShapeIndPreference(Eigen::MatrixXd &matDelta, double q, double p);
 
 
 // [[Rcpp::export]]
-Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
+Eigen::MatrixXd matPrometheeI(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
   //Get the number of rows
   int rows=datVec.size();
 
@@ -80,12 +80,14 @@ Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::
 }
 
 
-//' Calculates PROMETHEE III method.
+
+//' Calculates PROMETHEE I method.
+//'
 //' @param datMat A matrix containing the data from criterias and alternatives.
 //' @param vecWeights A vector of weights for each criteria.
 //' @param prefFunction A numerical vector to indicate the type of the
 //' Preference Function:
-//'   \itemize{
+//'  \itemize{
 //'     \item \code{prefFunction = 0} Gaussian Preference Function
 //'     \item \code{prefFunction = 1} Usual Preference Function
 //'     \item \code{prefFunction = 2} U-Shape Preference Function
@@ -93,8 +95,6 @@ Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::
 //'     \item \code{prefFunction = 4} Level Preference Function
 //'     \item \code{prefFunction = 5} V-Shape Preference and Indiference Function
 //'     }
-//' @param alphaVector A numerical vector to indicate the size of the interval
-//' for each alternative in Promethee III ranking.
 //' @param parms a numerical matrix with parameters associated to the Preference
 //'  Function. They're defined as a matrix of n columns and m rows. The maximum
 //'  number of parameters is 3 and m is the number of criterias. The parameters
@@ -104,12 +104,13 @@ Eigen::MatrixXd matPrometheeIII(Eigen::VectorXd datVec,int prefFunction, Eigen::
 //'   \item{Preference Threshold (\code{p})}
 //'   \item{Gaussian Threshold (\code{s})}
 //'   }
-//' @return Preference Matrix
+//' @param normalize A boolean to normalize the index.
+//' @keywords internal
 //' @export
 // [[Rcpp::export]]
 
 
-List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction,Eigen::VectorXi alphaVector, Eigen::MatrixXd parms){
+List PrometheeI(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();
 
@@ -123,7 +124,7 @@ List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::Vec
   for(int col=0;col<cols;col++){
     if(vecWeights(col)>0){
       //Create the delta matrix
-      Eigen::MatrixXd matTemp  = matPrometheeIII(datMat.col(col), prefFunction(col), parms.row(col));
+      Eigen::MatrixXd matTemp  = matPrometheeI(datMat.col(col), prefFunction(col), parms.row(col));
       //Multiply the weight
       matTemp = matTemp*vecWeights(col);
       //Accumulate the matrix
@@ -135,26 +136,27 @@ List PrometheeIII(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::Vec
   matPromethee = matPromethee/vecWeights.sum();
 
   //Create the Flow vector
-  Eigen::VectorXd limInf  = Eigen::VectorXd::Zero(rows);
-  Eigen::VectorXd limSup = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiPlus  = Eigen::VectorXd::Zero(rows);
+  Eigen::VectorXd phiMinus = Eigen::VectorXd::Zero(rows);
 
   for(int row=0;row<rows;row++){
-    Eigen::VectorXd rowMat =  matPromethee.row(row);
-    Eigen::VectorXd colMat = matPromethee.col(row);
-    Eigen::VectorXd diff = rowMat-colMat;
-    int nElements = matPromethee.cols();
+    phiPlus(row) = matPromethee.row(row).sum();
+    phiMinus(row) = matPromethee.col(row).sum();
+  }
 
-    //Compute mean and variance
-    double phiBar =diff.mean();
-    double phiVar = diff.squaredNorm()/nElements - (phiBar*phiBar);
-
-    limInf(row) = phiBar-alphaVector(row)*std::sqrt(phiVar);
-    limSup(row) = phiBar+alphaVector(row)*std::sqrt(phiVar);
+  //Normalize
+  double minPlus = phiPlus.minCoeff();
+  double maxPlus = phiPlus.maxCoeff();
+  double minMinus = phiMinus.minCoeff();
+  double maxMinus = phiMinus.maxCoeff();
+  if(normalize==true){
+    phiPlus = (phiPlus.array() - minPlus)/(maxPlus-minPlus);
+    phiMinus = (phiMinus.array() - minMinus)/(maxMinus-minMinus);
   }
 
   //'Store the results
-  List resTemp = Rcpp::List::create(Rcpp::Named("limInf") = limInf,
-                                    Rcpp::Named("limSup")  = limSup);
+  List resTemp = Rcpp::List::create(Rcpp::Named("Phi+") = phiPlus,
+                                    Rcpp::Named("Phi-")  = phiMinus);
 
   return (resTemp);
 }

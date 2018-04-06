@@ -93,7 +93,8 @@ Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{SensitivityAnalysis}},
   \code{\link{UpdateRPrometheeAlternatives}},
   \code{\link{UpdateRPrometheeArguments}},
-  \code{\link{WalkingWeightsPlot}}
+  \code{\link{WalkingWeightsPlot}},
+  \code{\link{plot,RPrometheeI-method}}
 }
 \author{
 Pedro Henrique Melo Albuquerque, \email{pedroa@unb.br}
