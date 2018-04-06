@@ -61,11 +61,12 @@ constraintDir = constraintDir)
 
 ## Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C", "D", "E", "F")
-result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 
 ## Updating any argument using UpdateRPrometheeArguments
 newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
-result <- UpdateRPrometheeArguments(result, "parms", newParms)
+PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
+(result <- SensitivityAnalysis(PromObj))
 }
 \references{
 \itemize{
@@ -99,8 +100,7 @@ result <- UpdateRPrometheeArguments(result, "parms", newParms)
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

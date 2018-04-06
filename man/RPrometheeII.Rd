@@ -71,11 +71,12 @@ PrometheeIIPlot(result)
 
 ## Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C")
-result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 
 ## Updating any argument using UpdateRPrometheeArguments
 newWeights <- c(0.5, 0.5)
-result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
+PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
+(results <- RPrometheeII(PromObj))
 }
 \references{
 \itemize{
@@ -102,8 +103,7 @@ result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

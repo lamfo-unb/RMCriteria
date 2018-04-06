@@ -82,8 +82,7 @@ This function is used to create a \code{RPrometheeArguments} object. This
  \code{\link{RPrometheeIII}}, \code{\link{RPrometheeIV}},
  \code{\link{RPrometheeIVKernel}}, \code{\link{RPrometheeV}}
 
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

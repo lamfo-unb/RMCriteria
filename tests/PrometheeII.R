@@ -12,7 +12,7 @@ parms<-matrix(c(NA,
 
 #Step 1: Construct the RPrometheeArguments
 PromObj <- RPrometheeConstructor(datMat=dados,vecWeights=c(0.3,0.7),vecMaximiz=c(F,T),prefFunction=c(0,0),parms=parms,normalize=FALSE)
-res <- RPrometheeII(PromObj)
+result <- RPrometheeII(PromObj)
 summary(res)
 print(res)
 show(res)
@@ -27,4 +27,3 @@ plot(res)
 alt <- c("A", "B", "C")
 
 res <- UpdateRPrometheeAlternatives(res, alt)
-

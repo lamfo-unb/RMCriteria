@@ -21,8 +21,7 @@ It's possible to update alternatives names for: \code{RPrometheeI},
  \code{RPrometheeIVKernel} and \code{RPrometheeV}
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

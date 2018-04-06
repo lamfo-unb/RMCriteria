@@ -341,11 +341,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newWeights <- c(0.5, 0.5)
-#' result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
+#' (results <- RPrometheeI(PromObj))
 #'
 
 
@@ -526,12 +527,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newWeights <- c(0.5, 0.5)
-#' result <- UpdateRPrometheeArguments(result, "vecWeights", newWeights)
-
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
+#' (results <- RPrometheeII(PromObj))
 
 
 #Define the Method
@@ -710,11 +711,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newAlphaVector <- c(1, 1, 1)
-#' result <- UpdateRPrometheeArguments(result, "alphaVector", newAlphaVector)
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "alphaVector", newAlphaVector)
+#' result <- RPrometheeIII(PromObj)
 
 #Define the Method
 setGeneric(
@@ -891,11 +893,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newPrefFunction <- c(1, 1)
-#' result <- UpdateRPrometheeArguments(result, "prefFunction", newPrefFunction)
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "prefFunction", newPrefFunction)
+#' (result <- RPrometheeIV(PromObj))
 
 
 
@@ -1074,11 +1077,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C", "D", "E", "F")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
-#' result <- UpdateRPrometheeArguments(result, "parms", newParms)
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
+#' (result <- RPrometheeIVKernel(PromObj))
 
 
 #Define the Method
@@ -1257,11 +1261,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C", "D", "E", "F")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newBounds <- c(5, -2)
-#' result <- UpdateRPrometheeArguments(result, "bounds", newBounds)
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "bounds", newBounds)
+#' (result <- RPrometheeV(PromObj))
 
 
 
@@ -1449,11 +1454,12 @@ setClass(
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C", "D", "E", "F")
-#' result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+#' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
 #' newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
-#' result <- UpdateRPrometheeArguments(result, "parms", newParms)
+#' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
+#' (result <- SensitivityAnalysis(PromObj))
 
 
 #Define the Method
@@ -2066,10 +2072,10 @@ setMethod(
       labs(x = "Alternatives", y = "Phi")
 
     plot_b <- ggplot(weightsDF) +
-      geom_bar(aes_string(x = as.character("criterias.value"), y = weights), stat = "identity", width = 0.5) +
-      geom_text(aes_string(x = as.character("criterias.value"), y = weights,
-                    label = sprintf("%0.2f%%", 100*weights),
-                    vjust = 1)) +
+      geom_bar(aes_string(x = as.character("criterias"), y = weights), stat = "identity", width = 0.5) +
+      geom_text(aes_string(x = as.character("criterias"), y = weights,
+                           label = 100*weights,
+                           vjust = 1)) +
       theme(axis.text.x = element_blank(),
             axis.text.y = element_blank(),
             axis.ticks = element_blank()) +
@@ -2127,66 +2133,66 @@ setMethod(
 #' @import ggnetwork
 
 
-#Define the Method
-setGeneric(
-  "NetworkPlot",
-  function(RPrometheeI) {
-    standardGeneric("NetworkPlot")
-  }
-)
-
-# Complete Ranking Promethee II - Method
-setMethod(
-  "NetworkPlot",
-  signature("RPrometheeI"),
-  function(RPrometheeI) {
-    PhiPlus        <-   RPrometheeI@PhiPlus
-    PhiMinus       <-   RPrometheeI@PhiMinus
-
-
-    #Step 1: Create the edges
-    #Step 1.1: Find the rank
-    rank<-data.frame("Phi"=RPrometheeI@PhiPlus-RPrometheeI@PhiMinus,"Phi.Plus"=RPrometheeI@PhiPlus, "Phi.Minus"= RPrometheeI@PhiMinus,"Alternative"=seq(1,length(RPrometheeI@PhiPlus)))
-    #Step 1.2: Order data
-    rank <- rank[order(-rank$Phi),]
-
-    #Step 1.3: Defining the eges
-    adjMatrix<-matrix(0,ncol=nrow(rank),nrow=nrow(rank))
-    invisible(capture.output(for(row1 in 1:(nrow(rank)-1)){
-      for(row2 in (row1+1):nrow(rank)){
-        print(paste(row1,row2))
-        if(rank[row1,"Phi.Plus"]>rank[row2,"Phi.Minus"] & rank[row1,"Phi.Minus"]<rank[row2,"Phi.Minus"]){
-          adjMatrix[row1,row2]<-1
-        }
-      }
-    }))
-
-    #Step 1.4: Create the network
-    net <- as.network(x = adjMatrix,
-                      directed = TRUE,
-                      loops = FALSE,
-                      matrix.type =    "adjacency")
-
-    #Naming the vertices
-    network.vertex.names(net) <- rank$Alternative
-
-    #Tipos de redes
-    net1<-ggnetwork(net)
-    net2<-ggnetwork(net, layout = "fruchtermanreingold", cell.jitter = 0.75)
-    net3<-ggnetwork(net, layout = "target", niter = 100)
-
-
-    results <- ggplot(net, aes_string(x = "x.values", y = "y.values", xend = "xend.values", yend = "yend.values")) +
-      geom_edges(arrow = arrow(length = unit(6, "pt"), type = "closed")) +
-      geom_nodes(color = "turquoise4", size = 10) +
-      geom_nodetext(aes_string(label =  "vertex.names.values"),
-                    fontface = "bold", color = "white") +
-      theme_blank()
-
-    #Return the class
-    return(results)
-  }
-)
+# #Define the Method
+# setGeneric(
+#   "NetworkPlot",
+#   function(RPrometheeI) {
+#     standardGeneric("NetworkPlot")
+#   }
+# )
+#
+# # Complete Ranking Promethee II - Method
+# setMethod(
+#   "NetworkPlot",
+#   signature("RPrometheeI"),
+#   function(RPrometheeI) {
+#     PhiPlus        <-   RPrometheeI@PhiPlus
+#     PhiMinus       <-   RPrometheeI@PhiMinus
+#
+#
+#     #Step 1: Create the edges
+#     #Step 1.1: Find the rank
+#     rank<-data.frame("Phi"=RPrometheeI@PhiPlus-RPrometheeI@PhiMinus,"Phi.Plus"=RPrometheeI@PhiPlus, "Phi.Minus"= RPrometheeI@PhiMinus,"Alternative"=seq(1,length(RPrometheeI@PhiPlus)))
+#     #Step 1.2: Order data
+#     rank <- rank[order(-rank$Phi),]
+#
+#     #Step 1.3: Defining the eges
+#     adjMatrix<-matrix(0,ncol=nrow(rank),nrow=nrow(rank))
+#     invisible(capture.output(for(row1 in 1:(nrow(rank)-1)){
+#       for(row2 in (row1+1):nrow(rank)){
+#         print(paste(row1,row2))
+#         if(rank[row1,"Phi.Plus"]>rank[row2,"Phi.Minus"] & rank[row1,"Phi.Minus"]<rank[row2,"Phi.Minus"]){
+#           adjMatrix[row1,row2]<-1
+#         }
+#       }
+#     }))
+#
+#     #Step 1.4: Create the network
+#     net <- as.network(x = adjMatrix,
+#                       directed = TRUE,
+#                       loops = FALSE,
+#                       matrix.type =    "adjacency")
+#
+#     #Naming the vertices
+#     network.vertex.names(net) <- rank$Alternative
+#
+#     #Tipos de redes
+#     net1<-ggnetwork(net)
+#     net2<-ggnetwork(net, layout = "fruchtermanreingold", cell.jitter = 0.75)
+#     net3<-ggnetwork(net, layout = "target", niter = 100)
+#
+#
+#     results <- ggplot(net, aes_string(x = "x.values", y = "y.values", xend = "xend.values", yend = "yend.values")) +
+#       geom_edges(arrow = arrow(length = unit(6, "pt"), type = "closed")) +
+#       geom_nodes(color = "turquoise4", size = 10) +
+#       geom_nodetext(aes_string(label =  "vertex.names.values"),
+#                     fontface = "bold", color = "white") +
+#       theme_blank()
+#
+#     #Return the class
+#     return(results)
+#   }
+# )
 
 
 ##### General Plot Function
@@ -2210,9 +2216,9 @@ setMethod(f="plot",
   signature("RPrometheeI"),
   definition = function(x, ...) {
     print(PrometheeIPlot(x))
-    par(ask = TRUE)
-    print(NetworkPlot(x))
-    par(ask = FALSE)
+#    par(ask = TRUE)
+#    print(NetworkPlot(x))
+#    par(ask = FALSE)
   }
 )
 
@@ -2817,7 +2823,7 @@ setMethod(f = "summary", signature = "SensitivityAnalysis",
 #'
 #' @aliases UpdateRPrometheeArguments
 #'
-#' @param object A \code{RPrometheeArguments} object
+#' @param object A \code{RPrometheeArguments} object.
 #' @param element A character value to indicate which slot is going to be
 #' updated. The name must be exactly the same as the name of the argument.
 #' @param newValue An object of the class of the element that is being updated.
@@ -2831,6 +2837,7 @@ setMethod(f = "summary", signature = "SensitivityAnalysis",
 #'
 #' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
 #' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#' @export
 
 
 ## RPrometheeArguments update functions
@@ -2840,6 +2847,17 @@ setGeneric(
     standardGeneric("UpdateRPrometheeArguments")
   }
 )
+
+#' @title UpdateRPrometheeArguments
+#' @description Updates slots from \code{RPrometheeArguments} objects.
+#' @aliases UpdateRPrometheeArguments,RPrometheeArguments-method
+#' @param object A \code{RPrometheeArguments} object
+#' @param element A character value to indicate which slot is going to be
+#' updated. The name must be exactly the same as the name of the argument.
+#' @param newValue An object of the class of the element that is being updated.
+#' For example, if it is \code{parms}, \code{newValue} must be a numeric vector.
+#' A character vector with the alternatives new names.
+#' @export
 
 setMethod(
   "UpdateRPrometheeArguments",
@@ -2859,47 +2877,33 @@ setMethod(
 
     if(as.character(element) == "datMat"){
       results <- RPrometheeConstructor(datMat = newValue, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "vecWeights"){
+    } else if(as.character(element) == "vecWeights"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = newValue, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "vecMaximiz"){
+    } else if(as.character(element) == "vecMaximiz"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = newValue, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "prefFunction"){
+    } else if(as.character(element) == "prefFunction"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = newValue, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "parms"){
+    } else if(as.character(element) == "parms"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = newValue, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "normalize"){
+    } else if(as.character(element) == "normalize"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = newValue, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "alphaVector"){
+    } else if(as.character(element) == "alphaVector"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = newValue, band = band, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "band"){
+    } else if(as.character(element) == "band"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = newValue, constraintDir = constraintDir, bounds = bounds)
-    }
-    else if(as.character(element) == "constraintDir"){
+    } else if(as.character(element) == "constraintDir"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = newValue, bounds = bounds)
-    }
-    else if(as.character(element) == "bounds"){
+    } else if(as.character(element) == "bounds"){
       results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = newValue)
-    }
-    else if(as.character(element) == "alternatives"){
+    } else if(as.character(element) == "alternatives"){
       object@alternatives <- newValue
-    }
-    else{results <- "Insert a valid object element to be replaced."}
+    } else{results <- "Insert a valid object element to be replaced."}
 
     #Return the class
     return(results)
   }
 )
 
-
-#setClassUnion("RPromethee", c("RPrometheeI", "RPrometheeII", "RPrometheeIII",
-#                              "RPrometheeIV", "RPrometheeIVKernel", "RPrometheeV"))
 
 #' @title UpdateRPrometheeAlternatives
 #'
@@ -2922,6 +2926,7 @@ setMethod(
 #'
 #' @author Pedro Henrique Melo Albuquerque, \email{pedroa@@unb.br}
 #' @author Gustavo Monteiro Pereira, \email{monteirogustavop@@gmail.com}
+#' @export
 
 ## RPrometheeArguments update functions
 setGeneric(
@@ -2930,6 +2935,13 @@ setGeneric(
     standardGeneric("UpdateRPrometheeAlternatives")
   }
 )
+
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,RPrometheeI-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
 
 setMethod(
   "UpdateRPrometheeAlternatives",
@@ -2940,6 +2952,13 @@ setMethod(
     }
 )
 
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,RPrometheeII-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
+
 setMethod(
   "UpdateRPrometheeAlternatives",
   signature("RPrometheeII"),
@@ -2948,6 +2967,13 @@ setMethod(
     return(object)
   }
 )
+
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,RPrometheeIII-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
 
 setMethod(
   "UpdateRPrometheeAlternatives",
@@ -2958,6 +2984,13 @@ setMethod(
   }
 )
 
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,RPrometheeIV-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
+
 setMethod(
   "UpdateRPrometheeAlternatives",
   signature("RPrometheeIV"),
@@ -2967,6 +3000,13 @@ setMethod(
   }
 )
 
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,RPrometheeIVKernel-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
+
 setMethod(
   "UpdateRPrometheeAlternatives",
   signature("RPrometheeIVKernel"),
@@ -2975,6 +3015,14 @@ setMethod(
     return(object)
   }
 )
+
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,RPrometheeV-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
+
 
 setMethod(
   "UpdateRPrometheeAlternatives",

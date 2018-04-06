@@ -58,11 +58,12 @@ PrometheeIIIPlot(result)
 
 ## Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C")
-result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 
 ## Updating any argument using UpdateRPrometheeArguments
 newAlphaVector <- c(1, 1, 1)
-result <- UpdateRPrometheeArguments(result, "alphaVector", newAlphaVector)
+PromObj <- UpdateRPrometheeArguments(PromObj, "alphaVector", newAlphaVector)
+result <- RPrometheeIII(PromObj)
 }
 \references{
 \itemize{
@@ -95,8 +96,7 @@ result <- UpdateRPrometheeArguments(result, "alphaVector", newAlphaVector)
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

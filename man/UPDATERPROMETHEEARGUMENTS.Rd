@@ -7,7 +7,7 @@
 UpdateRPrometheeArguments(object, element, newValue)
 }
 \arguments{
-\item{object}{A \code{RPrometheeArguments} object}
+\item{object}{A \code{RPrometheeArguments} object.}
 
 \item{element}{A character value to indicate which slot is going to be
 updated. The name must be exactly the same as the name of the argument.}
@@ -24,8 +24,7 @@ The updated arguments can be \code{datMat}, \code{vecWeights},
 \code{alphaVector}, \code{band}, \code{constraintDir} or \code{bounds}.
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

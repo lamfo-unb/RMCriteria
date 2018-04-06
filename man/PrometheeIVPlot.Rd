@@ -45,8 +45,7 @@ Plots PhiPlus and PhiMinus resulting from RPrometheeIV results.
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{RPrometheeConstructor}},

@@ -68,11 +68,12 @@ result <- RPrometheeV(PromObj, method = "RPrometheeIV")
 
 ## Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C", "D", "E", "F")
-result <- UpdateRPrometheeAlternatives(results, newAlternatives)
+result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 
 ## Updating any argument using UpdateRPrometheeArguments
 newBounds <- c(5, -2)
-result <- UpdateRPrometheeArguments(result, "bounds", newBounds)
+PromObj <- UpdateRPrometheeArguments(PromObj, "bounds", newBounds)
+(result <- RPrometheeV(PromObj))
 }
 \references{
 \itemize{
@@ -106,8 +107,7 @@ result <- UpdateRPrometheeArguments(result, "bounds", newBounds)
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIIPlot}},
   \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},

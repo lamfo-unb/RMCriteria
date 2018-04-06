@@ -45,8 +45,7 @@ Plots the Phi interval for each alternative and also its Phi dot.
    }
 }
 \seealso{
-Other RPromethee methods: \code{\link{NetworkPlot}},
-  \code{\link{PrometheeIIPlot}},
+Other RPromethee methods: \code{\link{PrometheeIIPlot}},
   \code{\link{PrometheeIPlot}},
   \code{\link{PrometheeIVPlot}},
   \code{\link{RPrometheeConstructor}},

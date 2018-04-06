@@ -26,7 +26,7 @@ show(res)
 str(res)
 
 PrometheeIPlot(res)
-NetworkPlot(res)
+#NetworkPlot(res)
 plot(res)
 
 
