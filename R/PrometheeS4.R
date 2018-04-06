@@ -1606,7 +1606,7 @@ setMethod(
 
     # Partial bars as in Visual-Promethee
     results <- ggplot(limits) +
-      geom_bar(aes_string(x = "class.values", y = "boundaries.values", fill = "pos_neg.values"),
+      geom_bar(aes_string(x = "class", y = "boundaries", fill = "pos_neg"),
                stat = "identity", width = 0.5) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
@@ -1713,7 +1713,7 @@ setMethod(
 
     # Full Ranking bar as in Visual-Promethee
     results <- ggplot(limits) +
-      geom_bar(aes_string(x = "class.values", y = "boundaries.values", fill = "pos_neg.values"),
+      geom_bar(aes_string(x = "class", y = "boundaries", fill = "pos_neg"),
                stat = "identity", width = 0.3) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
@@ -2648,11 +2648,11 @@ setMethod(f = "summary", signature = "RPrometheeArguments",
 
 setMethod(f = "summary", signature = "RPrometheeI",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",
@@ -2671,11 +2671,11 @@ setMethod(f = "summary", signature = "RPrometheeI",
 
 setMethod(f = "summary", signature = "RPrometheeII",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",
@@ -2696,11 +2696,11 @@ setMethod(f = "summary", signature = "RPrometheeII",
 
 setMethod(f = "summary", signature = "RPrometheeIII",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",
@@ -2720,11 +2720,11 @@ setMethod(f = "summary", signature = "RPrometheeIII",
 
 setMethod(f = "summary", signature = "RPrometheeIV",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",
@@ -2743,11 +2743,11 @@ setMethod(f = "summary", signature = "RPrometheeIV",
 
 setMethod(f = "summary", signature = "RPrometheeIVKernel",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",
@@ -2767,11 +2767,11 @@ setMethod(f = "summary", signature = "RPrometheeIVKernel",
 
 setMethod(f = "summary", signature = "RPrometheeV",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",
@@ -2790,11 +2790,11 @@ setMethod(f = "summary", signature = "RPrometheeV",
 
 setMethod(f = "summary", signature = "SensitivityAnalysis",
           definition <-  function(object) {
-            datMat         <- object@data;
+            data           <- object@datMat;
             alternatives   <- object@alternatives;
             criterias      <- object@criterias;
 
-            res<-pastecs::stat.desc(datMat)
+            res<-pastecs::stat.desc(data)
             res<-res[-11,]
             rownames(res)<-c("Total number of alternatives","Total number of alternatives with NULL",
                              "Total number of alternatives with NA","Minimum","Maximum","Range",

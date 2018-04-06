@@ -2,8 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{PrometheeI}
 \alias{PrometheeI}
-\title{PrometheeI
-Calculates PROMETHEE I method.}
+\title{Calculates PROMETHEE I method.}
 \usage{
 PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
 }
@@ -14,7 +13,7 @@ PrometheeI(datMat, vecWeights, prefFunction, parms, normalize)
 
 \item{prefFunction}{A numerical vector to indicate the type of the
 Preference Function:
-  \itemize{
+ \itemize{
     \item \code{prefFunction = 0} Gaussian Preference Function
     \item \code{prefFunction = 1} Usual Preference Function
     \item \code{prefFunction = 2} U-Shape Preference Function
@@ -35,10 +34,7 @@ are:
 
 \item{normalize}{A boolean to normalize the index.}
 }
-\value{
-Preference Matrix
-}
 \description{
-PrometheeI
 Calculates PROMETHEE I method.
 }
+\keyword{internal}

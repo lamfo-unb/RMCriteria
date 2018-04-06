@@ -6,6 +6,19 @@
 
 using namespace Rcpp;
 
+// matPrometheeI
+Eigen::MatrixXd matPrometheeI(Eigen::VectorXd datVec, int prefFunction, Eigen::VectorXd parms);
+RcppExport SEXP _RMCriteria_matPrometheeI(SEXP datVecSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type datVec(datVecSEXP);
+    Rcpp::traits::input_parameter< int >::type prefFunction(prefFunctionSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type parms(parmsSEXP);
+    rcpp_result_gen = Rcpp::wrap(matPrometheeI(datVec, prefFunction, parms));
+    return rcpp_result_gen;
+END_RCPP
+}
 // PrometheeI
 List PrometheeI(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize);
 RcppExport SEXP _RMCriteria_PrometheeI(SEXP datMatSEXP, SEXP vecWeightsSEXP, SEXP prefFunctionSEXP, SEXP parmsSEXP, SEXP normalizeSEXP) {
@@ -84,6 +97,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_RMCriteria_matPrometheeI", (DL_FUNC) &_RMCriteria_matPrometheeI, 3},
     {"_RMCriteria_PrometheeI", (DL_FUNC) &_RMCriteria_PrometheeI, 5},
     {"_RMCriteria_PrometheeII", (DL_FUNC) &_RMCriteria_PrometheeII, 5},
     {"_RMCriteria_PrometheeIII", (DL_FUNC) &_RMCriteria_PrometheeIII, 5},

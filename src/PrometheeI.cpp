@@ -13,16 +13,12 @@ void UShapePreference(Eigen::MatrixXd &matDelta, double q);
 //VShape Preference Function
 void VShapePreference(Eigen::MatrixXd &matDelta, double p);
 //Level Preference Function
-void LevelPreference(Eigen::MatrixXd &matDelta,double q, double p);
+void LevelPreference(Eigen::MatrixXd &matDelta, double q, double p);
 //Level Preference Function
 void VShapeIndPreference(Eigen::MatrixXd &matDelta, double q, double p);
 
 
-//' Create the Kernel matrix
-//' @param datVec  Column of the dataset
-//' @param int Type of preference function
-//' @return Preference Matrix
-//' @export
+// [[Rcpp::export]]
 Eigen::MatrixXd matPrometheeI(Eigen::VectorXd datVec,int prefFunction, Eigen::VectorXd parms){
   //Get the number of rows
   int rows=datVec.size();
@@ -83,13 +79,15 @@ Eigen::MatrixXd matPrometheeI(Eigen::VectorXd datVec,int prefFunction, Eigen::Ve
   return(matPromethee);
 }
 
-//' PrometheeI
+
+
 //' Calculates PROMETHEE I method.
+//'
 //' @param datMat A matrix containing the data from criterias and alternatives.
 //' @param vecWeights A vector of weights for each criteria.
 //' @param prefFunction A numerical vector to indicate the type of the
 //' Preference Function:
-//'   \itemize{
+//'  \itemize{
 //'     \item \code{prefFunction = 0} Gaussian Preference Function
 //'     \item \code{prefFunction = 1} Usual Preference Function
 //'     \item \code{prefFunction = 2} U-Shape Preference Function
@@ -107,9 +105,11 @@ Eigen::MatrixXd matPrometheeI(Eigen::VectorXd datVec,int prefFunction, Eigen::Ve
 //'   \item{Gaussian Threshold (\code{s})}
 //'   }
 //' @param normalize A boolean to normalize the index.
-//' @return Preference Matrix
+//' @keywords internal
 //' @export
 // [[Rcpp::export]]
+
+
 List PrometheeI(Eigen::MatrixXd datMat, Eigen::VectorXd vecWeights, Eigen::VectorXi prefFunction, Eigen::MatrixXd parms, bool normalize){
   //Get the number of rows
   int rows=datMat.rows();
