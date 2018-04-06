@@ -49,7 +49,7 @@ parms <- matrix(c(1.0, 5.0), byrow = TRUE, ncol = 1, nrow = 2)
 vecWeights <- c(0.3, 0.7)
 vecMaximiz <- c(FALSE, TRUE)
 prefFunction <- c(0, 0)
-constraintDir <- rep("<=", ncol(dados))
+constraintDir <- rep("<=", ncol(data))
 bounds <- c(7,-1)
 normalize <- FALSE
 alternatives <- c("Alt 1", "Alt 2", "Alt 3")

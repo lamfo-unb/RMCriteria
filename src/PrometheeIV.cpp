@@ -202,6 +202,7 @@ public:
 };
 
 //' Calculates PROMETHEE IV method.
+//'
 //' @param datMat A matrix containing the data from criterias and alternatives.
 //' @param vecWeights A vector of weights for each criteria.
 //' @param prefFunction A numerical vector to indicate the type of the

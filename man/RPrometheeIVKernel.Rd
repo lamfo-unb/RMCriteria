@@ -38,7 +38,7 @@ data <- matrix(c(5.2, -3.5,
                  6.7, -2.0,
                  5.4, -5.0,
                  4.8,  0.0,
-                 2.8, -3.4), byrow = TRUE, ncol=2)
+                 2.8, -3.4), byrow = TRUE, ncol = 2)
 
 parms <- matrix(c(1.0, 5.0), byrow = TRUE, ncol = 1, nrow = 2)
 vecWeights <- c(0.3, 0.7)
@@ -54,16 +54,16 @@ vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms,
 normalize = normalize, alternatives = alternatives, band = band)
 
 ## Run RPrometheeIVKernel
-(result <- RPrometheeIVKernel(PromObj))
+result <- RPrometheeIVKernel(PromObj)
 
 ## Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C", "D", "E", "F")
 result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 
 ## Updating any argument using UpdateRPrometheeArguments
-newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
-(result <- RPrometheeIVKernel(PromObj))
+result <- RPrometheeIVKernel(PromObj)
 }
 \references{
 \itemize{

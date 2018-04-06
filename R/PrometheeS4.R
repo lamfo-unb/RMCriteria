@@ -1057,7 +1057,7 @@ setClass(
 #'                  6.7, -2.0,
 #'                  5.4, -5.0,
 #'                  4.8,  0.0,
-#'                  2.8, -3.4), byrow = TRUE, ncol=2)
+#'                  2.8, -3.4), byrow = TRUE, ncol = 2)
 #'
 #' parms <- matrix(c(1.0, 5.0), byrow = TRUE, ncol = 1, nrow = 2)
 #' vecWeights <- c(0.3, 0.7)
@@ -1073,16 +1073,16 @@ setClass(
 #' normalize = normalize, alternatives = alternatives, band = band)
 #'
 #' ## Run RPrometheeIVKernel
-#' (result <- RPrometheeIVKernel(PromObj))
+#' result <- RPrometheeIVKernel(PromObj)
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C", "D", "E", "F")
 #' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
-#' newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+#' newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
-#' (result <- RPrometheeIVKernel(PromObj))
+#' result <- RPrometheeIVKernel(PromObj)
 
 
 #Define the Method
@@ -1242,7 +1242,7 @@ setClass(
 #' vecWeights <- c(0.3, 0.7)
 #' vecMaximiz <- c(FALSE, TRUE)
 #' prefFunction <- c(0, 0)
-#' constraintDir <- rep("<=", ncol(dados))
+#' constraintDir <- rep("<=", ncol(data))
 #' bounds <- c(7,-1)
 #' normalize <- FALSE
 #' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
@@ -1319,7 +1319,7 @@ setMethod(
     Solution <- PromV$solution
 
     #Set the class
-    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution, alternatives = alternatives, criterias = criterias, data = datMat_temp)
+    resultsClass <- new("RPrometheeV", Phi = Phi, Solution = Solution, alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -1435,7 +1435,7 @@ setClass(
 #' vecWeights <- c(0.3, 0.7)
 #' vecMaximiz <- c(FALSE, TRUE)
 #' prefFunction <- c(0, 0)
-#' constraintDir <- rep("<=", ncol(dados))
+#' constraintDir <- rep("<=", ncol(data))
 #' bounds <- c(7,-1)
 #' normalize <- FALSE
 #' alternatives <- c("Alt 1", "Alt 2", "Alt 3")
@@ -1450,14 +1450,14 @@ setClass(
 #' (result <- SensitivityAnalysis(PromObj))
 #'
 #' ## Run RPrometheeV using RPrometheeIV
-#' (result <- SensitivityAnalysis(PromObj, "PrometheeIV"))
+#' (result <- SensitivityAnalysis(PromObj, "RPrometheeIV"))
 #'
 #' ## Updating alternatives name using UpdateRPrometheeAlternatives
 #' newAlternatives <- c("A", "B", "C", "D", "E", "F")
 #' result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 #'
 #' ## Updating any argument using UpdateRPrometheeArguments
-#' newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+#' newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
 #' (result <- SensitivityAnalysis(PromObj))
 
@@ -1517,7 +1517,7 @@ setMethod(
     sensitivityResults <- lp$solution
 
     #Set the class
-    resultsClass <- new("SensitivityAnalysis",Solution=sensitivityResults, alternatives = alternatives, criterias = criterias, data = datMat_temp)
+    resultsClass <- new("SensitivityAnalysis",Solution=sensitivityResults, alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
 
     #Return the class
     return(resultsClass)
@@ -1962,7 +1962,7 @@ setMethod(
 
     # Partial bars as in Visual-Promethee
     results <- ggplot(limits) +
-      geom_bar(aes_string(x = "class.values", y = "boundaries.values", fill = "pos_neg.values"),
+      geom_bar(aes_string(x = "class", y = "boundaries", fill = "pos_neg"),
                stat = "identity", width = 0.5) +
       geom_point(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                  stat = "identity") +
@@ -1973,7 +1973,7 @@ setMethod(
                                 round(resultsPlot$phiNums, digits = 3),
                                 position = position_dodge(width = 0.9)),
                 hjust = 0, nudge_x = 0.05) +
-      scale_fill_manual(aes_string(x = "class.values", y = "boundaries.values"), values = c("#a1d99b", "#F57170")) +
+      scale_fill_manual(aes_string(x = "class", y = "boundaries"), values = c("#a1d99b", "#F57170")) +
       geom_text(data = resultsPlot, aes(x = phiLabels, y = phiNums),
                 label = alternatives, hjust = 1, nudge_x = -0.05) +
       theme(axis.text.y = element_blank(),
@@ -2196,6 +2196,8 @@ setMethod(
 
 
 ##### General Plot Function
+#' @title Generic X-Y Plotting
+#' @exportMethod plot
 if(!isGeneric("plot")){
   setGeneric("plot", function(x, ...) standardGeneric("plot"))}
 
@@ -2291,7 +2293,14 @@ setMethod(f="plot",
 #' @aliases show,RPrometheeArguments-method
 #' @description Shows data and some results for \code{RPrometheeArguments}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
+
+#' @title Shows a RPromethee object.
+#' @aliases show,RPrometheeArguments-method
+#' @description Shows data and some results for \code{RPrometheeArguments} object.
+#' @param object A RPromethee object.
+#' @exportMethod show
+
 
 setMethod(f = "show", signature = "RPrometheeArguments",
           definition <-  function(object) {
@@ -2313,7 +2322,7 @@ setMethod(f = "show", signature = "RPrometheeArguments",
 #' @aliases show,RPrometheeI-method
 #' @description Shows data and some results for \code{RPrometheeI}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeI",
           definition <-  function(object) {
@@ -2329,7 +2338,7 @@ setMethod(f = "show", signature = "RPrometheeI",
 #' @aliases show,RPrometheeII-method
 #' @description Shows data and some results for \code{RPrometheeII}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeII",
           definition <-  function(object) {
@@ -2344,7 +2353,7 @@ setMethod(f = "show", signature = "RPrometheeII",
 #' @aliases show,RPrometheeIII-method
 #' @description Shows data and some results for \code{RPrometheeIII}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeIII",
           definition <-  function(object) {
@@ -2361,7 +2370,7 @@ setMethod(f = "show", signature = "RPrometheeIII",
 #' @aliases show,RPrometheeIV-method
 #' @description Shows data and some results for \code{RPrometheeIV}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeIV",
           definition <-  function(object) {
@@ -2377,7 +2386,7 @@ setMethod(f = "show", signature = "RPrometheeIV",
 #' @aliases show,RPrometheeIVKernel-method
 #' @description Shows data and some results for \code{RPrometheeIVKernel}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
 setMethod(f = "show", signature = "RPrometheeIVKernel",
           definition <-  function(object) {
@@ -2393,7 +2402,7 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
 #' @aliases show,RPrometheeV-method
 #' @description Shows data and some results for \code{RPrometheeV}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
  setMethod(f = "show", signature = "RPrometheeV",
            definition <-  function(object) {
@@ -2410,7 +2419,7 @@ setMethod(f = "show", signature = "RPrometheeIVKernel",
 #' @aliases show,SensitivityAnalysis-method
 #' @description Shows data and some results for \code{SensitivityAnalysis}.
 #' @param object A RPromethee object.
-#' @export
+#' @exportMethod show
 
 setMethod(f = "show", signature = "SensitivityAnalysis",
           definition <-  function(object) {
@@ -2875,32 +2884,57 @@ setMethod(
     bounds        <- object@bounds
     alternatives  <- object@alternatives
 
+
     if(as.character(element) == "datMat"){
-      results <- RPrometheeConstructor(datMat = newValue, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@datMat <- newValue
     } else if(as.character(element) == "vecWeights"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = newValue, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@vecWeights <- newValue
     } else if(as.character(element) == "vecMaximiz"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = newValue, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@vecMaximiz <- newValue
     } else if(as.character(element) == "prefFunction"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = newValue, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@prefFunction <- newValue
     } else if(as.character(element) == "parms"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = newValue, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@parms <- newValue
     } else if(as.character(element) == "normalize"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = newValue, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@normalize <- newValue
     } else if(as.character(element) == "alphaVector"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = newValue, band = band, constraintDir = constraintDir, bounds = bounds)
+      object@alphaVector <- newValue
     } else if(as.character(element) == "band"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = newValue, constraintDir = constraintDir, bounds = bounds)
+      object@band <- newValue
     } else if(as.character(element) == "constraintDir"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = newValue, bounds = bounds)
+      object@constraintDir <- newValue
     } else if(as.character(element) == "bounds"){
-      results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = newValue)
+      object@bounds <- newValue
     } else if(as.character(element) == "alternatives"){
       object@alternatives <- newValue
-    } else{results <- "Insert a valid object element to be replaced."}
+    } else{stop("Insert a valid object element to be replaced.")}
+
+    # if(as.character(element) == "datMat"){
+    #   results <- RPrometheeConstructor(datMat = newValue, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+    # } else if(as.character(element) == "vecWeights"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = newValue, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+    # } else if(as.character(element) == "vecMaximiz"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = newValue, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+    # } else if(as.character(element) == "prefFunction"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = newValue, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+    # } else if(as.character(element) == "parms"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = newValue, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+    # } else if(as.character(element) == "normalize"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = newValue, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = bounds)
+    # } else if(as.character(element) == "alphaVector"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = newValue)
+    # } else if(as.character(element) == "band"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, band = newValue, constraintDir = constraintDir)
+    # } else if(as.character(element) == "constraintDir"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, bounds = bounds)
+    # } else if(as.character(element) == "bounds"){
+    #   results <- RPrometheeConstructor(datMat = datMat, vecWeights = vecWeights, vecMaximiz = vecMaximiz, prefFunction = prefFunction, parms = parms, normalize = normalize, alphaVector = alphaVector, band = band, constraintDir = constraintDir, bounds = newValue)
+    # } else if(as.character(element) == "alternatives"){
+    #   object@alternatives <- newValue
+    # } else{results <- "Insert a valid object element to be replaced."}
 
     #Return the class
-    return(results)
+    return(object)
   }
 )
 
@@ -3027,6 +3061,24 @@ setMethod(
 setMethod(
   "UpdateRPrometheeAlternatives",
   signature("RPrometheeV"),
+  function(object, alternatives) {
+    object@alternatives <- alternatives
+    return(object)
+  }
+)
+
+
+#' @title UpdateRPrometheeAlternatives
+#' @description Updates alternatives names from RPromethee objects.
+#' @aliases UpdateRPrometheeAlternatives,SensitivityAnalysis-method
+#' @param object An object from a RPromethee class.
+#' @param alternatives A character vector with the alternatives new names.
+#' @export
+
+
+setMethod(
+  "UpdateRPrometheeAlternatives",
+  signature("SensitivityAnalysis"),
   function(object, alternatives) {
     object@alternatives <- alternatives
     return(object)

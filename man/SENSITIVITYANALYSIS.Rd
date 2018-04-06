@@ -42,7 +42,7 @@ parms<-matrix(c(1.0, -2.3), byrow = TRUE, ncol = 1, nrow = 2)
 vecWeights <- c(0.3, 0.7)
 vecMaximiz <- c(FALSE, TRUE)
 prefFunction <- c(0, 0)
-constraintDir <- rep("<=", ncol(dados))
+constraintDir <- rep("<=", ncol(data))
 bounds <- c(7,-1)
 normalize <- FALSE
 alternatives <- c("Alt 1", "Alt 2", "Alt 3")
@@ -57,14 +57,14 @@ constraintDir = constraintDir)
 (result <- SensitivityAnalysis(PromObj))
 
 ## Run RPrometheeV using RPrometheeIV
-(result <- SensitivityAnalysis(PromObj, "PrometheeIV"))
+(result <- SensitivityAnalysis(PromObj, "RPrometheeIV"))
 
 ## Updating alternatives name using UpdateRPrometheeAlternatives
 newAlternatives <- c("A", "B", "C", "D", "E", "F")
 result <- UpdateRPrometheeAlternatives(result, newAlternatives)
 
 ## Updating any argument using UpdateRPrometheeArguments
-newParms <- matrix(c(1.6, 4.2), byrow = T, ncol = 1)
+newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
 (result <- SensitivityAnalysis(PromObj))
 }
