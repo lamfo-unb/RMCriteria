@@ -9,4 +9,7 @@
 #' @docType package
 #' @name RMCriteria
 #' @useDynLib RMCriteria
+#' @import Rcpp
+#' @import RcppNumerical
+#'
 NULL

@@ -40,4 +40,4 @@ PromObj <- RPrometheeConstructor(datMat = data, vecWeights = vecWeights, vecMaxi
 
 ## More Information
 
-`RMCriteria` was developed in the [Laboratory of Machine Learning in Finance and Organizations (LAMFO)](http://lamfo.unb.br/index.php?lang=en-us) from [University of Brasilia](http://www.alunoestrangeiro.unb.br/en/), in Brazil. LAMFO is a center devoted to research machine learning methods and related subjects applied to organizations in Marketing, Finance, Logistics and many others.
+`RMCriteria` was developed in the [Laboratory of Machine Learning in Finance and Organizations (LAMFO)](https://lamfo-unb.github.io/) from University of Brasilia, in Brazil. LAMFO is a center devoted to research machine learning methods and related subjects applied to organizations in Marketing, Finance, Logistics and many others.
