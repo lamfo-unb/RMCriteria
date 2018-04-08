@@ -5,11 +5,11 @@ Version: 0.1.0
 Author: Pedro Albuquerque and Gustavo Monteiro
 BugReports: https://github.com/lamfo-unb/RMCriteria
 Maintainer: Pedro Albuquerque <pedroa@unb.br>
-Description: Implement most of the Multicriteria Analysis models and methods <http://lamfo.unb.br/>
+Description: Implement most of the Multicriteria Analysis models and methods <http://lamfo.unb.br/>.
 Depends: R (>= 3.1.0)
 License: GPL-2
 LazyData: TRUE
-LinkingTo: Rcpp, RcppEigen, RcppNumerical, linprog, lpSolve, ggplot2, gridExtra
+LinkingTo: Rcpp, RcppEigen, RcppNumerical
 Imports:
     Rcpp,
     RcppNumerical,
@@ -19,7 +19,11 @@ Imports:
     gridExtra,
     ggnetwork,
     network,
-    RcppEigen,
-    pastecs
+    pastecs,
+    methods,
+    graphics,
+    stats,
+    utils,
+    dplyr
 SystemRequirements: GNU make
 RoxygenNote: 6.0.1

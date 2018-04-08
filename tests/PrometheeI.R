@@ -1,16 +1,16 @@
-dados<-matrix(c(5.8,-3.5,
-                4.3,-1.2,
-                6.7,-2.0),byrow = T, ncol=2,nrow=3)
+library(RMCriteria)
+dados<-matrix(c(5.8, -3.5,
+                4.3, -1.2,
+                6.7, -2.0), byrow = TRUE, ncol = 2, nrow = 3)
 
 rownames(dados) <- c("Alt 1", "Alt 2", "Alt 3")
 colnames(dados) <- c("Criteria 1", "Criteria 2")
 
-parms<-matrix(c(NA,
-                NA),byrow=TRUE,ncol=1,nrow=2)
+parms<-matrix(c(NA, NA), byrow = TRUE, ncol = 1, nrow = 2)
 
-vecWeights <- c(0.3,0.7)
-vecMaximiz <- c(T,T)
-prefFunction <- c(0,0)
+vecWeights <- c(0.3, 0.7)
+vecMaximiz <- c(TRUE, TRUE)
+prefFunction <- c(0, 0)
 normalize <- FALSE
 
 #########################################################
@@ -25,23 +25,22 @@ show(res)
 str(res)
 
 PrometheeIPlot(res)
-NetworkPlot(res)
+#NetworkPlot(res)
 plot(res)
 
 
 ########################################################
 # New values for tests cases
 
-dadosNew<-matrix(c(2,8,
-                   6,-4,
-                   1.8,5.5),byrow = T, ncol=2,nrow=3)
+dadosNew<-matrix(c(2.0,  8.0,
+                   6.0, -4.0,
+                   1.8,  5.5), byrow = TRUE, ncol = 2, nrow = 3)
 
-parmsNew<-matrix(c(1,
-                   NA),byrow=TRUE,ncol=1,nrow=2)
+parmsNew<-matrix(c(1, NA), byrow = TRUE, ncol = 1, nrow = 2)
 
-vecWeightsNew <- c(0.5,0.5)
-vecMaximizNew <- c(T,F)
-prefFunctionNew <- c(1,1)
+vecWeightsNew <- c(0.5, 0.5)
+vecMaximizNew <- c(TRUE, FALSE)
+prefFunctionNew <- c(1, 1)
 normalizeNew <- TRUE
 alternativesNew <- c("Car 1", "Car 2", "Car 3")
 
