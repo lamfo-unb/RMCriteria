@@ -8,9 +8,9 @@ using namespace Numer;
 class UsualKernel: public Func {
 private:
   double y;
-  bool plus;
   Eigen::VectorXd vec;
   double band;
+  bool plus;
 public:
   UsualKernel(double y_, Eigen::VectorXd vec_, double band_, bool plus_): y(y_), vec(vec_), band(band_), plus(plus_) {}
 
@@ -44,11 +44,11 @@ public:
 
 class UShapeKernel: public Func {
 private:
-  double q;
   double y;
-  bool plus;
   Eigen::VectorXd vec;
   double band;
+  double q;
+  bool plus;
 public:
   UShapeKernel(double y_, Eigen::VectorXd vec_, double band_, double q_, bool plus_) : y(y_), vec(vec_), band(band_), q(q_), plus(plus_) {}
 
@@ -81,11 +81,11 @@ public:
 
 class VShapeKernel: public Func {
 private:
-  double p;
   double y;
-  bool plus;
   Eigen::VectorXd vec;
   double band;
+  double p;
+  bool plus;
 public:
   VShapeKernel(double y_, Eigen::VectorXd vec_, double band_, double p_, bool plus_) : y(y_), vec(vec_), band(band_), p(p_), plus(plus_) {}
 
@@ -126,12 +126,12 @@ public:
 
 class LevelKernel: public Func {
 private:
-  double q;
-  double p;
   double y;
-  bool plus;
   Eigen::VectorXd vec;
   double band;
+  double q;
+  double p;
+  bool plus;
 public:
   LevelKernel(double y_, Eigen::VectorXd vec_, double band_, double q_, double p_, bool plus_) : y(y_),vec(vec_), band(band_), q(q_), p(p_), plus(plus_) {}
 
@@ -174,13 +174,13 @@ public:
 
 class VShapeIndPrefKernel: public Func {
 private:
-  double q;
-  double p;
   double y;
-  bool plus;
   Eigen::VectorXd vec;
   double band;
-public:
+  double q;
+  double p;
+  bool plus;
+  public:
   VShapeIndPrefKernel(double y_,Eigen::VectorXd vec_, double band_, double q_, double p_, bool plus_) : y(y_), vec(vec_), band(band_), q(q_), p(p_), plus(plus_) {}
 
   double operator()(const double& x) const
@@ -223,11 +223,11 @@ public:
 
 class GaussianPrefKernel: public Func {
 private:
-  double sigma;
   double y;
-  bool plus;
   Eigen::VectorXd vec;
   double band;
+  double sigma;
+  bool plus;
 public:
   GaussianPrefKernel(double y_,Eigen::VectorXd vec_, double band_, double sigma_, bool plus_) : y(y_),vec(vec_), band(band_), sigma(sigma_), plus(plus_) {}
 

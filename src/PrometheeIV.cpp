@@ -38,8 +38,8 @@ public:
 
 class UShape: public Func {
 private:
-  double q;
   double y;
+  double q;
   bool plus;
 public:
   UShape(double y_, double q_, bool plus_) :  y(y_), q(q_), plus(plus_) {}
@@ -69,8 +69,8 @@ public:
 
 class VShape: public Func {
 private:
-  double p;
   double y;
+  double p;
   bool plus;
 public:
   VShape(double y_, double p_, bool plus_) : y(y_), p(p_), plus(plus_) {}
@@ -106,9 +106,9 @@ public:
 
 class Level: public Func {
 private:
+  double y;
   double q;
   double p;
-  double y;
   bool plus;
 public:
   Level(double y_, double q_, double p_, bool plus_) : y(y_), q(q_), p(p_), plus(plus_) {}
@@ -144,9 +144,9 @@ public:
 
 class VShapeIndPref: public Func {
 private:
+  double y;
   double q;
   double p;
-  double y;
   bool plus;
 public:
   VShapeIndPref(double y_, double q_, double p_, bool plus_) : y(y_), q(q_), p(p_), plus(plus_) {}
@@ -183,8 +183,8 @@ public:
 
 class GaussianPref: public Func {
 private:
-  double sigma;
   double y;
+  double sigma;
   bool plus;
 public:
   GaussianPref(double y_, double sigma_, bool plus_) : y(y_), sigma(sigma_), plus(plus_) {}
