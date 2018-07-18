@@ -152,7 +152,7 @@ double VShapePrefKernel(double y,Eigen::VectorXd vec, double band, bool plus, do
 library(RcppEigen)
 library(RcppNumerical)
 library(Rcpp)
-vec <- c(5.2, 4.2, 6.7)
+vec <- c(5.2, 4.3, 6.7)
 band <- 0.5^2
 point <- 2
 sigma <- 0.7^2
@@ -169,8 +169,8 @@ res <- 0
 for(j in 1:length(vec)){
   for(i in 1:length(vec)){
     if(vec[j] <= vec[i]){
-      qq <- (1 - exp(-((vec[i]-vec[j])^2)/(2*sigma))) * K
-      res <- res + qq
+      qq <- (1 - exp(-((vec[i]-vec[j])^2)/(2*sigma)))
+      res <- res + (qq * K)
     }
   }
 }
@@ -185,8 +185,8 @@ res <- 0
 for(j in 1:length(vec)){
   for(i in 1:length(vec)){
     if(vec[j] <= vec[i]){
-      qq <- 1 * K
-      res <- res + qq
+      qq <- 1
+      res <- res + (qq * K)
     }
   }
 }
@@ -202,8 +202,8 @@ for(j in 1:length(vec)){
   for(i in 1:length(vec)){
     deltaji <- vec[j] - vec[i]
     if(deltaji >= q){
-      qq <- 1 * K
-      res <- res + qq
+      qq <- 1.0
+      res <- res + (qq * K)
     }
   }
 }
@@ -219,12 +219,12 @@ for(j in 1:length(vec)){
   for(i in 1:length(vec)){
     deltaji <- vec[j] - vec[i]
     if(deltaji >= p){
-      qq <- 1 * K
-      res <- res + qq
+      qq <- 1.0
+      res <- res + (qq * K)
     }
     else if(deltaji >= q){
       qq <- 0.5 * K
-      res <- res + qq
+      res <- res + (qq * K)
     }
   }
 }
@@ -241,14 +241,14 @@ for(j in 1:length(vec)){
   for(i in 1:length(vec)){
     deltaji <- vec[j] - vec[i]
     if(deltaji <= 0){
-      qq <- 0.0 * K
-      res <- res + qq
+      qq <- 0.0
+      res <- res + (qq * K)
     } else if(deltaji <= p){
       qq <- deltaji/p
-      res <- res + qq
+      res <- res + (qq * K)
     } else {
-      qq <- 1 * K
-      res <- res + qq
+      qq <- 1
+      res <- res + (qq * K)
     }
   }
 }
