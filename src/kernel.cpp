@@ -132,8 +132,7 @@ double VShapePrefKernel(double y,Eigen::VectorXd vec, double band, bool plus, do
       if(deltaji <= 0.0){
         double qq = 0.0;
         res = res + (qq * K);
-      }
-      else if(deltaji <= p){
+      } else if(deltaji <= p){
         double qq = deltaji/p;
         res = res + (qq * K);
       } else{
@@ -244,12 +243,10 @@ for(j in 1:length(vec)){
     if(deltaji <= 0){
       qq <- 0.0 * K
       res <- res + qq
-    }
-    else if(deltaji <= p){
+    } else if(deltaji <= p){
       qq <- deltaji/p
       res <- res + qq
-    }
-    else {
+    } else {
       qq <- 1 * K
       res <- res + qq
     }
