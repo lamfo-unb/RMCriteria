@@ -146,6 +146,38 @@ double VShapePrefKernel(double y,Eigen::VectorXd vec, double band, bool plus, do
 
 
 
+// [[Rcpp::export]]
+double VShapeIndPrefKernel(double y,Eigen::VectorXd vec, double band, bool plus, double q, double p) {
+  //Calculate kernel
+  const double pinum = 3.14159265359;
+  const double pi2 = 1.0/std::sqrt(2*pinum);
+  if(plus == false) vec = -vec;
+  // Kernel Function
+  double K = (-(vec.array()-y).square().array()/(2*band*band)).exp().sum();
+  K = K * pi2;
+  K = (1/(vec.size()*band)) * K;
+
+  //  Preference function
+  double res = 0.0;
+  for(int j = 0.0; j < vec.size(); j++){
+    for(int i = 0.0; i < vec.size(); i++){
+      double deltaji = vec(j) - vec(i);
+      if(deltaji <= q){
+        double qq = 0.0;
+        res = res + (qq * K);
+      } else if(deltaji <= p){
+        double qq = (deltaji-q)/(p-q);
+        res = res + (qq * K);
+      } else{
+        double qq = 1.0;
+        res = res + (qq * K);
+      }
+    }
+  }
+  return(res);
+}
+
+
 
 
 /*** R
@@ -234,7 +266,7 @@ paste("Level R", res)
 
 
 ######################
-# V Shape Pref Preference
+# V Shape Preference
 
 res <- 0
 for(j in 1:length(vec)){
@@ -256,4 +288,31 @@ for(j in 1:length(vec)){
 
 paste("V Shape Rcpp: ", VShapePrefKernel(point, vec, band, TRUE, p))
 paste("V Shape R", res)
+
+
+
+######################
+# V Shape Indifference Preference
+
+res <- 0
+for(j in 1:length(vec)){
+  for(i in 1:length(vec)){
+    deltaji <- vec[j] - vec[i]
+    if(deltaji <= q){
+      qq <- 0.0
+      res <- res + (qq * K)
+    } else if(deltaji <= p){
+      qq <- (deltaji-q)/(p-q)
+      res <- res + (qq * K)
+    } else {
+      qq <- 1
+      res <- res + (qq * K)
+    }
+  }
+}
+
+
+paste("V Shape Ind Rcpp: ", VShapeIndPrefKernel(point, vec, band, TRUE, q, p))
+paste("V Shape Ind R", res)
+
 */

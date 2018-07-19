@@ -359,3 +359,90 @@ Rcpp::List integrate_VShapePref()
   );
 }
 
+
+
+
+
+
+class VShapeIndPrefKernel: public Func {
+private:
+  // double y;
+  Eigen::VectorXd vec;
+  double band;
+  bool plus;
+  double q;
+  double p;
+
+public:
+  VShapeIndPrefKernel(Eigen::VectorXd vec_, double band_, bool plus_, double q__, double p__) : vec(vec_), band(band_), plus(plus_), q(q__), p(p__) {}
+
+  double operator()(const double& x) const
+  {
+
+    //Calculate kernel
+    const double pinum = 3.14159265359;
+    const double pi2 = 1.0/std::sqrt(2*pinum);
+    // Kernel Function
+    double K = (-(vec.array()-x).square().array()/(2*band*band)).exp().sum();
+    K = K * pi2;
+    K = (1/(vec.size()*band)) * K;
+
+
+    //  Preference function
+    double res = 0;
+    for(int j = 0.0; j < vec.size(); j++){
+      for(int i = 0.0; i < vec.size(); i++){
+        double deltaji = vec(j) - vec(i);
+        if(plus){
+          if(deltaji <= q){
+            double qq = 0.0;
+            res = res + (qq * K);
+          } else if(deltaji <= p){
+            double qq = (deltaji-q)/(p-q);
+            res = res + (qq * K);
+          } else{
+            double qq = 1.0;
+            res = res + (qq * K);
+          }
+        } else{
+          if(deltaji >= q){
+            double qq = 0.0;
+            res = res + (qq * K);
+          } else if(deltaji >= p){
+            double qq = (deltaji-q)/(p-q);
+            res = res + (qq * K);
+          } else{
+            double qq = 1.0;
+            res = res + (qq * K);
+          }
+        }
+      }
+    }
+    return(res);
+  }
+};
+
+
+// [[Rcpp::export]]
+Rcpp::List integrate_VShapeIndPref()
+{
+  const double lower = 4.3, upper = 6.7;
+  Eigen::Vector3d vec(5.2, 4.3, 6.7);
+  double band = 0.5*0.5;
+  bool plus = true;
+  double q = 0.4;
+  double p = 2;
+
+  VShapeIndPrefKernel f(vec, band, plus, q, p);
+
+  double err_est;
+  int err_code;
+  const double res = integrate(f, lower, upper, err_est, err_code);
+  return Rcpp::List::create(
+    Rcpp::Named("approximate") = res,
+    Rcpp::Named("error_estimate") = err_est,
+    Rcpp::Named("error_code") = err_code
+  );
+}
+
+
