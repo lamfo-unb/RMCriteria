@@ -77,8 +77,9 @@ private:
   Eigen::VectorXd vec;
   double band;
   bool plus;
+  double alt;
 public:
-  UsualPrefKernel(Eigen::VectorXd vec_, double band_, bool plus_) : vec(vec_), band(band_), plus(plus_) {}
+  UsualPrefKernel(Eigen::VectorXd vec_, double band_, bool plus_, double alt_) : vec(vec_), band(band_), plus(plus_), alt(alt_) {}
 
   double operator()(const double& x) const
   {
@@ -91,20 +92,21 @@ public:
     K = K * pi2;
     K = (1/(vec.size()*band)) * K;
 
+
     //  Preference function
     double res = 0;
     for(int j = 0; j < vec.size(); j++){
-      for(int i = 0; i < vec.size(); i++){
+      double delta = vec(j) - alt;
         if(plus){
-          if(vec(j) <= vec(i)){
+          if(delta <= 0){
             double qq = 1;
             res = res + (qq * K);
           }
         } else{
-          if(vec(j) >= vec(i)){
+          if(delta > 0){
             double qq = 1;
             res = res + (qq * K);
-        }
+
       }
     }
   }
@@ -115,23 +117,28 @@ public:
 
 
 // [[Rcpp::export]]
-Rcpp::List integrate_UsualPref()
+Eigen::VectorXd integrate_UsualPref(Eigen::MatrixXd dados, Eigen::VectorXd weights)
 {
-  const double lower = 4.3, upper = 6.7;
-  Eigen::Vector3d vec(5.2, 4.3, 6.7);
-  double band = 0.5*0.5;
-  bool plus = true;
+  int colunas = dados.cols();
+  Eigen::VectorXd sol(dados.rows());
+  int c;
+  for(c = 0; c < colunas; c++){
 
-  UsualPrefKernel f(vec, band, plus);
+    double lower = dados.colwise().minCoeff()(c);
+    double upper = dados.colwise().maxCoeff()(c);
+    Eigen::VectorXd vec = dados.col(c);
+    double band = 0.5*0.5;
+    bool plus = true;
 
-  double err_est;
-  int err_code;
-  const double res = integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
+    for(int i = 0; i < dados.size(); i++){
+      UsualPrefKernel f(vec, band, plus, vec(i));
+      double err_est;
+      int err_code;
+      const double res = integrate(f, lower, upper, err_est, err_code);
+      sol(i) = sol(i) * weights(c) + res;
+    }
+    }
+  return(sol);
 }
 
 

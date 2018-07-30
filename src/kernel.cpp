@@ -68,6 +68,7 @@ double UShapePrefKernel(double y,Eigen::VectorXd vec, double band, bool plus, do
   double K = (-(vec.array()-y).square().array()/(2*band*band)).exp().sum();
   K = K * pi2;
   K = (1/(vec.size()*band)) * K;
+  std::cout << K << std::endl;
 
   //  Preference function
   double res = 0;
@@ -185,6 +186,10 @@ library(RcppEigen)
 library(RcppNumerical)
 library(Rcpp)
 vec <- c(5.2, 4.3, 6.7)
+vec <- c(5.2, 4.3, 6.7,
+         4.4, 1.3, 2.8)
+vec <- matrix(vec, ncol = 2)
+weights <- c(0.7, 0.3)
 band <- 0.5^2
 point <- 2
 sigma <- 0.7^2
@@ -193,6 +198,7 @@ p <- 2
 
 
 K <- (1/(length(vec)*band)) * (1/(sqrt(2*pi))) * sum(exp(-(vec-2)^2/(2*band*band)))
+#K = (-(vec.array()-x).square().array()/(2*band*band)).exp().sum();
 
 ######################
 # Gaussian Preference
@@ -223,8 +229,23 @@ for(j in 1:length(vec)){
   }
 }
 
+
+res <- rep(NA, length(vec))
+for(i in 1:length(vec)){
+  lista <- integrate_UsualPref(vec[i])
+  res[i] <- lista[[1]]
+}
+
+vec.df <- as.data.frame(vec)
+res <- apply(vec, 1, function(x){
+  lista <- integrate_UsualPref(x)
+  lista[[1]]
+})
+
+
 paste("Usual Rcpp", UsualPrefKernel(point, vec, band, TRUE))
 paste("Usual R", res)
+paste("K ", K)
 
 ######################
 # U Shape Preference
@@ -242,6 +263,7 @@ for(j in 1:length(vec)){
 
 paste("UShape Rcpp: ", UShapePrefKernel(point, vec, band, TRUE, q))
 paste("UShape R", res)
+paste("UShape K", K)
 
 ######################
 # Level Preference
