@@ -186,11 +186,15 @@ library(RcppEigen)
 library(RcppNumerical)
 library(Rcpp)
 vec <- c(5.2, 4.3, 6.7)
-vec <- c(5.2, 4.3, 6.7,
-         4.4, 1.3, 2.8)
-vec <- matrix(vec, ncol = 2)
-weights <- c(0.7, 0.3)
+vec <- matrix(c(5.2, 4.3, 6.7,
+                4.4, 1.3, 2.8), ncol = 2)
+weights <- c(0.3, 0.7)
 band <- 0.5^2
+normalize  <-  FALSE
+parms <- matrix(c(NA, NA), byrow = TRUE, nrow = 2)
+integrate_UsualPref(vec, weights, parms, band, normalize)
+
+
 point <- 2
 sigma <- 0.7^2
 q <- 0.4

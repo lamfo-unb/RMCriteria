@@ -98,16 +98,21 @@ public:
     for(int j = 0; j < vec.size(); j++){
       double delta = vec(j) - alt;
         if(plus){
-          if(delta <= 0){
+          if(delta >= 0){
             double qq = 1;
+            res = res + (qq * K);
+          } else {
+            double qq = 0;
             res = res + (qq * K);
           }
         } else{
-          if(delta > 0){
+          if(delta < 0){
             double qq = 1;
             res = res + (qq * K);
-
-      }
+          } else {
+            double qq = 0;
+            res = res + (qq * K);
+          }
     }
   }
     return(res);
@@ -117,28 +122,44 @@ public:
 
 
 // [[Rcpp::export]]
-Eigen::VectorXd integrate_UsualPref(Eigen::MatrixXd dados, Eigen::VectorXd weights)
+Eigen::VectorXd integrate_UsualPref(Eigen::MatrixXd dados, Eigen::VectorXd weights, Eigen::VectorXd parms, double band, bool normalize)
 {
   int colunas = dados.cols();
   Eigen::VectorXd sol(dados.rows());
-  int c;
+  Eigen::VectorXd phi(dados.rows());
+
+  int c = 0;
   for(c = 0; c < colunas; c++){
 
-    double lower = dados.colwise().minCoeff()(c);
-    double upper = dados.colwise().maxCoeff()(c);
-    Eigen::VectorXd vec = dados.col(c);
-    double band = 0.5*0.5;
-    bool plus = true;
+      double lower = dados.colwise().minCoeff()(c);
+      double upper = dados.colwise().maxCoeff()(c);
+  //    std::cout << "lower " << c << " " << lower << std::endl;
+  //    std::cout << "upper " << c << " " << upper << std::endl;
+      Eigen::VectorXd vec = dados.col(c);
+  //    std::cout << "vec " << vec << std::endl;
+  //    std::cout << "dados.rows " << dados.rows() << std::endl;
+      double band = 0.5*0.5;
+      bool plus = true;
+  //    std::cout << "dados " << dados.col(c) << std::endl;
 
-    for(int i = 0; i < dados.size(); i++){
-      UsualPrefKernel f(vec, band, plus, vec(i));
-      double err_est;
-      int err_code;
-      const double res = integrate(f, lower, upper, err_est, err_code);
-      sol(i) = sol(i) * weights(c) + res;
+      for(int i = 0; i < dados.size(); i++){
+        UsualPrefKernel f(vec, band, plus, vec(i));
+        double err_est;
+        int err_code;
+        const double res = integrate(f, lower, upper, err_est, err_code);
+        sol(i) = sol(i) + res;
+        std::cout << "res " << res << std::endl;
+  //      std::cout << "weight " << weights(c) << std::endl;
+      }
+     phi = phi.array()+sol.array()*weights(c);
     }
-    }
-  return(sol);
+
+  phi=phi.array()/weights.sum();
+  double min = phi.minCoeff();
+  double max = phi.maxCoeff();
+  if(normalize == true) phi = (phi.array() - min)/(max - min);
+
+  return(phi);
 }
 
 
