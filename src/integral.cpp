@@ -6,7 +6,6 @@ using namespace Numer;
 
 class GaussianPrefKernel: public Func {
 private:
-  // double y;
   Eigen::VectorXd vec;
   double band;
   double sigma;
@@ -47,33 +46,11 @@ public:
   }
 };
 
-
-// [[Rcpp::export]]
-Rcpp::List integrate_GaussianPref()
-{
-  const double lower = 4.3, upper = 6.7;
-  Eigen::Vector3d vec(5.2, 4.3, 6.7);
-  double band = 0.5*0.5;
-  double sigma = 0.7*0.7;
-  bool plus = true;
-
-  GaussianPrefKernel f(vec, band, sigma, plus);
-
-  double err_est;
-  int err_code;
-  const double res = integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
-}
-
-
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 
 class UsualPrefKernel: public Func {
 private:
-  // double y;
   Eigen::VectorXd vec;
   double band;
   bool plus;
@@ -117,55 +94,13 @@ public:
   }
     return(res);
   }
-
 };
 
-
-// [[Rcpp::export]]
-Eigen::VectorXd integrate_UsualPref(Eigen::MatrixXd dados, Eigen::VectorXd weights, Eigen::VectorXd parms, double band, bool normalize)
-{
-  int colunas = dados.cols();
-  Eigen::VectorXd sol(dados.rows());
-  Eigen::VectorXd phi(dados.rows());
-
-  int c = 0;
-  for(c = 0; c < colunas; c++){
-
-      double lower = dados.colwise().minCoeff()(c);
-      double upper = dados.colwise().maxCoeff()(c);
-  //    std::cout << "lower " << c << " " << lower << std::endl;
-  //    std::cout << "upper " << c << " " << upper << std::endl;
-      Eigen::VectorXd vec = dados.col(c);
-  //    std::cout << "vec " << vec << std::endl;
-  //    std::cout << "dados.rows " << dados.rows() << std::endl;
-      double band = 0.5*0.5;
-      bool plus = true;
-  //    std::cout << "dados " << dados.col(c) << std::endl;
-
-      for(int i = 0; i < dados.size(); i++){
-        UsualPrefKernel f(vec, band, plus, vec(i));
-        double err_est;
-        int err_code;
-        const double res = integrate(f, lower, upper, err_est, err_code);
-        sol(i) = sol(i) + res;
-        std::cout << "res " << res << std::endl;
-  //      std::cout << "weight " << weights(c) << std::endl;
-      }
-     phi = phi.array()+sol.array()*weights(c);
-    }
-
-  phi=phi.array()/weights.sum();
-  double min = phi.minCoeff();
-  double max = phi.maxCoeff();
-  if(normalize == true) phi = (phi.array() - min)/(max - min);
-
-  return(phi);
-}
-
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 
 class UShapePrefKernel: public Func {
 private:
-  // double y;
   Eigen::VectorXd vec;
   double band;
   bool plus;
@@ -206,32 +141,11 @@ public:
   }
 };
 
-
-// [[Rcpp::export]]
-Rcpp::List integrate_UShapePref()
-{
-  const double lower = 4.3, upper = 6.7;
-  Eigen::Vector3d vec(5.2, 4.3, 6.7);
-  double band = 0.5*0.5;
-  bool plus = true;
-  double q = 0.4;
-
-  UShapePrefKernel f(vec, band, plus, q);
-
-  double err_est;
-  int err_code;
-  const double res = integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
-}
-
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 
 class LevelPrefKernel: public Func {
 private:
-  // double y;
   Eigen::VectorXd vec;
   double band;
   bool plus;
@@ -283,35 +197,11 @@ public:
   }
 };
 
-
-// [[Rcpp::export]]
-Rcpp::List integrate_LevelPref()
-{
-  const double lower = 4.3, upper = 6.7;
-  Eigen::Vector3d vec(5.2, 4.3, 6.7);
-  double band = 0.5*0.5;
-  bool plus = true;
-  double q = 0.4;
-  double p = 2;
-
-  LevelPrefKernel f(vec, band, plus, q, p);
-
-  double err_est;
-  int err_code;
-  const double res = integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
-}
-
-
-
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 
 class VShapePrefKernel: public Func {
 private:
-  // double y;
   Eigen::VectorXd vec;
   double band;
   bool plus;
@@ -365,36 +255,11 @@ public:
   }
 };
 
-
-// [[Rcpp::export]]
-Rcpp::List integrate_VShapePref()
-{
-  const double lower = 4.3, upper = 6.7;
-  Eigen::Vector3d vec(5.2, 4.3, 6.7);
-  double band = 0.5*0.5;
-  bool plus = true;
-  double p = 2;
-
-  VShapePrefKernel f(vec, band, plus, p);
-
-  double err_est;
-  int err_code;
-  const double res = integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
-}
-
-
-
-
-
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 
 class VShapeIndPrefKernel: public Func {
 private:
-  // double y;
   Eigen::VectorXd vec;
   double band;
   bool plus;
@@ -450,27 +315,84 @@ public:
   }
 };
 
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
 
 // [[Rcpp::export]]
-Rcpp::List integrate_VShapeIndPref()
+Eigen::VectorXd integrate_KernelPromethee(Eigen::MatrixXd dados, int prefFunction, Eigen::VectorXd weights, Eigen::VectorXd parms, double band, bool normalize)
 {
-  const double lower = 4.3, upper = 6.7;
-  Eigen::Vector3d vec(5.2, 4.3, 6.7);
-  double band = 0.5*0.5;
-  bool plus = true;
-  double q = 0.4;
-  double p = 2;
+  int colunas = dados.cols();
+  Eigen::VectorXd sol(dados.rows());
+  Eigen::VectorXd phi(dados.rows());
 
-  VShapeIndPrefKernel f(vec, band, plus, q, p);
+  int c = 0;
+  for(c = 0; c < colunas; c++){
 
-  double err_est;
-  int err_code;
-  const double res = integrate(f, lower, upper, err_est, err_code);
-  return Rcpp::List::create(
-    Rcpp::Named("approximate") = res,
-    Rcpp::Named("error_estimate") = err_est,
-    Rcpp::Named("error_code") = err_code
-  );
+    double lower = dados.colwise().minCoeff()(c);
+    double upper = dados.colwise().maxCoeff()(c);
+    //    std::cout << "lower " << c << " " << lower << std::endl;
+    //    std::cout << "upper " << c << " " << upper << std::endl;
+    Eigen::VectorXd vec = dados.col(c);
+    //    std::cout << "vec " << vec << std::endl;
+    //    std::cout << "dados.rows " << dados.rows() << std::endl;
+    bool plus = true;
+    //    std::cout << "dados " << dados.col(c) << std::endl;
+
+    for(int i = 0; i < dados.size(); i++){
+      double err_est;
+      int err_code;
+      if (prefFunction == 0)
+      {
+//        VectorXd vec_, double band_, double sigma_, bool plus_
+        GaussianPrefKernel f(vec, band, parms(1), plus);
+        const double res = integrate(f, lower, upper, err_est, err_code);
+        sol(i) = sol(i) + res;
+        std::cout << "res " << res << std::endl;
+      }
+      else if (prefFunction == 1)
+      {
+        UsualPrefKernel f(vec, band, plus, vec(i));
+        const double res = integrate(f, lower, upper, err_est, err_code);
+        sol(i) = sol(i) + res;
+        std::cout << "res " << res << std::endl;
+      }
+      else if (prefFunction == 2)
+      {
+        UShapePrefKernel f(vec, band, plus, vec(i));
+        const double res = integrate(f, lower, upper, err_est, err_code);
+        sol(i) = sol(i) + res;
+        std::cout << "res " << res << std::endl;
+      }
+
+      else if (prefFunction == 3)
+      {
+        VShapePrefKernel f(vec, band, plus, vec(i));
+        const double res = integrate(f, lower, upper, err_est, err_code);
+        sol(i) = sol(i) + res;
+        std::cout << "res " << res << std::endl;
+      }
+      // else if (prefFunction == 4)
+      // {
+      //   LevelPrefKernel f(vec, band, plus, vec(i));
+      //   const double res = integrate(f, lower, upper, err_est, err_code);
+      //   sol(i) = sol(i) + res;
+      //   std::cout << "res " << res << std::endl;
+      // }
+      // else if (prefFunction == 5)
+      // {
+      //   VShapeIndPrefKernel f(vec, band, plus, vec(i));
+      //   const double res = integrate(f, lower, upper, err_est, err_code);
+      //   sol(i) = sol(i) + res;
+      //   std::cout << "res " << res << std::endl;
+      // }
+    }
+  }
+
+  phi = phi.array() + sol.array() * weights(c);
+  phi = phi.array()/weights.sum();
+  double min = phi.minCoeff();
+  double max = phi.maxCoeff();
+  if(normalize == true) phi = (phi.array() - min)/(max - min);
+
+  return(phi);
 }
-
-

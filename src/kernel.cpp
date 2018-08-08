@@ -192,7 +192,8 @@ weights <- c(0.3, 0.7)
 band <- 0.5^2
 normalize  <-  FALSE
 parms <- matrix(c(NA, NA), byrow = TRUE, nrow = 2)
-integrate_UsualPref(vec, weights, parms, band, normalize)
+# dados, prefFunction, weights, parms, band, normalize)
+integrate_KernelPromethee(dados = vec, prefFunction = 1, weights = weights, parms = parms, band = band, normalize = normalize)
 
 
 point <- 2
