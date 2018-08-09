@@ -1,3 +1,4 @@
+#include <RcppEigen.h>
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::depends(RcppNumerical)]]
 #include <RcppNumerical.h>
@@ -23,6 +24,23 @@ public:
     double K = (-(vec.array()-x).square().array()/(2*band*band)).exp().sum();
     K = K * pi2;
     K = (1/(vec.size()*band)) * K;
+
+    //Get the number of rows
+    int rows = vec.size();
+
+    //Initialize the matDelta
+    Eigen::MatrixXd matDelta = Eigen::MatrixXd::Zero(rows, rows);
+
+
+    //Fill the matDelta
+    for(int i = 0; i < rows; i++){
+      for(int j = i + 1; j < rows; j++){
+        double delta = vec(i) - vec(j);
+        matDelta(i, j) = delta;
+        matDelta(j, i) = (-1.0)*delta;
+      }
+    }
+
 
     //  Preference function
     double res = 0;
@@ -65,33 +83,51 @@ public:
     const double pinum = 3.14159265359;
     const double pi2 = 1.0/std::sqrt(2*pinum);
     // Kernel Function
-    double K = (-(vec.array()-x).square().array()/(2*band*band)).exp().sum();
-    K = K * pi2;
-    K = (1/(vec.size()*band)) * K;
+    double K = (1/(vec.size()*band)) * pi2 * (-(vec.array()-x).square().array()/(2*band*band)).exp().sum();
+
+
+    //Get the number of rows
+    int rows = vec.size();
+
+    //Initialize the matDelta
+    Eigen::MatrixXd matDelta = Eigen::MatrixXd::Zero(rows, rows);
+
+
+    //Fill the matDelta
+    for(int i = 0; i < rows; i++){
+      for(int j = i + 1; j < rows; j++){
+        double delta = vec(i) - vec(j);
+        matDelta(i, j) = delta;
+        matDelta(j, i) = (-1.0)*delta;
+      }
+    }
 
 
     //  Preference function
-    double res = 0;
-    for(int j = 0; j < vec.size(); j++){
-      double delta = vec(j) - alt;
+    Eigen::MatrixXd res = Eigen::MatrixXd::Zero(rows, rows);
+    for(int i = 0; i < rows; i++){
+      for(int j = 0; j < rows; j++){
         if(plus){
-          if(delta >= 0){
-            double qq = 1;
-            res = res + (qq * K);
-          } else {
+          if(matDelta(i, j) <= 0){
             double qq = 0;
-            res = res + (qq * K);
+            res(i, j) = qq * K;
+          } else {
+            double qq = 1;
+            res(i, j) = qq * K;
           }
         } else{
-          if(delta < 0){
-            double qq = 1;
-            res = res + (qq * K);
-          } else {
+          if(matDelta(i, j) >= 0){
             double qq = 0;
-            res = res + (qq * K);
+            res(i, j) = qq * K;
+          } else {
+            double qq = 1;
+            res(i, j) = qq * K;
           }
-    }
+        }
+      }
   }
+//    phiPlus =
+
     return(res);
   }
 };

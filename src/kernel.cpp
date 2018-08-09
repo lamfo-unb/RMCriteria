@@ -8,7 +8,7 @@ using namespace Numer;
 
 // [[Rcpp::export]]
 double GaussianPrefKernel(double y,Eigen::VectorXd vec, double band, double sigma, bool plus) {
-    //Calculate kernel
+  //Calculate kernel
     const double pinum = 3.14159265359;
     const double pi2 = 1.0/std::sqrt(2*pinum);
     if(plus == false) vec = -vec;
