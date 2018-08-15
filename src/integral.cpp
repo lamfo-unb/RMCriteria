@@ -2,6 +2,7 @@
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::depends(RcppNumerical)]]
 #include <RcppNumerical.h>
+#include <math.h>
 using namespace Numer;
 
 
@@ -72,18 +73,12 @@ private:
   Eigen::VectorXd vec;
   double band;
   bool plus;
-  double alt;
+  int alt;
 public:
-  UsualPrefKernel(Eigen::VectorXd vec_, double band_, bool plus_, double alt_) : vec(vec_), band(band_), plus(plus_), alt(alt_) {}
+  UsualPrefKernel(Eigen::VectorXd vec_, double band_, bool plus_, int alt_) : vec(vec_), band(band_), plus(plus_), alt(alt_) {}
 
   double operator()(const double& x) const
   {
-
-    //Calculate kernel
-    const double pinum = 3.14159265359;
-    const double pi2 = 1.0/std::sqrt(2*pinum);
-    // Kernel Function
-    double K = (1/(vec.size()*band)) * pi2 * (-(vec.array()-x).square().array()/(2*band*band)).exp().sum();
 
 
     //Get the number of rows
@@ -102,11 +97,24 @@ public:
       }
     }
 
+    //Calculate kernel
+    const double pinum = 3.14159265359;
+    const double pi2 = 1.0/std::sqrt(2*pinum);
+    // Kernel Function
+    double K = 0;
+    double Ktemp = 0;
+    for(int i = 0; i < rows; i++){
+      Ktemp = (1/(vec.size()*band)) * pi2 * exp(-(1/2)*pow((((vec(alt)-x) - (vec(i)-x))/band), 2));
+      K = K + Ktemp;
+    }
+
+
 
     //  Preference function
     Eigen::MatrixXd res = Eigen::MatrixXd::Zero(rows, rows);
     for(int i = 0; i < rows; i++){
       for(int j = 0; j < rows; j++){
+        double delta = vec(alt) - vec(alt);
         if(plus){
           if(matDelta(i, j) <= 0){
             double qq = 0;
@@ -131,6 +139,10 @@ public:
     Eigen::VectorXd phiPlus  = Eigen::VectorXd::Zero(rows);
     Eigen::VectorXd phiMinus = Eigen::VectorXd::Zero(rows);
 
+    for(int row = 0; row < rows; row++){
+      phiPlus(row) = matDelta.row(row).sum();
+      phiMinus(row) = matDelta.col(row).sum();
+    }
 
     return(res);
   }
