@@ -126,7 +126,11 @@ public:
         }
       }
   }
-//    phiPlus =
+
+    //Create the Flow vector
+    Eigen::VectorXd phiPlus  = Eigen::VectorXd::Zero(rows);
+    Eigen::VectorXd phiMinus = Eigen::VectorXd::Zero(rows);
+
 
     return(res);
   }
