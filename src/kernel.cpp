@@ -185,7 +185,8 @@ double VShapeIndPrefKernel(double y,Eigen::VectorXd vec, double band, bool plus,
 library(RcppEigen)
 library(RcppNumerical)
 library(Rcpp)
-vec <- c(5.2, 4.3, 6.7)
+library(RMCriteria)
+vec <- matrix(c(5.2, 4.3, 6.7), ncol = 1)
 vec <- matrix(c(5.2, 4.3, 6.7,
                 4.4, 1.3, 2.8), ncol = 2)
 weights <- c(0.3, 0.7)
@@ -193,8 +194,13 @@ band <- 0.5^2
 normalize  <-  FALSE
 parms <- matrix(c(NA, NA), byrow = TRUE, nrow = 2)
 # dados, prefFunction, weights, parms, band, normalize)
-integrate_KernelPromethee(dados = vec, prefFunction = 1, weights = weights, parms = parms, band = band, normalize = normalize)
+integrate_KernelPromethee(dados = vec, prefFunction = 1, weights = weights, parms = parms, band = band, normalize = normalize, alt = 0)
+integrate_KernelPromethee(dados = vec, prefFunction = 1, weights = weights, parms = parms, band = band, normalize = normalize, alt = 1)
+integrate_KernelPromethee(dados = vec, prefFunction = 1, weights = weights, parms = parms, band = band, normalize = normalize, alt = 2)
 
+Ktest(vec, band, plus = TRUE, alt = 0)
+Ktest(vec, band, plus = TRUE, alt = 1)
+Ktest(vec, band, plus = TRUE, alt = 2)
 
 point <- 2
 sigma <- 0.7^2
