@@ -66,17 +66,18 @@ public:
 };
 
 
+
 /////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-class UsualPrefKernel: public Func {
+class UsualPrefKernelPlus: public Func {
 private:
   Eigen::VectorXd vec;
   double band;
   bool plus;
   int alt;
 public:
-  UsualPrefKernel(Eigen::VectorXd vec_, double band_, bool plus_, int alt_) : vec(vec_), band(band_), plus(plus_), alt(alt_) {}
+  UsualPrefKernelPlus(Eigen::VectorXd vec_, double band_, bool plus_, int alt_) : vec(vec_), band(band_), plus(plus_), alt(alt_) {}
 
   double operator()(const double& x) const
   {
@@ -136,7 +137,7 @@ public:
 
 
 // [[Rcpp::export]]
-double integrate_KernelPromethee(Eigen::VectorXd dados, int prefFunction, Eigen::VectorXd weights, Eigen::VectorXd parms, double band, bool normalize, int alt)
+double integrate_KernelPrometheePlus(Eigen::VectorXd dados, int prefFunction, Eigen::VectorXd weights, Eigen::VectorXd parms, double band, bool normalize, int alt)
 {
 //  int colunas = dados.cols();
 //  Eigen::VectorXd sol(dados.rows());
@@ -163,7 +164,7 @@ double integrate_KernelPromethee(Eigen::VectorXd dados, int prefFunction, Eigen:
         res = integrate(f, lower, upper, err_est, err_code);
       }
       else if (prefFunction == 1){
-        UsualPrefKernel f(vec, band, plus, vec(alt));
+        UsualPrefKernelPlus f(vec, band, plus, vec(alt));
         res = integrate(f, lower, upper, err_est, err_code);
       }
       // else if (prefFunction == 2)
@@ -206,6 +207,173 @@ double integrate_KernelPromethee(Eigen::VectorXd dados, int prefFunction, Eigen:
 
   return(res);
 }
+
+
+
+
+
+/////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+
+class UsualPrefKernelMinus: public Func {
+private:
+  Eigen::VectorXd vec;
+  double band;
+  bool plus;
+  int alt;
+public:
+  UsualPrefKernelMinus(Eigen::VectorXd vec_, double band_, bool plus_, int alt_) : vec(vec_), band(band_), plus(plus_), alt(alt_) {}
+
+  double operator()(const double& x) const
+  {
+    // Band para cada critério, phi menos, testes, pref functions e colunas
+
+    //Get the number of rows
+    int rows = vec.size();
+
+
+    //Calculate kernel
+    const double pinum = 3.14159265359;
+    const double pi2 = 1.0/std::sqrt(2*pinum);
+    // Kernel Function
+    double K = 0;
+    double res = 0;
+    // Melhoria: tirar o cálculo do K de dentro da função
+    for(int i = 0; i < rows; i++){
+      K = (1/(vec.size()*band)) * pi2 * exp(-(1/2)*pow((((vec(alt)-vec(i)) - (vec(alt)-x))/band), 2));
+
+      // Preference function using delta of alternative with x
+      double delta = x - vec(alt);
+      if(plus){
+        if(delta <= 0){
+          double qq = 0;
+          res = res + K * qq;
+        } else {
+          double qq = 1;
+          res = res + K * qq;
+        }
+      } else{
+        if(delta >= 0){
+          double qq = 0;
+          res = res + K * qq;
+        } else {
+          double qq = 1;
+          res = res + K * qq;
+        }
+      }
+    }
+
+
+    //Create the Flow vector
+    // Eigen::VectorXd phiPlus  = Eigen::VectorXd::Zero(rows);
+    // Eigen::VectorXd phiMinus = Eigen::VectorXd::Zero(rows);
+    //
+    // for(int row = 0; row < rows; row++){
+    //   phiPlus(row) = matDelta.row(row).sum();
+    //   phiMinus(row) = matDelta.col(row).sum();
+    // }
+    //    std::cout << "K = " << K << std::endl;
+    //    std::cout << "vec(alt) " << alt << " = " << vec(alt) << std::endl;
+    return(res);
+  }
+};
+
+
+
+
+// [[Rcpp::export]]
+double integrate_KernelPrometheeMinus(Eigen::VectorXd dados, int prefFunction, Eigen::VectorXd weights, Eigen::VectorXd parms, double band, bool normalize, int alt)
+{
+  //  int colunas = dados.cols();
+  //  Eigen::VectorXd sol(dados.rows());
+  //  double sol = 0;
+  Eigen::VectorXd phi(dados.rows());
+
+  //  int c = 0;
+  //  for(c = 0; c < colunas; c++){
+
+  //    double lower = dados.colwise().minCoeff()(c);
+  //    double upper = dados.colwise().maxCoeff()(c);
+  double lower = dados.minCoeff();
+  double upper = dados.maxCoeff();
+  double res = 0;
+  //    Eigen::VectorXd vec = dados.col(c);
+  Eigen::VectorXd vec = dados;
+  bool plus = true;
+
+  // Variables to be used by integral function
+  double err_est;
+  int err_code;
+  if (prefFunction == 0){
+    GaussianPrefKernel f(vec, band, parms(1), plus);
+    res = integrate(f, lower, upper, err_est, err_code);
+  }
+  else if (prefFunction == 1){
+    UsualPrefKernelMinus f(vec, band, plus, vec(alt));
+    res = integrate(f, lower, upper, err_est, err_code);
+  }
+  // else if (prefFunction == 2)
+  // {
+  //   UShapePrefKernel f(vec, band, plus, vec(i));
+  //   const double res = integrate(f, lower, upper, err_est, err_code);
+  //   sol(i) = sol(i) + res;
+  //   std::cout << "res " << res << std::endl;
+  // }
+  //
+  // else if (prefFunction == 3)
+  // {
+  //   VShapePrefKernel f(vec, band, plus, vec(i));
+  //   const double res = integrate(f, lower, upper, err_est, err_code);
+  //   sol(i) = sol(i) + res;
+  //   std::cout << "res " << res << std::endl;
+  // }
+  // else if (prefFunction == 4)
+  // {
+  //   LevelPrefKernel f(vec, band, plus, vec(i));
+  //   const double res = integrate(f, lower, upper, err_est, err_code);
+  //   sol(i) = sol(i) + res;
+  //   std::cout << "res " << res << std::endl;
+  // }
+  // else if (prefFunction == 5)
+  // {
+  //   VShapeIndPrefKernel f(vec, band, plus, vec(i));
+  //   const double res = integrate(f, lower, upper, err_est, err_code);
+  //   sol(i) = sol(i) + res;
+  //   std::cout << "res " << res << std::endl;
+  // }
+  //    }
+
+
+  // phi = phi.array() + sol.array() * weights(c);
+  // phi = phi.array()/weights.sum();
+  // double min = phi.minCoeff();
+  // double max = phi.maxCoeff();
+  // if(normalize == true) phi = (phi.array() - min)/(max - min);
+
+  return(res);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
