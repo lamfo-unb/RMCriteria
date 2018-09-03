@@ -10,9 +10,9 @@ There were no ERRORs or WARNINGs.
 There are currently no downstream dependencies for this package.
 
 ## Update
-* Update to the new version RMCriteria 0.1.0
+* Update to the new version RMCriteria 0.1.1
+
 
 ## News
-* This is the first version of the package.
-
+* This is the second version of the package with new calculations for Promethee IV Kernel, solving its old bugs.
 
