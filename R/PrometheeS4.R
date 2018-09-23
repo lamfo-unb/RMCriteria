@@ -949,7 +949,6 @@ setMethod(
 #'
 #' @slot PhiPlus A numeric vector with the PhiPlus result from Promethee.
 #' @slot PhiMinus A numeric vector with the PhiMinus result from Promethee.
-#' @slot Index The index resulting from the lp solution.
 #' @slot alternatives A character vector with alternatives names.
 #' @slot criterias A character vector with criterias names.
 #' @slot datMat A matrix containing the data from criterias and alternatives.
@@ -961,24 +960,24 @@ setClass(
   Class = "RPrometheeIVKernel",
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
-            Index          = "numeric",
             alternatives   = "character",
             criterias      = "character",
             datMat         = "matrix"),
   prototype = list(
     PhiPlus        = numeric(0),
     PhiMinus       = numeric(0),
-    Index          = numeric(0),
     alternatives   = character(0),
     criterias      = character(0),
-    datMat         = matrix(0)),
-  validity=function(object)
-  {
-    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
-      return("The Phi vectors must have the same length.")
-    }
-    return(TRUE)
-  }
+    datMat         = matrix(0))
+
+  # Uncomment after including PhiMinus
+  # validity=function(object)
+  # {
+  #   if(length(object@PhiPlus)!=length(object@PhiMinus)) {
+  #     return("The Phi vectors must have the same length.")
+  #   }
+  #   return(TRUE)
+  # }
 )
 
 
@@ -1007,7 +1006,6 @@ setClass(
 #'   criterias.}
 #'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
 #'   criterias}
-#'   \item{Index} {The index resulting from the lp solution.}
 #'   \item{alternatives} {The alternatives names.}
 #'   \item{criterias} {The criterias names.}
 #'   \item{datMat} {The data used corresponding to criterias and alternatives.}
@@ -1112,12 +1110,53 @@ setMethod(
     datMat_temp <- datMat
     #Fix orientation
     for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
-    #Execute Promethee III
+    #Create bandwitdhs, in case it's not provided
     if(is.null(band)){band <- as.matrix(apply(datMat,2,bw.nrd0))}
-    results <- RMCriteria::PrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
+
+    k <- 1
+    y <- NULL
+    plus <- c(rep(NA, nrow(datMat)))
+    minus <- c(rep(NA, nrow(datMat)))
+    # Usual preference function
+    usualpref <- function(x,w){
+      ifelse(w - x >= 0, 1, 0)
+    }
+
+    for(k in 1:ncol(datMat)){
+      z <- data.frame(datMat)[1, k]
+      y <- datMat[,k]
+
+      plus <- apply(data.frame(y), 1, function(w){
+
+
+        integrand <- function(x){
+          (1/sqrt(2*pi))*sum(exp(-0.5*((usualpref(x,z) - usualpref(x,y))/band[k])^2))*usualpref(x,z)
+        }
+
+        plus[k] <- integrate(integrand, 0, 1)$value
+        #  })
+
+      }
+      )}
+    for(k in 1:ncol(datMat)){
+      z <- data.frame(datMat)[1, k]
+      y <- datMat[,k]
+
+      minus <- apply(data.frame(y), 1, function(w){
+
+
+        integrand <- function(x){
+          (1/sqrt(2*pi))*sum(exp(-0.5*((usualpref(z,x) - usualpref(y,x))/band[k])^2))*usualpref(z,x)
+        }
+
+        minus[k] <- integrate(integrand, 0, 1)$value
+      }
+      )}
+
 
     #Set the class
-    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
+    #resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
+    resultsClass <- new("RPrometheeIVKernel", PhiPlus = plus, PhiMinus = minus, alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
     #Return the class
     return(resultsClass)
   }
