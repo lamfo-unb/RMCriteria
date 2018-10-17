@@ -14,8 +14,6 @@ An S4 class to store results from RPrometheeIVKernel.
 
 \item{\code{PhiMinus}}{A numeric vector with the PhiMinus result from Promethee.}
 
-\item{\code{Index}}{The index resulting from the lp solution.}
-
 \item{\code{alternatives}}{A character vector with alternatives names.}
 
 \item{\code{criterias}}{A character vector with criterias names.}

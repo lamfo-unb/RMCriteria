@@ -426,8 +426,7 @@ double Ktest(Eigen::VectorXd vec, double band, bool plus, int alt)
   //   phiPlus(row) = matDelta.row(row).sum();
   //   phiMinus(row) = matDelta.col(row).sum();
   // }
-  std::cout << "K = " << K << std::endl;
-  std::cout << "vec(alt) " << alt << " = " << vec(alt) << std::endl;
+
   return(res);
 
   return(res);

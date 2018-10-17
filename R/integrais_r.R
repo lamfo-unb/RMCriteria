@@ -26,6 +26,8 @@ datMat <- matrix(c(5.2, 4.3, 6.7,
                 1.3, 2.5, 4.0), ncol = 2, nrow = 3)
 band <- c(0.25, 0.1)
 k <- 1
+plus <- c(rep(NA, nrow(datMat)))
+minus <- c(rep(NA, nrow(datMat)))
 #y <- NULL
 
 #x <- 0
@@ -35,17 +37,35 @@ usualpref <- function(x,w){
 
 for(k in 1:ncol(datMat)){
     z <- data.frame(datMat)[1, k]
-    y<-datMat[,k]
+    y <- datMat[,k]
 
-    res<-apply(data.frame(y), 1, function(z){
+    plus <- apply(data.frame(y), 1, function(w){
 
 
     integrand <- function(x){
       (1/sqrt(2*pi))*sum(exp(-0.5*((usualpref(x,z) - usualpref(x,y))/band[k])^2))*usualpref(x,z)
     }
 
-    res[i, k] <- integrate(integrand, 0, 1)$value
+    plus[k] <- integrate(integrand, 0, 1)$value
     #  })
 
   }
-)}
+    )}
+
+
+
+
+for(k in 1:ncol(datMat)){
+  z <- data.frame(datMat)[1, k]
+  y <- datMat[,k]
+
+  minus <- apply(data.frame(y), 1, function(w){
+
+
+    integrand <- function(x){
+      (1/sqrt(2*pi))*sum(exp(-0.5*((usualpref(z,x) - usualpref(y,x))/band[k])^2))*usualpref(z,x)
+    }
+
+    minus[k] <- integrate(integrand, 0, 1)$value
+  }
+  )}

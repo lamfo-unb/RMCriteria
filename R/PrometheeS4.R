@@ -1047,6 +1047,7 @@ setClass(
 #'    }
 #'
 #' @importFrom stats bw.nrd0
+#' @importFrom stats integrate
 #' @export
 #' @examples
 #' ## Create objects for each argument
