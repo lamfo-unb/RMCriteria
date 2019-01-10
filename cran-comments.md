@@ -10,9 +10,11 @@ There were no ERRORs or WARNINGs.
 There are currently no downstream dependencies for this package.
 
 ## Update
-* Update to the new version RMCriteria 0.1.0
+* Update to the new version RMCriteria 0.2.0
 
 ## News
-* This is the first version of the package.
+* Correct the RPrometheeIVKernel
+* Add more information about RPromtheeV
+* Create the Sensitivity Analysis manual
 
 

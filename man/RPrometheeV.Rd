@@ -28,8 +28,8 @@ to be calculated. The method can be \code{"PrometheeII"} or
  }
 }
 \description{
-PROMETHEE V deals with a subset of alternatives considerating a set of
-  restrictions. First, the PROMETHEE II is calculated to get a complete
+PROMETHEE V deals with a subset of alternatives considering a set of
+  constraints. First, the PROMETHEE II is calculated to get a complete
   pre-order. Then, binary linear programming is used to select a subset that
   maximizes the net outranking flow, according to restrictions. The first
   step can be calculated using PROMETHEE II or PROMETHEE IV, this is defined
