@@ -4,10 +4,10 @@
 \alias{brutePrometheeIVKernel}
 \title{Calculates PROMETHEE IV KERNEL method.}
 \usage{
-brutePrometheeIVKernel(datMat, vecWeights, prefFunction, parms, band, normalize)
+brutePrometheeIVKernel(datMat_temp, vecWeights, prefFunction, parms, band, normalize)
 }
 \arguments{
-\item{datMat}{A matrix containing the data from criterias and alternatives.}
+\item{datMat_temp}{A matrix containing the data from criterias and alternatives.}
 
 \item{vecWeights}{A vector of weights for each criteria.}
 
