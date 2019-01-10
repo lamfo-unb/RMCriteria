@@ -68,7 +68,6 @@ double UShapePrefKernel(double y,Eigen::VectorXd vec, double band, bool plus, do
   double K = (-(vec.array()-y).square().array()/(2*band*band)).exp().sum();
   K = K * pi2;
   K = (1/(vec.size()*band)) * K;
-  std::cout << K << std::endl;
 
   //  Preference function
   double res = 0;

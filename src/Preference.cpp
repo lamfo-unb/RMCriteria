@@ -14,7 +14,6 @@ void UsualPreference(Eigen::MatrixXd &matDelta){
       else{
         matDelta(i,j) = 1.0;
       }
-
     }
   }
 }
