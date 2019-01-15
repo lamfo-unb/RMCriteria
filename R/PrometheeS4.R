@@ -314,6 +314,7 @@ setClass(
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' library(RMCriteria)
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
@@ -347,7 +348,7 @@ setClass(
 #' newWeights <- c(0.5, 0.5)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
 #' (results <- RPrometheeI(PromObj))
-#'
+#'}
 
 
 # Define the Method
@@ -501,6 +502,7 @@ setClass(
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -533,7 +535,7 @@ setClass(
 #' newWeights <- c(0.5, 0.5)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
 #' (results <- RPrometheeII(PromObj))
-
+#'}
 
 #Define the Method
 setGeneric(
@@ -684,6 +686,7 @@ setClass(
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -717,6 +720,7 @@ setClass(
 #' newAlphaVector <- c(1, 1, 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "alphaVector", newAlphaVector)
 #' result <- RPrometheeIII(PromObj)
+#'}
 
 #Define the Method
 setGeneric(
@@ -867,6 +871,7 @@ setClass(
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -899,6 +904,7 @@ setClass(
 #' newPrefFunction <- c(1, 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "prefFunction", newPrefFunction)
 #' (result <- RPrometheeIV(PromObj))
+#'}
 
 
 
@@ -1051,6 +1057,7 @@ setClass(
 #' @importFrom stats bw.nrd0
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Create objects for each argument
 #' data <- matrix(c(5.2, -3.5,
 #'                  4.3, -1.2,
@@ -1083,6 +1090,7 @@ setClass(
 #' newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
 #' result <- RPrometheeIVKernel(PromObj)
+#'}
 
 
 #Define the Method
@@ -1545,6 +1553,7 @@ setClass(
 #' @importFrom lpSolve lp
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Create objects for each argument
 #' data <- matrix(c(5.2, -3.5,
 #'                  4.3, -1.2,
@@ -1582,6 +1591,7 @@ setClass(
 #' newBounds <- c(5, -2)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "bounds", newBounds)
 #' (result <- RPrometheeV(PromObj))
+#'}
 
 
 
@@ -1738,6 +1748,7 @@ setClass(
 #' @importFrom linprog solveLP
 #' @export
 #' @examples
+#' \dontrun{
 #' ## Create objects for each argument
 #' data <- matrix(c(5.2, -3.5,
 #'                  4.3, -1.2,
@@ -1775,6 +1786,7 @@ setClass(
 #' newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
 #' (result <- SensitivityAnalysis(PromObj))
+#'}
 
 
 #Define the Method
