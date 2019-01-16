@@ -314,7 +314,6 @@ setClass(
 #'
 #' @export
 #' @examples
-#' \dontrun{
 #' library(RMCriteria)
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
@@ -348,7 +347,7 @@ setClass(
 #' newWeights <- c(0.5, 0.5)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
 #' (results <- RPrometheeI(PromObj))
-#'}
+#'
 
 
 # Define the Method
@@ -502,7 +501,6 @@ setClass(
 #'
 #' @export
 #' @examples
-#' \dontrun{
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -535,7 +533,7 @@ setClass(
 #' newWeights <- c(0.5, 0.5)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "vecWeights", newWeights)
 #' (results <- RPrometheeII(PromObj))
-#'}
+
 
 #Define the Method
 setGeneric(
@@ -686,7 +684,6 @@ setClass(
 #'
 #' @export
 #' @examples
-#' \dontrun{
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -720,7 +717,6 @@ setClass(
 #' newAlphaVector <- c(1, 1, 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "alphaVector", newAlphaVector)
 #' result <- RPrometheeIII(PromObj)
-#'}
 
 #Define the Method
 setGeneric(
@@ -871,7 +867,6 @@ setClass(
 #'
 #' @export
 #' @examples
-#' \dontrun{
 #' ## Create objects for each argument
 #' data <-matrix(c(5.2, -3.5,
 #'                 4.3, -1.2,
@@ -904,7 +899,6 @@ setClass(
 #' newPrefFunction <- c(1, 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "prefFunction", newPrefFunction)
 #' (result <- RPrometheeIV(PromObj))
-#'}
 
 
 
@@ -955,7 +949,6 @@ setMethod(
 #'
 #' @slot PhiPlus A numeric vector with the PhiPlus result from Promethee.
 #' @slot PhiMinus A numeric vector with the PhiMinus result from Promethee.
-#' @slot Index The index resulting from the lp solution.
 #' @slot alternatives A character vector with alternatives names.
 #' @slot criterias A character vector with criterias names.
 #' @slot datMat A matrix containing the data from criterias and alternatives.
@@ -967,24 +960,24 @@ setClass(
   Class = "RPrometheeIVKernel",
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
-            Index          = "numeric",
             alternatives   = "character",
             criterias      = "character",
             datMat         = "matrix"),
   prototype = list(
     PhiPlus        = numeric(0),
     PhiMinus       = numeric(0),
-    Index          = numeric(0),
     alternatives   = character(0),
     criterias      = character(0),
-    datMat         = matrix(0)),
-  validity=function(object)
-  {
-    if(length(object@PhiPlus)!=length(object@PhiMinus)) {
-      return("The Phi vectors must have the same length.")
-    }
-    return(TRUE)
-  }
+    datMat         = matrix(0))
+
+  # Uncomment after including PhiMinus
+  # validity=function(object)
+  # {
+  #   if(length(object@PhiPlus)!=length(object@PhiMinus)) {
+  #     return("The Phi vectors must have the same length.")
+  #   }
+  #   return(TRUE)
+  # }
 )
 
 
@@ -1013,7 +1006,6 @@ setClass(
 #'   criterias.}
 #'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
 #'   criterias}
-#'   \item{Index} {The index resulting from the lp solution.}
 #'   \item{alternatives} {The alternatives names.}
 #'   \item{criterias} {The criterias names.}
 #'   \item{datMat} {The data used corresponding to criterias and alternatives.}
@@ -1055,9 +1047,9 @@ setClass(
 #'    }
 #'
 #' @importFrom stats bw.nrd0
+#' @importFrom stats integrate
 #' @export
 #' @examples
-#' \dontrun{
 #' ## Create objects for each argument
 #' data <- matrix(c(5.2, -3.5,
 #'                  4.3, -1.2,
@@ -1090,21 +1082,6 @@ setClass(
 #' newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
 #' result <- RPrometheeIVKernel(PromObj)
-#'}
-
-
-#Define the Method
-setGeneric(
-  "RPrometheeIVKernel",
-  function(RPrometheeArguments) {
-    standardGeneric("RPrometheeIVKernel")
-  }
-)
-
-####################################################################################################
-######################################  PromtheeIVKernel ###########################################
-####################################################################################################
-
 
 
 ######################################  Gaussian Preference ########################################
@@ -1343,6 +1320,7 @@ integraFunctionLinearNegative<-function(x,ROW,COL,n,band,parms,datMat_temp){
 }
 
 
+
 brutePrometheeIVKernel<-function(datMat_temp, vecWeights, prefFunction, parms, band, normalize){
   #Step 1: Max ou Min orientation
   #inv<-(normalize==FALSE)
@@ -1416,6 +1394,14 @@ brutePrometheeIVKernel<-function(datMat_temp, vecWeights, prefFunction, parms, b
 }
 
 
+#Define the Method
+setGeneric(
+  "RPrometheeIVKernel",
+  function(RPrometheeArguments) {
+    standardGeneric("RPrometheeIVKernel")
+  }
+)
+
 #Promethee IV K - Method
 setMethod(
   "RPrometheeIVKernel",
@@ -1432,15 +1418,18 @@ setMethod(
     criterias    <- RPrometheeArguments@criterias
 
     #Save original dataMatrix
-    datMat_temp <<- datMat
+    datMat_temp <- datMat
     #Fix orientation
-    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat_temp[,c] <- -datMat_temp[,c];
-    #Execute Promethee III
+    for(c in 1:ncol(datMat)) if(!vecMaximiz[c]) datMat[,c] <- -datMat[,c];
+    #Create bandwitdhs, in case it's not provided
+    if(is.null(band)){band <- as.matrix(apply(datMat,2,bw.nrd0))}
+
+    #Execute Promethee IVKernel
     if(is.null(band)){band <- as.matrix(apply(datMat_temp,2,bw.nrd0))}
     #results <- RMCriteria::PrometheeIVKernel(datMat_temp, vecWeights, prefFunction, parms, band, normalize)
     results <- RMCriteria::brutePrometheeIVKernel(datMat_temp, vecWeights, prefFunction, parms, band, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
+    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
     #Return the class
     return(resultsClass)
   }
@@ -1553,7 +1542,6 @@ setClass(
 #' @importFrom lpSolve lp
 #' @export
 #' @examples
-#' \dontrun{
 #' ## Create objects for each argument
 #' data <- matrix(c(5.2, -3.5,
 #'                  4.3, -1.2,
@@ -1591,7 +1579,6 @@ setClass(
 #' newBounds <- c(5, -2)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "bounds", newBounds)
 #' (result <- RPrometheeV(PromObj))
-#'}
 
 
 
@@ -1748,7 +1735,6 @@ setClass(
 #' @importFrom linprog solveLP
 #' @export
 #' @examples
-#' \dontrun{
 #' ## Create objects for each argument
 #' data <- matrix(c(5.2, -3.5,
 #'                  4.3, -1.2,
@@ -1786,7 +1772,6 @@ setClass(
 #' newParms <- matrix(c(1.6, 4.2), byrow = TRUE, ncol = 1)
 #' PromObj <- UpdateRPrometheeArguments(PromObj, "parms", newParms)
 #' (result <- SensitivityAnalysis(PromObj))
-#'}
 
 
 #Define the Method
