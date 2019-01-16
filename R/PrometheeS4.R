@@ -960,12 +960,14 @@ setClass(
   Class = "RPrometheeIVKernel",
   slots = c(PhiPlus        = "numeric",
             PhiMinus       = "numeric",
+            Index          = "numeric",
             alternatives   = "character",
             criterias      = "character",
             datMat         = "matrix"),
   prototype = list(
     PhiPlus        = numeric(0),
     PhiMinus       = numeric(0),
+    Index          = numeric(0),
     alternatives   = character(0),
     criterias      = character(0),
     datMat         = matrix(0))
@@ -1005,6 +1007,8 @@ setClass(
 #'   \item{PhiPlus} {The resulting PhiPlus from the alternatives for all
 #'   criterias.}
 #'   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
+#'   criterias}
+#'   \item{Index} {The resulting Index from the alternatives for all
 #'   criterias}
 #'   \item{alternatives} {The alternatives names.}
 #'   \item{criterias} {The criterias names.}
@@ -1429,7 +1433,7 @@ setMethod(
     #results <- RMCriteria::PrometheeIVKernel(datMat_temp, vecWeights, prefFunction, parms, band, normalize)
     results <- RMCriteria::brutePrometheeIVKernel(datMat_temp, vecWeights, prefFunction, parms, band, normalize)
     #Set the class
-    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
+    resultsClass <- new("RPrometheeIVKernel",PhiPlus=results[[1]], PhiMinus=results[[2]], Index=results[[3]], alternatives = alternatives, criterias = criterias, datMat = datMat_temp)
     #Return the class
     return(resultsClass)
   }
