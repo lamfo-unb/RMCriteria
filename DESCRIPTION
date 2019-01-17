@@ -10,20 +10,10 @@ Depends: R (>= 3.1.0)
 License: GPL-2
 LazyData: TRUE
 LinkingTo: Rcpp, RcppEigen, RcppNumerical
-Imports:
-    Rcpp,
-    RcppNumerical,
-    linprog,
-    lpSolve,
-    ggplot2,
-    gridExtra,
-    ggnetwork,
-    network,
-    pastecs,
-    methods,
-    graphics,
-    stats,
-    utils,
-    dplyr
+Imports: Rcpp, RcppNumerical, linprog, lpSolve, ggplot2, gridExtra,
+        ggnetwork, network, pastecs, methods, graphics, stats, utils,
+        dplyr
 SystemRequirements: GNU make
 RoxygenNote: 6.0.1
+NeedsCompilation: yes
+

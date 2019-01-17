@@ -6,9 +6,10 @@
 
 ## Installation
 
-Currently, the easiest way to install `RMCriteria` is through R `install.packages` command, straight from console:
+Currently, the easiest way to install `RMCriteria` is through `devtools` package, straight from GitHub:
 ```R
-install.packages("RMCriteria")
+# install.packages("devtools")
+devtools::install_github("lamfo-unb/RMCriteria")
 ```
 
 ## Usage

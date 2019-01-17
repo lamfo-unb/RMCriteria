@@ -19,7 +19,8 @@ more information.}
   criterias.}
   \item{PhiMinus} {The resulting PhiMinus from the alternatives for all
   criterias}
-  \item{Index} {The index resulting from the lp solution.}
+  \item{Index} {The resulting Index from the alternatives for all
+  criterias}
   \item{alternatives} {The alternatives names.}
   \item{criterias} {The criterias names.}
   \item{datMat} {The data used corresponding to criterias and alternatives.}
